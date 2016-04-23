@@ -1,0 +1,12 @@
+#
+#
+#
+
+NEW_ITEM;
+name = Pressure suit;
+description = Suit that protects user from hazardous environment with low pressure, gravity and atmosphere.;
+volume = 400;
+price = 500;
+material = Polyfiber;
+slots = Torso, Neck, Left arm, Right arm, Left leg, Right leg;
+PUSH_ITEM;

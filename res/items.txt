@@ -1,0 +1,25 @@
+#
+#
+
+########## MISC ITEMS ############
+
+NEW_ITEM;
+name = Rock;
+description = Just a boring piece of rock;
+volume = 20;
+price = 0;
+type = misc;
+material = Granite;
+PUSH_ITEM;
+
+########### AMMO #############
+
+NEW_ITEM;
+name = 5.56x45 ammo;
+description = Widely used ammo for rifles;
+volume = 1;
+price = 1;
+type = ammo;
+material = Lead;
+PUSH_ITEM;
+

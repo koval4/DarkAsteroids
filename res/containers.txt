@@ -1,0 +1,13 @@
+#
+#
+#
+
+NEW_ITEM;
+name = Backpack;
+description = Simple backpack, it's construction hasn't changed in centuries.;
+volume = 200;
+price = 100;
+material = Leather;
+wearable = true;
+slots = Torso;
+PUSH_ITEM;

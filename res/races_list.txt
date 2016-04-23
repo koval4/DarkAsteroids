@@ -1,0 +1,21 @@
+#
+#
+#
+
+NEW_RACE;
+name = Human;
+min_body_size = 1000;
+max_body_size = 1000;
+body =    Torso : Torso (volume = 300)
+        , Neck : Neck (volume = 50)
+        , Head : Head (volume = 100)
+        , Left arm : Arm (volume = 120)
+        , Right arm : Arm (volume = 120)
+        , Left hand : Hand (volume = 20, connection = Left arm)
+        , Right hand : Hand (volume = 20, connection = Right arm)
+        , Left leg : Leg (volume = 200)
+        , Right leg : Leg (volume = 200)
+        , Left foot : Foot (volume = 35, connection = Left leg)
+        , Right foot : Foot (volume = 35, connection = Right leg);
+PUSH_RACE;
+

@@ -1,0 +1,141 @@
+#
+#
+#
+
+############# METALS #############
+
+NEW_MATERIAL;
+name = Copper;
+price = 10;
+density = 50;
+yield_strength = 90;
+fracture = 115;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+NEW_MATERIAL;
+name = Iron;
+price = 13;
+density = 55;
+yield_strength = 100;
+fracture = 125;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+NEW_MATERIAL;
+name = Steel;
+price = 15;
+density = 56;
+yield_strength = 115;
+fracture = 130;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+NEW_MATERIAL;
+name = Lead;
+price = 9;
+density = 64;
+yield_strength = 82;
+fracture = 75;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+###############################
+
+NEW_MATERIAL;
+name = Wood;
+price = 5;
+density = 43;
+yield_strength = 53;
+fracture = 53;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+############ CLOTH #############
+
+NEW_MATERIAL;
+name = Wool;
+price = 6;
+density = 11;
+yield_strength = 26;
+fracture = 86;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+NEW_MATERIAL;
+name = Silk;
+price = 10;
+density = 13;
+yield_strength = 34;
+fracture = 94;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+NEW_MATERIAL;
+name = Leather;
+price = 7;
+density = 26;
+yield_strength = 75;
+fracture = 89;
+strain_at_stress = 13;
+PUSH_MATERIAL;
+
+NEW_MATERIAL;
+name = Polyfiber;
+price = 40;
+density = 30;
+yield_strength = 86;
+fracture = 126;
+strain_at_stress = 77;
+PUSH_MATERIAL;
+
+############## STONES #############
+
+NEW_MATERIAL;
+name = Limestone;
+price = 7;
+density = 40;
+yield_strength = 95;
+fracture = 96;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+NEW_MATERIAL;
+name = Granite;
+price = 7;
+density = 66;
+yield_strength = 181;
+fracture = 181;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+NEW_MATERIAL;
+name = Marble;
+price = 12;
+density = 56;
+yield_strength = 85;
+fracture = 85;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+############ BIOMATERIALS #############
+
+NEW_MATERIAL;
+name = Bone;
+price = 1;
+density = 78;
+yield_strength = 78;
+fracture = 85;
+strain_at_stress = 1;
+PUSH_MATERIAL;
+
+NEW_MATERIAL;
+name = Flesh;
+price = 1;
+density = 19;
+yield_strength = 45;
+fracture = 58;
+strain_at_stress = 6;
+PUSH_MATERIAL;
+
+

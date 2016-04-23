@@ -1,0 +1,66 @@
+#
+#
+#
+
+NEW_ITEM;
+name = Torso;
+description = Torso;
+price = 0;
+material = Flesh;
+is_grasp = false;
+PUSH_ITEM;
+
+NEW_ITEM;
+name = Neck;
+description = Neck;
+price = 0;
+material = Flesh;
+is_grasp = false;
+connection = Torso;
+PUSH_ITEM;
+
+NEW_ITEM;
+name = Head;
+description = Head;
+price = 0;
+material = Flesh;
+is_grasp = false;
+connection = Neck;
+PUSH_ITEM;
+
+NEW_ITEM;
+name = Arm;
+description = Arm;
+price = 0;
+material = Flesh;
+is_grasp = false;
+connection = Torso;
+PUSH_ITEM;
+
+NEW_ITEM;
+name = Hand;
+description = Hand;
+price = 0;
+material = Flesh;
+is_grasp = true;
+connection = Arm;
+PUSH_ITEM;
+
+NEW_ITEM;
+name = Leg;
+description = Leg;
+price = 0;
+material = Flesh;
+is_grasp = false;
+connection = Torso;
+PUSH_ITEM;
+
+NEW_ITEM;
+name = Foot;
+description = Foot;
+price = 0;
+material = Flesh;
+is_grasp = false;
+connection = Leg;
+PUSH_ITEM;
+

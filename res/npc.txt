@@ -1,0 +1,6 @@
+NEW_NPC;
+name = Pirate;
+description = A pirate.;
+texture = textures/pirate.png;
+race = Human;
+PUSH_NPC;

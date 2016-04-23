@@ -1,0 +1,28 @@
+#
+#
+#
+
+########### ASSAULT RIFLES ###########
+
+NEW_ITEM;
+name = CPP-17;
+description = One of the most popular assault rifles;
+volume = 100;
+price = 120;
+type = weapon;
+material = Steel;
+hold_type = two_handed;
+ammo = {type = 5.56x45, max_ammo = 24};
+available_attacks = {Ranged :: name = Single shot
+                    , message = " shoots "
+                    , ap_cost = 2
+                    , ammo_usage = 1
+                    , ammo_type = 5.56x45
+                    , contact_area = 2
+                    , start_force = 600
+                    , range = 100
+                    , thermal_energy = 300
+                    , melee = false
+                    , projectile = ammo
+                    };
+PUSH_ITEM;
