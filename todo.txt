@@ -1,0 +1,8 @@
+Separate ui parts from data.h
+Add listeners blocking
+Add Logger class
+Add Database class
+Add Output class (Used for info output on screen)
+Add Inventory class
+Complete implementation of Tile class
+Add thermal calculations
