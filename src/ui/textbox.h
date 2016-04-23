@@ -51,7 +51,7 @@ class Textbox : public Widget, public Scrollable {
          * @param font_size -- size of font used to render text, uses default static value
          */
         Textbox( SDL_Rect form
-               , Margin margin = {}
+               , Padding margin = {}
                , bool multiline = false
                , SDL_Color font_color = default_font_color
                , uint16_t font_size = default_font_size);

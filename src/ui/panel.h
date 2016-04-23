@@ -30,7 +30,7 @@ class Panel : public Widget {
          * @param form -- size and position of panel
          * @param margin -- margins inside panel
          */
-        Panel(SDL_Rect form, Margin margin);
+        Panel(SDL_Rect form, Padding margin);
 
         //################# DESTRUCTOR #######################
         ~Panel();

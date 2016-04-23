@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include "widget.h"
 #include "texture.h"
-#include "../data.h"
+#include "common.h"
 #include "slidebar.h"
 #include "gui.h"
 

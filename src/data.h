@@ -1,37 +1,20 @@
 #ifndef DATA_H_INCLUDED
 #define DATA_H_INCLUDED
 
+#include <cmath>
 #include <string>
 #include <vector>
 #include <map>
 #include <fstream>
 #include <ostream>
 #include <iostream>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 
 //#define PAIRS(first, second) std::vector<std::pair<first, second>>
 template<typename F, typename S>
 using PAIRS = std::vector<std::pair<F, S>>;
-using EventType = decltype(std::declval<SDL_Event>().type);
 
 extern std::string txtr_path;
 #define img(name) txtr_path + std::string(name)
-
-struct Margin{
-    uint16_t top;
-    uint16_t left;
-    uint16_t right;
-    uint16_t bottom;
-
-    Margin() : top(0), left(0), right(0), bottom(0) {}
-
-    Margin(uint16_t value) : top(value), left(value), right(value), bottom(value) {}
-
-    Margin(uint16_t top, uint16_t left, uint16_t right, uint16_t bottom) :
-        top(top), left(left), right(right), bottom(bottom) {}
-};
 
 /**
  * @brief The Coord struct represents coordinates
@@ -55,7 +38,7 @@ struct Coord {
             return !(*this == right);
         }
 
-        //for std::map<Coord, _>
+        //for ordering
         /**
          * @brief operator < -- compares length of vectors
          * @param right -- value at right

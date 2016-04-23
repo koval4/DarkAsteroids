@@ -69,7 +69,7 @@ void Game::Execute() {
     Player::set_game_state(&running);
 
     //--------------------------setting player's gui---------------------------------
-    Margin standart_margin = {3, 3, 3, 3};
+    Padding standart_margin = {3, 3, 3, 3};
 
     SDL_Rect output_form = {0, 400, 250, 200};
     ui.output = Textbox::ptr(new Textbox(output_form, {5, 5, 5, 5}, true));

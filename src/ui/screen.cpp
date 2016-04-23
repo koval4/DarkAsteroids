@@ -3,7 +3,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
-#include "../data.h"
+#include "common.h"
 #include "texture.h"
 #include "screen.h"
 

@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "texture.h"
-#include "../data.h"
+#include "common.h"
 #include "gui.h"
 #include "textbox.h"
 
@@ -32,7 +32,7 @@ Textbox::Textbox() : Widget(), Scrollable() {
 * @param font_color -- color used for text rendering, defaulted to black
 * @param font_size -- size of font used to render text, uses default static value
 */
-Textbox::Textbox(SDL_Rect form, Margin margin, bool multiline, SDL_Color font_color, uint16_t font_size)
+Textbox::Textbox(SDL_Rect form, Padding margin, bool multiline, SDL_Color font_color, uint16_t font_size)
     : Widget(default_back_txtr, form, margin), Scrollable()
     , multiline(multiline), font_color(font_color) {
     pos = 0;

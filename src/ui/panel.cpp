@@ -25,7 +25,7 @@ Panel::Panel() : Widget() {
 * @param form -- size and position of panel
 * @param margin -- margins inside panel
 */
-Panel::Panel(SDL_Rect form, Margin margin) : Widget(default_back_path, form, margin) {
+Panel::Panel(SDL_Rect form, Padding margin) : Widget(default_back_path, form, margin) {
 
 }
 

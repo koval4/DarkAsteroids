@@ -49,7 +49,7 @@ class Button : public Widget {
          * @param margin -- margins inside button
          * @param content -- marks content that will be placed in button (text, icon), defaulted to text
          */
-        Button(std::string txtr, SDL_Rect form, Margin margin, Content content = text);
+        Button(std::string txtr, SDL_Rect form, Padding margin, Content content = text);
 
         //############## DESTRUCTOR #################
         ~Button();

@@ -5,7 +5,7 @@
 #include <map>
 #include <memory>
 #include <SDL2/SDL.h>
-#include "../data.h"
+#include "common.h"
 
 /**
  * @brief The Listener class describes objects that handles some events in separate thread

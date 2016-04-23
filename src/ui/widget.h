@@ -6,14 +6,14 @@
 #include <memory>
 #include <SDL2/SDL.h>
 #include "texture.h"
-#include "../data.h"
+#include "common.h"
 
 /** abstract class that describes base gui element*/
 class Widget{
     protected:
         Texture::ptr background;
         SDL_Rect form;  ///position and size of widget
-        Margin margin;  ///margin of widget
+        Padding margin;  ///margin of widget
 
         bool visible;   ///is object visible
         bool enabled;   ///is object enabled
@@ -25,14 +25,14 @@ class Widget{
         typedef std::unique_ptr<Widget> ptr;
 
         Widget();   ///base c-tor, creates empty widget
-        Widget(Texture::ptr background, SDL_Rect form, Margin margin = {});
-        Widget(std::string back_path, SDL_Rect form, Margin margin = {});
+        Widget(Texture::ptr background, SDL_Rect form, Padding margin = {});
+        Widget(std::string back_path, SDL_Rect form, Padding margin = {});
         virtual ~Widget();  ///d-tor
 
         //####################### GETTERS ##########################
         virtual std::vector<Texture*> get_textures() const = 0;    ///returns textures of widget
         SDL_Rect get_form();
-        Margin get_margin();
+        Padding get_margin();
 
         //############### SETTERS ##################
         void set_visible(bool visible);

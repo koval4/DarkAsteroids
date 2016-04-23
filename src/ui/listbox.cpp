@@ -5,7 +5,7 @@
 #include "texture.h"
 #include "widget.h"
 #include "gui.h"
-#include "../data.h"
+#include "common.h"
 #include "listbox.h"
 
 //##################### STATIC VARIABLES ############################
@@ -17,7 +17,7 @@ int Listbox::default_font_size = 0;                     /// size used as default
 SDL_Color Listbox::default_font_color = {0, 0, 0, 0};   /// default color used for text in list items
 uint16_t Listbox::default_item_height = 0;              /// default height in pixels used for list item form
 uint16_t Listbox::default_spacing = 0;                  /// default spacing between visible items
-Margin Listbox::default_item_margin = {};               /// default margins used in items
+Padding Listbox::default_item_margin = {};               /// default margins used in items
 
 //########################### LIST ITEM ################################
 
@@ -84,7 +84,7 @@ Listbox::Listbox() : Widget() {}
 * @param margin -- margins inside listbox, defaulted to no margins
 * @param items_color -- color used for items rendering, defaulted to black
 */
-Listbox::Listbox(SDL_Rect form, Margin margin, uint16_t item_height)
+Listbox::Listbox(SDL_Rect form, Padding margin, uint16_t item_height)
     : Widget(default_back_txtr, form, margin)
     , pos(0)
     , item_height(item_height)
@@ -181,7 +181,7 @@ void Listbox::set_default_spacing(uint16_t spacing) {
     default_spacing = spacing;
 }
 
-void Listbox::set_default_item_margin(Margin item_margin) {
+void Listbox::set_default_item_margin(Padding item_margin) {
     default_item_margin = item_margin;
 }
 

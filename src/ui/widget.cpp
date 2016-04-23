@@ -3,7 +3,7 @@
 #include <typeinfo>
 #include <SDL2/SDL.h>
 #include "texture.h"
-#include "../data.h"
+#include "common.h"
 #include "widget.h"
 
 uint16_t Widget::obj_counter = 0;
@@ -18,14 +18,14 @@ Widget::Widget() {
     enabled = false;
 }
 
-Widget::Widget(Texture::ptr background, SDL_Rect form, Margin margin)
+Widget::Widget(Texture::ptr background, SDL_Rect form, Padding margin)
     : background(std::move(background)), form(form), margin(margin) {
     obj_counter++;
     visible = true;
     enabled = true;
 }
 
-Widget::Widget(std::string back_path, SDL_Rect form, Margin margin)
+Widget::Widget(std::string back_path, SDL_Rect form, Padding margin)
     : form(form), margin(margin), visible(true)
     , enabled(true), background(new Texture(back_path, form.x, form.y, form.w, form.h)) {
     obj_counter++;
@@ -53,7 +53,7 @@ SDL_Rect Widget::get_form() {
     return form;
 }
 
-Margin Widget::get_margin() {
+Padding Widget::get_margin() {
     return margin;
 }
 

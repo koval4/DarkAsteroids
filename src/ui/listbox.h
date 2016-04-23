@@ -9,7 +9,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "texture.h"
 #include "widget.h"
-#include "../data.h"
+#include "common.h"
 #include "listener.h"
 
 /**
@@ -25,7 +25,7 @@ class Listbox : public Widget {
             Texture::ptr text_txtr;     /// texture with item text
             Texture::ptr background;    /// background of item
             SDL_Rect form;              /// size and position of item
-            Margin margin;              /// margins inside item
+            Padding margin;              /// margins inside item
 
             Listener listener;          /// listener that checks if item is clicked
 
@@ -47,7 +47,7 @@ class Listbox : public Widget {
         TTF_Font* items_font;                       /// font used for text rendering in items
         SDL_Color items_color;                      /// colour of text used for rendering in item
         std::string item_background;                /// background of each item used for rendering
-        Margin item_margin;                         /// margins inside each of items
+        Padding item_margin;                         /// margins inside each of items
 
         std::function<void(std::string)> item_clicked_handler;
 
@@ -58,7 +58,7 @@ class Listbox : public Widget {
         static SDL_Color default_font_color;        /// default color used for text in list items
         static uint16_t default_item_height;        /// default height in pixels used for list item form
         static uint16_t default_spacing;            /// default spacing between visible items
-        static Margin default_item_margin;          /// default margins used in items
+        static Padding default_item_margin;          /// default margins used in items
 
         void draw_items();  /// makes visible_items from items
     public:
@@ -75,7 +75,7 @@ class Listbox : public Widget {
          * @param margin -- margins inside listbox, defaulted to no margins
          * @param items_color -- color used for items rendering, defaulted to black
          */
-        Listbox(SDL_Rect form, Margin margin = {}
+        Listbox(SDL_Rect form, Padding margin = {}
                 , uint16_t item_height = default_item_height);
 
         //################## DESTRUCTOR ##########################
@@ -101,7 +101,7 @@ class Listbox : public Widget {
         static void set_default_font_color(SDL_Color color);
         static void set_default_item_height(uint16_t item_height);
         static void set_default_spacing(uint16_t spacing);
-        static void set_default_item_margin(Margin item_margin);
+        static void set_default_item_margin(Padding item_margin);
 
         //################## ITEMS OPERATIONS #######################
         void add_item(std::string item);    /// adds single item in textbox

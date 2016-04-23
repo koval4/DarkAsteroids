@@ -32,7 +32,7 @@ Button::Button()
 * @param margin -- margins inside button
 * @param content -- marks content that will be placed in button (text, icon), defaulted to text
 */
-Button::Button(std::string txtr, SDL_Rect form, Margin margin, Button::Content content)
+Button::Button(std::string txtr, SDL_Rect form, Padding margin, Button::Content content)
     : Widget(default_back_path, form , margin)
     , font_color(default_font_color)
     , listener(SDL_MOUSEBUTTONDOWN) {

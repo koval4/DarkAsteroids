@@ -300,7 +300,7 @@ void Player::pick_item() {
 
 void Player::attack(Coord target) {
     bool done = false;
-    Margin margin = {3};
+    Padding margin = {3};
     auto btns_height = 70;
     Attack::ptr atk;
 
