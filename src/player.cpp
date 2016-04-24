@@ -184,7 +184,10 @@ void Player::make_turn() {
 
     Listener key_listener(SDL_KEYDOWN);
     Listener mouse_listener(SDL_MOUSEBUTTONDOWN);
-    key_listener.run([this, &done, &move_action] (SDL_Event& event) -> void {
+    EventProcessor processor;
+    processor.listen(&key_listener);
+    processor.listen(&mouse_listener);
+    key_listener.set_handler([this, &done, &move_action, &key_listener, &mouse_listener] (SDL_Event& event) -> void {
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
                 event.type = 0;
@@ -194,6 +197,7 @@ void Player::make_turn() {
                 *game_running = false;
                 break;
             case SDLK_g:
+                // BUG: pick up fn calling again and again
                 pick_item();
                 break;
             case SDLK_i:
@@ -219,7 +223,7 @@ void Player::make_turn() {
                 break;
         }
     });
-    mouse_listener.run([this, &done, &move_action] (SDL_Event & event) -> void {
+    mouse_listener.set_handler([this, &done, &move_action] (SDL_Event & event) -> void {
         auto tiles_hor = Screen::inst().get_width() / Map::Tile::tile_size;
         auto tiles_vert = Screen::inst().get_height() / Map::Tile::tile_size;
         // calculating position on map that has been clicked
@@ -235,7 +239,7 @@ void Player::make_turn() {
         else move_action(mpos);
         update_ap_lbl();
     });
-    EventProcessor::inst().run([this, &done] (void) -> bool { return !done && params.action_points > 0 && *game_running; });
+    processor.run([this, &done] (void) -> bool { return !done && params.action_points > 0 && *game_running; });
     ui->output->add_text("====New turn====\n");
 }
 
@@ -284,7 +288,10 @@ void Player::pick_item() {
     GUI::inst().update();
 
     Listener listener(SDL_KEYDOWN);
-    listener.run([this, &done] (SDL_Event & event) -> void {
+    EventProcessor processor;
+    processor.listen(panel);
+    processor.listen(&listener);
+    listener.set_handler([this, &done] (SDL_Event & event) -> void {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE :
                 done = true;
@@ -294,7 +301,7 @@ void Player::pick_item() {
         }
     });
 
-    EventProcessor::inst().run([this, &done] (void) -> bool { return !done && params.action_points > 0 && *game_running; });
+    processor.run([this, &done] (void) -> bool { return !done && params.action_points > 0 && *game_running; });
     GUI::inst().remove_widget(&panel);
 }
 
@@ -366,7 +373,10 @@ void Player::attack(Coord target) {
     GUI::inst().update();
 
     Listener listener(SDL_KEYDOWN);
-    listener.run([this, &done] (SDL_Event & event) -> void {
+    EventProcessor processor;
+    processor.listen(&listener);
+    processor.listen(panel);
+    listener.set_handler([this, &done] (SDL_Event & event) -> void {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE :
                 event.type = 0;
@@ -377,12 +387,11 @@ void Player::attack(Coord target) {
         }
     });
 
-    EventProcessor::inst().run([this, &done] (void) -> bool { return !done && params.action_points > 0 && *game_running; });
+    processor.run([this, &done] (void) -> bool { return !done && params.action_points > 0 && *game_running; });
     GUI::inst().remove_widget(&panel);
 }
 
 void Player::show_inventory() {
-    EventProcessor::inst().block_listeners();
     bool done = false;
     Item::ptr chosen_item(nullptr);
     std::string chosen_str;
@@ -441,7 +450,10 @@ void Player::show_inventory() {
     GUI::inst().update();
 
     Listener listener(SDL_KEYDOWN);
-    listener.run([this, &done] (SDL_Event & event) -> void {
+    EventProcessor processor;
+    processor.listen(&listener);
+    processor.listen(panel);
+    listener.set_handler([this, &done] (SDL_Event & event) -> void {
         switch (event.key.keysym.sym) {
             case SDLK_ESCAPE :
                 event.type = 0;
@@ -452,7 +464,6 @@ void Player::show_inventory() {
         }
     });
 
-    EventProcessor::inst().run([this, &done] (void) -> bool { return !done && params.action_points > 0 && *game_running; });
+    processor.run([this, &done] (void) -> bool { return !done && params.action_points > 0 && *game_running; });
     GUI::inst().remove_widget(&panel);
-    EventProcessor::inst().unblock_listeners();
 }

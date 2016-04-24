@@ -49,6 +49,16 @@ std::vector<Texture*> Panel::get_textures() const {
     return textures;
 }
 
+std::vector<const Listener*> Panel::get_listeners() const {
+    std::vector<const Listener*> listeners;
+    for (auto& widget : widgets) {
+        auto w_listeners = widget->get_listeners();
+        listeners.reserve(listeners.capacity() + w_listeners.size());
+        listeners.insert(listeners.end(), w_listeners.begin(), w_listeners.end());
+    }
+    return listeners;
+}
+
 //##################### SETTERS #########################
 
 void Panel::set_widgets(std::vector<Widget*> widgets) {

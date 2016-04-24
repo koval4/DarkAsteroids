@@ -2,7 +2,6 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
-#include <stack>
 #include <functional>
 #include <SDL2/SDL.h>
 #include "listener.h"
@@ -16,20 +15,17 @@ EventProcessor::~EventProcessor() {}
 
 //################## GETTERS #####################
 
-/**
- * @brief EventProcessor::inst -- static function to get instance of singleton class
- * @return reference to singleton instance of event processor
- */
-EventProcessor& EventProcessor::inst() {
-    static EventProcessor instance;
-    return instance;
-}
-
-void EventProcessor::listen(Listener* listener) {
+void EventProcessor::listen(const Listener* listener) {
     listeners[listener->get_type()].push_back(listener);
 }
 
-void EventProcessor::unlisten(Listener* listener) {
+void EventProcessor::listen(const Widget& widget) {
+    for (auto& listener : widget.get_listeners()) {
+        listen(listener);
+    }
+}
+
+void EventProcessor::unlisten(const Listener* listener) {
     auto& listnr_at = listeners[listener->get_type()];
     auto it = listnr_at.begin();
     while (it != listnr_at.end()) {
@@ -41,20 +37,9 @@ void EventProcessor::unlisten(Listener* listener) {
     }
 }
 
-void EventProcessor::block_listeners() {
-    for (auto& type_it : listeners) {
-        for (auto& it : type_it.second) {
-            it->set_enabled(false);
-        }
-    }
-}
-
-void EventProcessor::unblock_listeners() {
-    for (auto& type_it : listeners) {
-        for (auto& it : type_it.second) {
-            it->set_enabled(true);
-        }
-    }
+void EventProcessor::unlisten(const Widget& widget) {
+    for (auto& listener : widget.get_listeners())
+        unlisten(listener);
 }
 
 void EventProcessor::run(std::function<bool ()> condition) {
@@ -64,15 +49,14 @@ void EventProcessor::run(std::function<bool ()> condition) {
     while (condition()) {
         SDL_PollEvent(&event);
 #ifdef _DEBUG_
-        if (event.type == SDL_KEYDOWN) {
+        if (event.type == SDL_KEYDOWN)
             std::cout << "Key " << event.key.keysym.sym << " pressed!" << std::endl;
-        } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+        else if (event.type == SDL_MOUSEBUTTONDOWN)
             std::cout << "Mouse button pressed. Position: x = " << event.button.x << ", y = " << event.button.y << std::endl;
-        }
 #endif
         for (auto& listener : listeners[event.type]) {
             if (!condition()) return;
-            listener->notify(event);
+            if (listener->is_enabled()) listener->notify(event);
         }
     }
 }

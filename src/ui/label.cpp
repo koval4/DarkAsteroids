@@ -47,6 +47,10 @@ std::vector<Texture*> Label::get_textures() const {
     return {txtr.get()};
 }
 
+std::vector<const Listener*> Label::get_listeners() const {
+    return {};
+}
+
 //###################### SETTERS ######################
 
 void Label::set_font(std::string font_path, int font_size) {

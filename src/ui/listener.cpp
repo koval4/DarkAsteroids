@@ -1,7 +1,6 @@
 #include "listener.h"
 #include <functional>
 #include <SDL2/SDL.h>
-#include "event_processor.h"
 #include "gui.h"
 
 /**
@@ -12,7 +11,6 @@ Listener::Listener(EventType type)
     , enabled(true) {}
 
 Listener::~Listener() {
-    EventProcessor::inst().unlisten(this);
 }
 
 EventType Listener::get_type() const {
@@ -28,15 +26,14 @@ void Listener::set_enabled(bool enabled) {
 }
 
 /**
-* @brief run -- start handling events in separate thread
+* @brief set_handler -- start handling events in separate thread
 * @param handler -- function that handles event
 */
-void Listener::run(std::function<void(SDL_Event&)> handler) {
+void Listener::set_handler(std::function<void(SDL_Event&)> handler) {
     this->handler = handler;
-    EventProcessor::inst().listen(this);
 }
 
-void Listener::notify(SDL_Event& event) {
+void Listener::notify(SDL_Event& event) const {
     if (!enabled)
         return;
     if (handler)

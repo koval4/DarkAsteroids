@@ -101,7 +101,7 @@ Slidebar::Slidebar(SDL_Rect form, uint16_t lines_total, uint16_t lines_on_screen
                 scrollable->update_pos();
         }
     });
-    wheel_listener.run([this] (SDL_Event& event) -> void {
+    wheel_listener.set_handler([this] (SDL_Event& event) -> void {
         // ERROR DOWN HERE IN CONDITION
         int mouse_x = 0;
         int mouse_y = 0;
@@ -143,6 +143,13 @@ std::vector<Texture*> Slidebar::get_textures() const {
     for (auto& it : down->get_textures())
         textures.push_back(it);
     return textures;
+}
+
+std::vector<const Listener*> Slidebar::get_listeners() const {
+    std::vector<const Listener*> listeners { &wheel_listener };
+    listeners.reserve(4);
+    auto btn_listeners = up->get_listeners();
+    listeners.insert(listeners.end(), btn_listeners.begin(), btn_listeners.end());
 }
 
 uint16_t Slidebar::get_pos() const {

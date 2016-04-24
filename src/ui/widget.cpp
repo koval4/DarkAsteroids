@@ -49,12 +49,16 @@ bool Widget::is_point_in(SDL_Point point) {
 
 //#################### GETTERS ############################
 
-SDL_Rect Widget::get_form() {
+SDL_Rect Widget::get_form() const {
     return form;
 }
 
-Padding Widget::get_margin() {
+Padding Widget::get_padding() const {
     return margin;
+}
+
+bool Widget::is_enabled() const{
+    return enabled;
 }
 
 ///==================SETTERS======================

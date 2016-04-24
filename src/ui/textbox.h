@@ -33,7 +33,7 @@ class Textbox : public Widget, public Scrollable {
         void redraw_text();                     /// changes part of text to render
 
         //################## SCROLLABLE #########################
-        void update_bar();
+        void update_bar() override;
     public:
         typedef std::unique_ptr<Textbox> ptr;
 
@@ -63,7 +63,9 @@ class Textbox : public Widget, public Scrollable {
         std::string get_text() const;               /// returns text stored in textbox
         uint16_t get_height() const;                /// returns height of form without margin
         uint16_t get_text_height() const;           /// returns height of text texture
-        std::vector<Texture*> get_textures() const; /// used for textbox rendering, returns textures with text and background
+        /// used for textbox rendering, returns textures with text and background
+        virtual std::vector<Texture*> get_textures() const override;
+        virtual std::vector<const Listener*> get_listeners() const override;
 
         //###################### SETTERS ############################
         void set_text(std::string text);                        /// sets text to store in textbox
@@ -81,7 +83,7 @@ class Textbox : public Widget, public Scrollable {
         void clear_text();                  /// wrapper of this->text.clear()
 
         //##################### SCROLLABLE #######################
-        void update_pos();
+        void update_pos() override;
 };
 
 #endif // TEXTBOX_H

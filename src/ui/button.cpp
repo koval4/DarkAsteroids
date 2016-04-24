@@ -56,7 +56,7 @@ Button::Button(std::string txtr, SDL_Rect form, Padding margin, Button::Content 
     int centered_y = form.y + ((form.h - margin.top - margin.bottom)/2 - (centered_h / 2));
     this->txtr->set_form({centered_x, centered_y, centered_w, centered_h});
 
-    listener.run([this] (SDL_Event& event) -> void {
+    listener.set_handler([this] (SDL_Event& event) -> void {
         // if clicked this button and on_click_handler is defined
         if (is_point_in({event.button.x, event.button.y}) && on_click_handler) {
             on_click_handler();
@@ -74,6 +74,10 @@ Button::~Button() {
 
 std::vector<Texture*> Button::get_textures() const {
     return {background.get(), txtr.get()};
+}
+
+std::vector<const Listener*> Button::get_listeners() const {
+    return { &listener };
 }
 
 //######################### SETTERS ############################

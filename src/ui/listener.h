@@ -34,13 +34,13 @@ class Listener {
 
         //################ SETTERS ###############
         void set_enabled(bool enabled);
-
         /**
-         * @brief run -- start handling events in separate thread
+         * @brief set_handler -- start handling events in separate thread
          * @param handler -- function that handles event
          */
-        void run(std::function<void(SDL_Event&)> handler);
-        void notify(SDL_Event& event);
+        void set_handler(std::function<void(SDL_Event&)> handler);
+
+        void notify(SDL_Event& event) const;
 };
 
 #endif // LISTENER_H

@@ -6,6 +6,7 @@
 #include <memory>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include "listener.h"
 #include "texture.h"
 #include "widget.h"
 
@@ -42,7 +43,8 @@ class Label : public Widget {
         ~Label();
 
         //#################### GETTERS #######################
-        std::vector<Texture*> get_textures() const;
+        virtual std::vector<Texture*> get_textures() const override;
+        virtual std::vector<const Listener*> get_listeners() const override;
 
         //#################### SETTERS #########################
         void set_font(std::string font_path, int font_size);

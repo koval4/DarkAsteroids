@@ -84,7 +84,8 @@ class Listbox : public Widget {
         //################## GETTERS ##############################
         uint16_t get_items_count() const;
         uint16_t get_visible_items_count() const;
-        std::vector<Texture*> get_textures() const;
+        virtual std::vector<Texture*> get_textures() const override;
+        virtual std::vector<const Listener*> get_listeners() const override;
 
         //################## SETTERS ##############################
         void set_items(std::vector<std::string> items);

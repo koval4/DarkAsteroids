@@ -1,4 +1,4 @@
-Rewrite EventProcessor (from singleton to class that just runs event loop for given listeners, listeners have to be set explicitly or implicitly from widgets)
+Fix pick up function re-calling
 Implement enabled field in widgets
 Complete implementation of Tile class
 Make dungeon generation algorithm

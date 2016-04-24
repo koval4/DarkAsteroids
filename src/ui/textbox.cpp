@@ -164,6 +164,10 @@ std::vector<Texture*> Textbox::get_textures() const {
     return textures;
 }
 
+std::vector<const Listener*> Textbox::get_listeners() const {
+    return {};
+}
+
 //################## SETTERS #####################
 
 void Textbox::set_text(std::string text) {

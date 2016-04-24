@@ -84,7 +84,8 @@ class Slidebar : public Widget {
         ~Slidebar();
 
         //################# GETTERS ###################
-        std::vector<Texture*> get_textures() const;
+        virtual std::vector<Texture*> get_textures() const override;
+        virtual std::vector<const Listener*> get_listeners() const override;
         /**
          * @brief get_pos -- returns position of slide (upper side)
          * @return -- slider.pos

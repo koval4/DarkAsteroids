@@ -37,7 +37,7 @@ Listbox::List_Item::List_Item(Listbox* parent, std::string text, SDL_Rect form)
     text_txtr = Texture::ptr(new Texture(text, parent->items_font, parent->items_color, form.x + parent->item_margin.left, form.y + parent->item_margin.top));
     background = Texture::ptr(new Texture(parent->item_background, form.x, form.y, form.w, form.h));
 
-    listener.run([this, parent] (SDL_Event& event) -> void {
+    listener.set_handler([this, parent] (SDL_Event& event) -> void {
         //checking if click was inside list item
         if (event.button.x < this->form.x || event.button.x > (this->form.x + this->form.w))
             return;
@@ -118,6 +118,15 @@ std::vector<Texture*> Listbox::get_textures() const {
         textures.push_back(it->text_txtr.get());
     }
     return textures;
+}
+
+std::vector<const Listener*> Listbox::get_listeners() const {
+    std::vector<const Listener*> listeners;
+    listeners.reserve(visible_items.size());
+    for (auto& item : visible_items) {
+        listeners.push_back(&item->listener);
+    }
+    return listeners;
 }
 
 //######################### SETTERS #############################

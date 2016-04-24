@@ -7,6 +7,7 @@
 #include <SDL2/SDL.h>
 #include "texture.h"
 #include "common.h"
+#include "listener.h"
 
 /** abstract class that describes base gui element*/
 class Widget{
@@ -31,8 +32,10 @@ class Widget{
 
         //####################### GETTERS ##########################
         virtual std::vector<Texture*> get_textures() const = 0;    ///returns textures of widget
-        SDL_Rect get_form();
-        Padding get_margin();
+        SDL_Rect get_form() const;
+        Padding get_padding() const;
+        bool is_enabled() const;
+        virtual std::vector<const Listener*> get_listeners() const = 0;
 
         //############### SETTERS ##################
         void set_visible(bool visible);

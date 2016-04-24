@@ -6,6 +6,7 @@
 #include <memory>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include "listener.h"
 #include "texture.h"
 #include "widget.h"
 
@@ -36,7 +37,8 @@ class Panel : public Widget {
         ~Panel();
 
         //################## GETTERS ###########################
-        std::vector<Texture*> get_textures() const;   /// returns textures of all stored widgets
+        virtual std::vector<Texture*> get_textures() const override;   /// returns textures of all stored widgets
+        virtual std::vector<const Listener*> get_listeners() const override;
 
         //#################### SETTERS ############################
         void set_widgets(std::vector<Widget*> widgets);
