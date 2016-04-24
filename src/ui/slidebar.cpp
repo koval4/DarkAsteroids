@@ -150,6 +150,7 @@ std::vector<const Listener*> Slidebar::get_listeners() const {
     listeners.reserve(4);
     auto btn_listeners = up->get_listeners();
     listeners.insert(listeners.end(), btn_listeners.begin(), btn_listeners.end());
+    return listeners;
 }
 
 uint16_t Slidebar::get_pos() const {
