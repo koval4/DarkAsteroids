@@ -1,8 +1,17 @@
-Separate ui parts from data.h
-Add listeners blocking
+Rewrite EventProcessor (from singleton to class that just runs event loop for given listeners, listeners have to be set explicitly or implicitly from widgets)
+Implement enabled field in widgets
+Complete implementation of Tile class
+Make dungeon generation algorithm
+Make simple npc logic (seek & destroy)
+Add thermal calculations
+Add text input
+Add character generation step
+Add air resistance and thermal losses during ranged attack (add air into tiles, it will act just like item)
+Add object counters for checking if memory is leaked
+Place items in dungeon rooms
+Make dungeon regions
 Add Logger class
 Add Database class
 Add Output class (Used for info output on screen)
 Add Inventory class
-Complete implementation of Tile class
-Add thermal calculations
+Make scriptable npc logic
