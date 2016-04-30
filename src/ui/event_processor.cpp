@@ -47,16 +47,17 @@ void EventProcessor::run(std::function<bool ()> condition) {
         return;
     SDL_Event event;
     while (condition()) {
-        SDL_PollEvent(&event);
-#ifdef _DEBUG_
-        if (event.type == SDL_KEYDOWN)
-            std::cout << "Key " << event.key.keysym.sym << " pressed!" << std::endl;
-        else if (event.type == SDL_MOUSEBUTTONDOWN)
-            std::cout << "Mouse button pressed. Position: x = " << event.button.x << ", y = " << event.button.y << std::endl;
-#endif
-        for (auto& listener : listeners[event.type]) {
-            if (!condition()) return;
-            if (listener->is_enabled()) listener->notify(event);
+        while (SDL_PollEvent(&event)) {
+            #ifdef _DEBUG_
+            if (event.type == SDL_KEYDOWN)
+                std::cout << "Key " << event.key.keysym.sym << " pressed!" << std::endl;
+            else if (event.type == SDL_MOUSEBUTTONDOWN)
+                std::cout << "Mouse button pressed. Position: x = " << event.button.x << ", y = " << event.button.y << std::endl;
+            #endif
+            for (auto& listener : listeners[event.type]) {
+                if (!condition()) return;
+                if (listener->is_enabled()) listener->notify(event);
+            }
         }
     }
 }

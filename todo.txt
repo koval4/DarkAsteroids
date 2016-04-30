@@ -1,9 +1,8 @@
-Fix pick up function re-calling
-Implement enabled field in widgets
 Complete implementation of Tile class
 Make dungeon generation algorithm
 Make simple npc logic (seek & destroy)
 Add thermal calculations
+Implement enabled field in widgets
 Add text input
 Add character generation step
 Add air resistance and thermal losses during ranged attack (add air into tiles, it will act just like item)

@@ -187,7 +187,7 @@ void Player::make_turn() {
     EventProcessor processor;
     processor.listen(&key_listener);
     processor.listen(&mouse_listener);
-    key_listener.set_handler([this, &done, &move_action, &key_listener, &mouse_listener] (SDL_Event& event) -> void {
+    key_listener.set_handler([this, &done, &move_action] (SDL_Event& event) -> void {
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
                 event.type = 0;
@@ -197,7 +197,6 @@ void Player::make_turn() {
                 *game_running = false;
                 break;
             case SDLK_g:
-                // BUG: pick up fn calling again and again
                 pick_item();
                 break;
             case SDLK_i:
