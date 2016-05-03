@@ -16,7 +16,7 @@ class Map;
  */
 class Actor {
     public:
-        typedef std::unique_ptr<Actor> ptr;
+        typedef std::shared_ptr<Actor> ptr;
 
         /**
          * @brief The Params struct

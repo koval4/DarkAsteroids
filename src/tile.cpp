@@ -7,7 +7,7 @@
 #include "actor.h"
 #include "item.h"
 
-uint16_t Tile::size     = 200;  /// size of tile's side in pixels
+uint16_t Tile::size     = 100;  /// size of tile's side in pixels
 uint16_t Tile::volume   = 1500; /// volume of space in tile
 
 Tile::Tile()
@@ -22,6 +22,10 @@ Tile::Tile(Coord pos, bool passable, std::string texture)
     , texture(texture)
     , actor(nullptr) {}
 
+Tile::~Tile() {
+    adjacent.clear();
+}
+
 Coord Tile::get_pos() const {
     return pos;
 }
@@ -32,10 +36,10 @@ std::string Tile::get_texture() const {
     else return texture;
 }
 
-std::vector<Item::ptr*> Tile::get_items() {
-    std::vector<Item::ptr*> items_ref;
+std::vector<Item::ptr> Tile::get_items() const {
+    std::vector<Item::ptr> items_ref;
     for (auto& it : items)
-        items_ref.push_back(&it);
+        items_ref.push_back(it);
     return items_ref;
 }
 
@@ -58,6 +62,10 @@ Tile::ptr Tile::get_tile(Coord coord) const {
 
 void Tile::set_texture(std::string texture) {
     this->texture = texture;
+}
+
+void Tile::set_passable(bool passable) {
+    this->passable = passable;
 }
 
 Item::ptr Tile::take_item(Item::ptr& item) {

@@ -2,6 +2,7 @@
 #include <string>
 #include "attack.h"
 #include "weapon.h"
+#include "tile.h"
 #include "map.h"
 
 RangedAttack::RangedAttack()
@@ -83,16 +84,17 @@ void RangedAttack::make_attack(Actor& user
         // starting momentum of projectile
         int32_t momentum = get_momentum(projectile->get_weight(), start_force);
         while (momentum > 0) {
-            Map::Tile* tile = &Map::curr_map->at({(int)round(x),(int)round(y)});
-            if (!tile->passable)
+            Tile::ptr tile = Map::curr_map->at({(int)round(x),(int)round(y)});
+            if (!tile->is_passable())
                 break;
 
             // TODO: check for collision with items
 
-            if (tile->actor && tile->actor.get() == victim)
+            auto tile_actor = tile->get_actor();
+            if (tile_actor && tile_actor.get() == victim)
                 victim->get_wound(momentum, *projectile, contact_area, target);
-            else if (tile->actor)
-                tile->actor->get_wound(momentum, *projectile, contact_area, nullptr);
+            else if (tile_actor)
+                tile_actor->get_wound(momentum, *projectile, contact_area, nullptr);
 
             x += dx;
             y += dy;

@@ -28,17 +28,21 @@ class Tile {
         Tile();
         Tile(Coord pos, bool passable, std::string texture);
 
+        //############### DESTRUCTOR ################
+        ~Tile();
+
         //################# GETTERS ################
         Coord get_pos() const;
         inline bool is_passable() const;
         std::string get_texture() const;
-        std::vector<Item::ptr*> get_items();
+        std::vector<Item::ptr> get_items() const;
         Actor::ptr& get_actor();
         std::vector<Tile::ptr> get_adjacent() const;
         Tile::ptr get_tile(Coord coord) const;
 
         //############## SETTERS ################
         void set_texture(std::string texture);
+        void set_passable(bool passable);
 
         //############# ITEMS OPERATIONS ################
         Item::ptr take_item(Item::ptr& item);

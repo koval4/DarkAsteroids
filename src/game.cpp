@@ -109,7 +109,6 @@ void Game::Execute() {
     //-------------------------------------------------------------------------------------------------
 
     game_map.generate_map(100, 100, players);
-    game_map.set_viewpoint({50, 50});
     Map::curr_map = &game_map;
     while (running) {
         Loop();
@@ -118,7 +117,6 @@ void Game::Execute() {
 }
 
 void Game::Loop() {
-    game_map.draw_map();
     for (auto& it : game_map.get_actors()) {
         it->make_turn();
         if (!running)

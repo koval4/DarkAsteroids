@@ -4,7 +4,9 @@
 #include <algorithm>
 #include "actor.h"
 #include "data.h"
+#include "tile.h"
 #include "map.h"
+#include "map_drawer.h"
 #include "ui/gui.h"
 #include "ui/screen.h"
 #include "ui/textbox.h"
@@ -164,14 +166,14 @@ void Player::reload_weapon() {
 void Player::make_turn() {
     params.action_points = params.max_ap;
     bool done = false;
-    auto move_action = [this] (Coord new_pos) {
+    MapDrawer map_drawer;
+    auto move_action = [this, &map_drawer] (Coord new_pos) {
         move_to(new_pos);
-        map->set_viewpoint(pos);
         update_ap_lbl();
-        map->draw_map();
+        map_drawer.draw_map(map->at(pos));
     };
 
-    map->set_viewpoint(pos);
+    map_drawer.draw_map(map->at(pos));
     update_ap_lbl();
     // current weapon is the first available
     if (curr_weap == nullptr && !weapons.empty())
@@ -223,17 +225,17 @@ void Player::make_turn() {
         }
     });
     mouse_listener.set_handler([this, &done, &move_action] (SDL_Event & event) -> void {
-        auto tiles_hor = Screen::inst().get_width() / Map::Tile::tile_size;
-        auto tiles_vert = Screen::inst().get_height() / Map::Tile::tile_size;
+        auto tiles_hor = Screen::inst().get_width() / Tile::size;
+        auto tiles_vert = Screen::inst().get_height() / Tile::size;
         // calculating position on map that has been clicked
         Coord mpos = {
-            (this->pos.x - tiles_hor / 2) + event.button.x / Map::Tile::tile_size
-            , (this->pos.y - tiles_vert / 2) + event.button.y / Map::Tile::tile_size
+            (this->pos.x - tiles_hor / 2) + event.button.x / Tile::size
+            , (this->pos.y - tiles_vert / 2) + event.button.y / Tile::size
         };
         event.type = 0;
 
         // TODO: add enemy check to attack-on-click
-        if (map->at(mpos).actor && map->at(mpos).actor.get() != this)
+        if (map->at(mpos)->get_actor().get() != this)
             attack(mpos);
         else move_action(mpos);
         update_ap_lbl();
@@ -252,11 +254,11 @@ void Player::pick_item() {
     Button pick_btn("Pick up", {500, 410, 100, 30}, {3, 3, 3, 3});
     Button done_btn("Done", {500, 465, 100, 30}, {3, 3, 3, 3});
 
-    for (auto& it : map->at(pos).items)
+    for (auto& it : map->at(pos)->get_items())
         items_list.add_item(it->get_name());
 
     items_list.on_item_clicked([this, &item_descr, &chosen_item] (std::string item_name) -> void {
-        for (auto& it : map->at(pos).items) {
+        for (auto& it : map->at(pos)->get_items()) {
             if (it->get_name() == item_name)
                 chosen_item = &it;
         }
@@ -264,18 +266,14 @@ void Player::pick_item() {
             item_descr.set_text((*chosen_item)->describe());
     });
     pick_btn.on_click([this, &chosen_item, &done, &items_list, &item_descr] () -> void {
+        auto items = map->at(pos)->get_items();
         if (chosen_item != nullptr) {
             equip_item(std::move(*chosen_item));
-            for (size_t i = 0; i < map->at(pos).items.size(); i++) {
-                if (&map->at(pos).items[i] == chosen_item) {
-                    map->at(pos).items.erase(map->at(pos).items.begin() + i);
-                    break;
-                }
-            }
+            map->at(pos)->take_item(*chosen_item);
         }
         item_descr.clear_text();
         items_list.clear_items();
-        for (auto& it : map->at(pos).items)
+        for (auto& it : map->at(pos)->get_items())
             items_list.add_item(it->get_name());
     });
     done_btn.on_click([&done] () -> void {
@@ -361,7 +359,7 @@ void Player::attack(Coord target) {
         if (!atk)
             return;
         params.action_points -= atk->get_cost();
-        curr_weap->make_attack(*this, atk, this->pos, target, map->at(target).actor.get());
+        curr_weap->make_attack(*this, atk, this->pos, target, map->at(target)->get_actor().get());
         update_weap_info();
         done = true;
     });

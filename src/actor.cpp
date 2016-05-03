@@ -235,7 +235,7 @@ std::vector<Coord> Actor::find_path_to(Coord pos) {
                 if (j == curr_y && i == curr_x)
                     continue;
                 // skipping non-passable nodes
-                if (!map->is_passable_at({i, j}))
+                if (!map->at({i, j})->is_passable())
                     continue;
                 // skipping diagonal to current node nodes
                 if ((i != curr_x) && (j != curr_y))
@@ -275,12 +275,12 @@ void Actor::die() {
     // possible bug here, item could be copied
     for (auto& bpart : equipment) {
         for (auto& item : bpart.second->get_items()) {
-            Map::curr_map->at(pos).items.push_back(Item::ptr(new Item(*item)));
+            Map::curr_map->at(pos)->put_item(Item::ptr(new Item(*item)));
         }
     }
     for (auto& bpart : grasps) {
         for (auto& item : bpart.second->get_grabbed_items()) {
-            Map::curr_map->at(pos).items.push_back(Item::ptr(new Item(*item)));
+            Map::curr_map->at(pos)->put_item(Item::ptr(new Item(*item)));
         }
     }
 }
@@ -308,18 +308,18 @@ void Actor::set_map(Map* map) {
 //################# GAME LOGIC ###############
 
 void Actor::move_to(Coord pos) {
-    if (!map->is_passable_at(pos))
+    if (!map->at(pos)->is_passable())
         return;
     uint16_t dx = abs(pos.x - this->pos.x);
     uint16_t dy = abs(pos.y - this->pos.y);
     if (dx <= 1 && dy <= 1) {
         if (dx != dy && params.action_points > 0) {
             params.action_points--;
-            map->at(pos).actor = std::move(map->at(this->pos).actor);
+            map->at(pos)->place_actor(map->at(this->pos)->remove_actor());
             this->pos = pos;
         } else if (params.action_points > 1) {
             params.action_points -= 2;
-            map->at(pos).actor = std::move(map->at(this->pos).actor);
+            map->at(pos)->place_actor(map->at(this->pos)->remove_actor());
             this->pos = pos;
         } else {
             return;
@@ -329,7 +329,7 @@ void Actor::move_to(Coord pos) {
         if (path.size() > params.action_points)
             return;
         else {
-            map->at(pos).actor = std::move(map->at(this->pos).actor);
+            map->at(pos)->place_actor(map->at(this->pos)->remove_actor());
             this->pos = pos;
             params.action_points -= path.size();
         }
@@ -346,7 +346,7 @@ void Actor::equip_item(Item::ptr item) {
     else {
         log_file << name << " are overloaded. Droping item" << std::endl;
         if (map != nullptr)
-            map->at(pos).items.push_back(std::move(item));
+            map->at(pos)->put_item(std::move(item));
         return;// "too_heavy";
     }
 
@@ -355,7 +355,7 @@ void Actor::equip_item(Item::ptr item) {
     else {
         log_file << name << " does not have enough action points to pick up items." << std::endl;
         if (map != nullptr)
-            map->at(pos).items.push_back(std::move(item));
+            map->at(pos)->put_item(std::move(item));
         return;// "lack_ap";
     }
 
@@ -374,7 +374,7 @@ void Actor::equip_item(Item::ptr item) {
     for (auto& it : needed_slots) { //searching appropriate bodypart for each slot
         PAIRS<std::string, Bodypart*> slots = find_slots(it);    //getting vector with appropriate bodyparts
         if (slots.size() == 0) {  //if none appropriate slot => return
-            map->at(pos).items.push_back(std::move(item));
+            map->at(pos)->put_item(std::move(item));
             return;// "no_slot";
         }
         Bodypart* bpart_slot = find_less_loaded_bpart(slots);
@@ -477,7 +477,7 @@ void Actor::drop_item(Item::ptr item) {
         }
     }
     log_file << name << " has dropped " << item->get_name() << "." << std::endl;
-    map->at(pos).items.push_back(std::move(item));
+    map->at(pos)->put_item(std::move(item));
 }
 
 void Actor::get_wound( int32_t& momentum
