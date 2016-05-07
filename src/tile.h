@@ -9,9 +9,9 @@
 #include "actor.h"
 #include "item.h"
 
-class Tile {
+class Tile : public std::enable_shared_from_this<Tile> {
     public:
-        typedef std::shared_ptr<Tile> ptr;
+        using ptr  = std::shared_ptr<Tile>;
         static uint16_t size;   /// size of tile's side in pixels
         static uint16_t volume; /// volume of space in tile
 

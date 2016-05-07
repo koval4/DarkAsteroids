@@ -49,8 +49,9 @@ Actor::ptr& Tile::get_actor() {
 
 std::vector<Tile::ptr> Tile::get_adjacent() const {
     std::vector<Tile::ptr> tiles;
-    for (auto& it : adjacent)
+    for (auto& it : adjacent) {
         tiles.push_back(it.second);
+    }
     return tiles;
 }
 
@@ -97,5 +98,5 @@ void Tile::connect(Tile::ptr tile) {
     if (adjacent.find(tile->pos) == adjacent.end())
         adjacent.insert({tile->pos, tile});
     if (tile->adjacent.find(pos) == tile->adjacent.end())
-        tile->connect(Tile::ptr(this));
+        tile->connect(shared_from_this());
 }

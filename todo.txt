@@ -1,4 +1,3 @@
-Fix crash at ~Tile() call
 Rewrite pathfinding algorithm
 Make dungeon generation algorithm
 Make simple npc logic (seek & destroy)
