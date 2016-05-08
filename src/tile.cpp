@@ -95,8 +95,6 @@ void Tile::place_actor(Actor::ptr actor) {
 }
 
 void Tile::connect(Tile::ptr tile) {
-    if (adjacent.find(tile->pos) == adjacent.end())
-        adjacent.insert({tile->pos, tile});
-    if (tile->adjacent.find(pos) == tile->adjacent.end())
-        tile->connect(shared_from_this());
+    adjacent[tile->pos] = tile;
+    tile->adjacent[pos] = shared_from_this();
 }

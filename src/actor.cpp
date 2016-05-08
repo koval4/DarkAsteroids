@@ -227,22 +227,11 @@ std::vector<Coord> Actor::find_path_to(Coord pos) {
         if (curr_node == pos)
             break;
 
-        uint16_t curr_x = curr_node.x;
-        uint16_t curr_y = curr_node.y;
-        for (uint16_t i = (curr_x == 0) ? curr_x : curr_x - 1; i <= curr_x + 1; i++) {
-            for (uint16_t j = (curr_y == 0) ? curr_y : curr_y - 1; j <= curr_y + 1; j++) {
-                // skipping current node
-                if (j == curr_y && i == curr_x)
-                    continue;
-                // skipping non-passable nodes
-                if (!map->at({i, j})->is_passable())
-                    continue;
-                // skipping diagonal to current node nodes
-                if ((i != curr_x) && (j != curr_y))
-                    continue;
-
+        for (auto& tile : map->at(curr_node)->get_adjacent()) {
+            if (!tile->is_passable())
+                continue;
                 // calculating cost for next node
-                Coord next_node = {i, j};
+                Coord next_node = tile->get_pos();
                 int next_cost = g_costs[curr_node] + 1;
                 if (g_costs.count(next_node) == 0 || next_cost < g_costs[next_node]) {
                     g_costs[next_node] = next_cost;
@@ -251,7 +240,6 @@ std::vector<Coord> Actor::find_path_to(Coord pos) {
                     came_from[next_node] = curr_node;
                     open_nodes.emplace(next_node, priority);
                 }
-            }
         }
     }
 

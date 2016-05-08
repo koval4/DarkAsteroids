@@ -22,24 +22,20 @@ Map::Map() {}
 void Map::generate_map(uint16_t width, uint16_t height, std::vector<Actor::ptr>& players) {
     // allocating memory for map
     map.reserve(height);
-    for (size_t i = 0; i < height; i++) {
+    for (size_t i = 0; i < width; i++) {
         map.push_back(std::vector<Tile::ptr>(width));
-        for (size_t j = 0; j < width; j++) {
+        for (size_t j = 0; j < height; j++) {
             map[i][j] = Tile::ptr(new Tile{ {i, j}, false, img("tile_wall.png") });
         }
     }
 
     // connecting tiles
-    for (size_t i = 0; i < height; i++) {
-        for (size_t j = 0; j < width; j++) {
-            if (i > 0)
-                map[i][j]->connect(map[i-1][j]);
-            if (i < height - 2)
-                map[i][j]->connect(map[i+1][j]);
-            if (j > 0)
-                map[i][j]->connect(map[i][j-1]);
-            if (j < width - 2)
-                map[i][j]->connect(map[i][j+1]);
+    for (size_t i = 1; i < width - 1; i++) {
+        for (size_t j = 1; j < height - 1; j++) {
+            map[i][j]->connect(map[i+1][j]);
+            map[i][j]->connect(map[i-1][j]);
+            map[i][j]->connect(map[i][j+1]);
+            map[i][j]->connect(map[i][j-1]);
         }
     }
 

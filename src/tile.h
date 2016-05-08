@@ -2,7 +2,7 @@
 #define TILE_H
 
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <memory>
 #include "data.h"
@@ -21,7 +21,7 @@ class Tile : public std::enable_shared_from_this<Tile> {
         std::string texture;                    /// path to texture of this tile
         Actor::ptr actor;                       /// actor that stands in this tile
         std::vector<Item::ptr> items;           /// items that lying in this tile
-        std::map<Coord, Tile::ptr> adjacent;    /// tiles that adjacent to this tile
+        std::unordered_map<Coord, Tile::ptr> adjacent;    /// tiles that adjacent to this tile
 
     public:
         //################ CONSTRUCTORS ##################

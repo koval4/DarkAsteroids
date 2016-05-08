@@ -229,13 +229,13 @@ void Player::make_turn() {
         auto tiles_vert = Screen::inst().get_height() / Tile::size;
         // calculating position on map that has been clicked
         Coord mpos = {
-            (this->pos.x - tiles_hor / 2) + event.button.x / Tile::size
-            , (this->pos.y - tiles_vert / 2) + event.button.y / Tile::size
+            (this->pos.x - tiles_hor / 2) + event.button.x / Tile::size,
+            (this->pos.y - tiles_vert / 2) + event.button.y / Tile::size
         };
         event.type = 0;
 
         // TODO: add enemy check to attack-on-click
-        if (map->at(mpos)->get_actor().get() != this)
+        if (map->at(mpos)->get_actor() && map->at(mpos)->get_actor().get() != this)
             attack(mpos);
         else move_action(mpos);
         update_ap_lbl();

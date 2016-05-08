@@ -53,7 +53,7 @@ namespace std {
     template<>
     struct hash<Coord> {
         size_t operator () (const Coord& coord) const {
-            return std::hash<int>()(coord.x) ^ std::hash<int>()(coord.y);
+            return std::hash<int>()(coord.x) ^ std::hash<int>()(coord.y) ^ std::hash<int>()(coord.x);
         }
     };
 }

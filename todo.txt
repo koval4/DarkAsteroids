@@ -1,4 +1,3 @@
-Rewrite pathfinding algorithm
 Make dungeon generation algorithm
 Make simple npc logic (seek & destroy)
 Add thermal calculations
