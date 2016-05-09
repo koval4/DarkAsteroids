@@ -19,10 +19,10 @@ std::unordered_map<std::string, Actor::Race> Actor::RACES_LIST;
 Actor::Params::Params() {}
 
 Actor::Params::Params( uint16_t strength
-                     , uint16_t perception
-                     , uint16_t agility
-                     , uint16_t speed
-                     , uint16_t endurance)
+                       , uint16_t perception
+                       , uint16_t agility
+                       , uint16_t speed
+                       , uint16_t endurance)
     : strength(strength)
     , perception(perception)
     , agility(agility)
@@ -230,16 +230,16 @@ std::vector<Coord> Actor::find_path_to(Coord pos) {
         for (auto& tile : map->at(curr_node)->get_adjacent()) {
             if (!tile->is_passable())
                 continue;
-                // calculating cost for next node
-                Coord next_node = tile->get_pos();
-                int next_cost = g_costs[curr_node] + 1;
-                if (g_costs.count(next_node) == 0 || next_cost < g_costs[next_node]) {
-                    g_costs[next_node] = next_cost;
-                    int heuristics = 1*(abs(next_node.x - pos.x) + abs(next_node.y - pos.y));
-                    int priority = next_cost + heuristics;
-                    came_from[next_node] = curr_node;
-                    open_nodes.emplace(next_node, priority);
-                }
+            // calculating cost for next node
+            Coord next_node = tile->get_pos();
+            int next_cost = g_costs[curr_node] + 1;
+            if (g_costs.count(next_node) == 0 || next_cost < g_costs[next_node]) {
+                g_costs[next_node] = next_cost;
+                int heuristics = 1*(abs(next_node.x - pos.x) + abs(next_node.y - pos.y));
+                int priority = next_cost + heuristics;
+                came_from[next_node] = curr_node;
+                open_nodes.emplace(next_node, priority);
+            }
         }
     }
 
@@ -349,7 +349,7 @@ void Actor::equip_item(Item::ptr item) {
 
     //if item is grabbable
     if ((item->get_type() != Item::armor)
-        && (item->get_type() != Item::wear_cont) ) {
+            && (item->get_type() != Item::wear_cont) ) {
         if (grasps.empty())
             return;
         grab_item(std::move(item));

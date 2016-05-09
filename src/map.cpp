@@ -20,6 +20,8 @@ Map::Map() {}
 //################### MAP OPERATIONS ##################
 
 void Map::generate_map(uint16_t width, uint16_t height, std::vector<Actor::ptr>& players) {
+    this->width = width;
+    this->height = height;
     // allocating memory for map
     map.reserve(height);
     for (size_t i = 0; i < width; i++) {
@@ -107,43 +109,10 @@ std::vector<Actor*> Map::get_actors() const {
     return actors;
 }
 
-bool Map::is_in_sight(Coord start, Coord end) {
-    return false;
-//    if (!map[end.x][end.y].is_visible())
-//        return false;
-//    int32_t dx = start.x - end.x;
-//    int32_t dy = start.y - end.y;
-//    int32_t adx = abs(dx);
-//    int32_t ady = abs(dy);
-//    int8_t sign_x = dx > 0 ? 1 : -1;
-//    int8_t sign_y = dy > 0 ? 1 : -1;
-//    int32_t x = start.x;
-//    int32_t y = start.y;
-//    if (adx > ady) {
-//        int32_t t = ady*2 - adx;
-//        do {
-//            if (t >= 0) {
-//                y += sign_y;
-//                t -= adx*2;
-//            }
-//            x += sign_x;
-//            t += ady*2;
-//            if (end.x == x && end.y == y)
-//                return true;
-//        } while (map[x][y].is_visible());
-//        return false;
-//    } else {
-//        int32_t t = adx*2 - ady;
-//        do {
-//            if (t >= 0) {
-//                x += sign_x;
-//                t -= ady*2;
-//            }
-//            y += sign_y;
-//            t += adx*2;
-//            if (end.x == x && end.y == y)
-//                return true;
-//        } while (map[x][y].is_visible());
-//        return false;
-//    }
+uint16_t Map::get_width() const {
+    return width;
+}
+
+uint16_t Map::get_height() const {
+    return height;
 }

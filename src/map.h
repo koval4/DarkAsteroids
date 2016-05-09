@@ -19,6 +19,8 @@ class Map {
         static Map* curr_map;	/// pointer to current game map
 
     private:
+        uint16_t width;
+        uint16_t height;
         std::vector<std::vector<Tile::ptr>> map; /// container for tiles, actual game map
         std::vector<Actor*> actors;         /// container with actors on map
 
@@ -42,9 +44,8 @@ class Map {
 
         //################## GETTERS ####################
         std::vector<Actor*> get_actors() const;
-
-        //############# GAME LOGIC #################
-        bool is_in_sight(Coord start, Coord end);
+        uint16_t get_width() const;
+        uint16_t get_height() const;
 };
 
 #endif // MAP_H

@@ -49,6 +49,16 @@ struct Coord {
         }
 };
 
+        struct Rectangle {
+            Coord first;
+            Coord last;
+
+            bool is_overlapping(const Rectangle& other) const {
+    return (this->first.x < other.last.x && this->last.x > other.first.x &&
+            this->first.y < other.last.y && this->last.y > other.first.y);
+            }
+        };
+
 namespace std {
     template<>
     struct hash<Coord> {

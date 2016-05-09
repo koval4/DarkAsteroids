@@ -1,6 +1,7 @@
 Make dungeon generation algorithm
 Make simple npc logic (seek & destroy)
 Add thermal calculations
+Improve map drawing (add raycasting)
 Implement enabled field in widgets
 Add text input
 Add textures to items
