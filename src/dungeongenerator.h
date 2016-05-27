@@ -4,11 +4,13 @@
 #include <vector>
 #include "tile.h"
 #include "map.h"
+#include "roomgenerator.h"
 
 class DungeonGenerator {
     private:
         using Area = std::vector<Tile::ptr>;
         Map::ptr map;
+        RoomGenerator::prt room_generator;
         std::vector<Area> areas;
 
     public:

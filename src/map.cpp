@@ -24,16 +24,16 @@ void Map::generate_map(uint16_t width, uint16_t height, std::vector<Actor::ptr>&
     this->height = height;
     // allocating memory for map
     map.reserve(height);
-    for (size_t i = 0; i < width; i++) {
+    for (uint16_t i = 0; i < width; i++) {
         map.push_back(std::vector<Tile::ptr>(width));
-        for (size_t j = 0; j < height; j++) {
+        for (uint16_t j = 0; j < height; j++) {
             map[i][j] = Tile::ptr(new Tile{ {i, j}, false, img("tile_wall.png") });
         }
     }
 
     // connecting tiles
-    for (size_t i = 1; i < width - 1; i++) {
-        for (size_t j = 1; j < height - 1; j++) {
+    for (uint16_t i = 1; i < width - 1; i++) {
+        for (uint16_t j = 1; j < height - 1; j++) {
             map[i][j]->connect(map[i+1][j]);
             map[i][j]->connect(map[i-1][j]);
             map[i][j]->connect(map[i][j+1]);

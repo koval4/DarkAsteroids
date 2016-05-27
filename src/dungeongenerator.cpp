@@ -3,12 +3,19 @@
 #include "data.h"
 #include "tile.h"
 #include "map.h"
+#include "room.h"
+#include "roomgenerator.h"
 
 DungeonGenerator::DungeonGenerator(Map::ptr map)
-    : map(map) {}
+    : map(map) {
+    room_generator.reset(new RoomGenerator(map));
+}
 
 void DungeonGenerator::generate() {
-
+    make_rooms(30, 5, 7);
+    make_maze();
+    connect_areas(35);
+    remove_deadends();
 }
 
 void DungeonGenerator::make_rooms(uint16_t attempts, uint8_t min_size, uint8_t max_size) {
@@ -33,7 +40,8 @@ void DungeonGenerator::make_rooms(uint16_t attempts, uint8_t min_size, uint8_t m
 
         placed_rooms.push_back(room_square);
 
-        // make room
+        // making room
+        room_generator->generate(room_square);
     }
 }
 
