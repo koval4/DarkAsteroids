@@ -19,14 +19,14 @@ Map::Map() {}
 
 //################### MAP OPERATIONS ##################
 
-void Map::generate_map(uint16_t width, uint16_t height, std::vector<Actor::ptr>& players) {
+void Map::generate_map(uint8_t width, uint8_t height, std::vector<Actor::ptr>& players) {
     this->width = width;
     this->height = height;
     // allocating memory for map
     map.reserve(height);
-    for (uint16_t i = 0; i < width; i++) {
+    for (uint8_t i = 0; i < width; i++) {
         map.push_back(std::vector<Tile::ptr>(width));
-        for (uint16_t j = 0; j < height; j++) {
+        for (uint8_t j = 0; j < height; j++) {
             map[i][j] = Tile::ptr(new Tile{ {i, j}, false, img("tile_wall.png") });
         }
     }
@@ -44,8 +44,8 @@ void Map::generate_map(uint16_t width, uint16_t height, std::vector<Actor::ptr>&
     // making rooms in map
     std::vector<Coord> waypoints;
     for (uint16_t i = 0; i < (width / 3); i++) {
-        int waypoint_x = rand()%(height - 2) + 1;
-        int waypoint_y = rand()%(width - 2) + 1;
+        uint8_t waypoint_x = rand()%(height - 2) + 1;
+        uint8_t waypoint_y = rand()%(width - 2) + 1;
         waypoints.push_back({waypoint_x, waypoint_y});
     }
     for (auto& it : waypoints) {

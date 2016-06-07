@@ -20,52 +20,52 @@ extern std::string txtr_path;
  * @brief The Coord struct represents coordinates
  */
 struct Coord {
-        uint8_t x;
-        uint8_t y;
+    uint8_t x;
+    uint8_t y;
 
-        Coord() : x(0), y(0) {}
-        Coord(int x, int y) : x(x), y(y) {}
+    Coord() : x(0), y(0) {}
+    Coord(uint8_t x, uint8_t y) : x(x), y(y) {}
 
-        uint8_t get_length() const {
-            return sqrt(x*x + y*y);
-        }
+    uint8_t get_length() const {
+        return sqrt(x*x + y*y);
+    }
 
-        bool operator == (const Coord& right) const {
-            return (this->x == right.x && this->y == right.y);
-        }
+    bool operator == (const Coord& right) const {
+        return (this->x == right.x && this->y == right.y);
+    }
 
-        bool operator != (const Coord& right) const {
-            return !(*this == right);
-        }
+    bool operator != (const Coord& right) const {
+        return !(*this == right);
+    }
 
-        //for ordering
-        /**
-         * @brief operator < -- compares length of vectors
-         * @param right -- value at right
-         * @return is length of this less than length of right
-         */
-        bool operator < (const Coord& right) const {
-            return (this->get_length() < right.get_length());
-        }
+    //for ordering
+    /**
+     * @brief operator < -- compares length of vectors
+     * @param right -- value at right
+     * @return is length of this less than length of right
+     */
+    bool operator < (const Coord& right) const {
+        return (this->get_length() < right.get_length());
+    }
 };
 
-        struct Rectangle {
-            Coord first;
-            Coord last;
+struct Rectangle {
+    Coord first;
+    Coord last;
 
-            bool is_overlapping(const Rectangle& other) const {
-    return (this->first.x < other.last.x && this->last.x > other.first.x &&
-            this->first.y < other.last.y && this->last.y > other.first.y);
-            }
-        };
+    bool is_overlapping(const Rectangle& other) const {
+        return (this->first.x < other.last.x && this->last.x > other.first.x &&
+                this->first.y < other.last.y && this->last.y > other.first.y);
+    }
+};
 
 namespace std {
-    template<>
-    struct hash<Coord> {
-        size_t operator () (const Coord& coord) const {
-            return std::hash<int>()(coord.x) ^ std::hash<int>()(coord.y) ^ std::hash<int>()(coord.x);
-        }
-    };
+template<>
+struct hash<Coord> {
+    size_t operator () (const Coord& coord) const {
+        return std::hash<int>()(coord.x) ^ std::hash<int>()(coord.y) ^ std::hash<int>()(coord.x);
+    }
+};
 }
 
 extern std::ofstream log_file;

@@ -84,7 +84,7 @@ void RangedAttack::make_attack(Actor& user
         // starting momentum of projectile
         int32_t momentum = get_momentum(projectile->get_weight(), start_force);
         while (momentum > 0) {
-            Tile::ptr tile = Map::curr_map->at({(int)round(x),(int)round(y)});
+            Tile::ptr tile = Map::curr_map->at({static_cast<uint8_t>(round(x)), static_cast<uint8_t>(round(y))});
             if (!tile->is_passable())
                 break;
 

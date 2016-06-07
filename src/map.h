@@ -37,7 +37,7 @@ class Map {
          * @param height
          * @param players
          */
-        void generate_map(uint16_t width, uint16_t height, std::vector<Actor::ptr>& players);
+        void generate_map(uint8_t width, uint8_t height, std::vector<Actor::ptr>& players);
         Tile::ptr at(Coord pos) const;    ///
 
         //################## SETTERS ###################

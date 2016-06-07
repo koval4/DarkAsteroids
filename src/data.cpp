@@ -75,7 +75,7 @@ size_t find_match_char(std::string line, size_t index, char lchar, char rchar) {
     uint16_t left_parnths_num = 1;
     uint16_t right_parnths_num = 0;
     size_t i = index + 1;
-    for (i; left_parnths_num != right_parnths_num; i++) {
+    for (; left_parnths_num != right_parnths_num; i++) {
         if (line[i] == rchar)
             right_parnths_num++;
         else if (line[i] == lchar)

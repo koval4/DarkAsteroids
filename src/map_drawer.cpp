@@ -12,10 +12,10 @@ MapDrawer::MapDrawer()
 
 void MapDrawer::draw_map(Tile::ptr center) const {
     Coord viewpoint = center->get_pos();
-    Coord first = { viewpoint.x - (tiles_horizntally / 2)
-                  , viewpoint.y - (tiles_vertically / 2) };
-    Coord last = { viewpoint.x + (tiles_horizntally / 2)
-                 , viewpoint.y + (tiles_vertically / 2) };
+    Coord first = { static_cast<uint8_t>(viewpoint.x - (tiles_horizntally / 2))
+                  , static_cast<uint8_t>(viewpoint.y - (tiles_vertically / 2)) };
+    Coord last = { static_cast<uint8_t>(viewpoint.x + (tiles_horizntally / 2))
+                 , static_cast<uint8_t>(viewpoint.y + (tiles_vertically / 2)) };
     std::vector<Tile::ptr> tiles;
     std::unordered_set<Tile::ptr> drawn_tiles;
     tiles.reserve(tiles_horizntally * tiles_vertically);

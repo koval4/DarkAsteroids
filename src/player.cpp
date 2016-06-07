@@ -206,19 +206,19 @@ void Player::make_turn() {
                 break;
             case SDLK_UP:
                 event.type = 0;
-                move_action({pos.x, pos.y - 1});
+                move_action({pos.x, static_cast<uint8_t>(pos.y - 1)});
                 break;
             case SDLK_DOWN:
                 event.type = 0;
-                move_action({pos.x, pos.y + 1});
+                move_action({pos.x, static_cast<uint8_t>(pos.y + 1)});
                 break;
             case SDLK_LEFT:
                 event.type = 0;
-                move_action({pos.x - 1, pos.y});
+                move_action({static_cast<uint8_t>(pos.x - 1), pos.y});
                 break;
             case SDLK_RIGHT:
                 event.type = 0;
-                move_action({pos.x + 1, pos.y});
+                move_action({static_cast<uint8_t>(pos.x + 1), pos.y});
                 break;
             default:
                 break;
@@ -229,8 +229,8 @@ void Player::make_turn() {
         auto tiles_vert = Screen::inst().get_height() / Tile::size;
         // calculating position on map that has been clicked
         Coord mpos = {
-            (this->pos.x - tiles_hor / 2) + event.button.x / Tile::size,
-            (this->pos.y - tiles_vert / 2) + event.button.y / Tile::size
+            static_cast<uint8_t>((this->pos.x - tiles_hor / 2) + event.button.x / Tile::size),
+            static_cast<uint8_t>((this->pos.y - tiles_vert / 2) + event.button.y / Tile::size)
         };
         event.type = 0;
 
