@@ -2,7 +2,7 @@ project(ui)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 cmake_minimum_required(VERSION 2.8.)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "../../cmake")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${ui_SOURCE_DIR}/../../cmake")
 
 # Add _DEBUG_ define
 if(CMAKE_BUILD_TYPE MATCHES "Debug")

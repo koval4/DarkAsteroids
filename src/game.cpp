@@ -1,5 +1,7 @@
+#include "dungeongenerator.h"
 #include "game.h"
 #include <vector>
+#include <list>
 #include "ui/event_processor.h"
 #include "ui/screen.h"
 #include "ui/gui.h"
@@ -63,8 +65,8 @@ void Game::Init() {
 void Game::Execute() {
     Init();
     for (uint16_t i = 0; i < 4; i++) {
-        players.push_back(Actor::ptr(new Player()));
-        dynamic_cast<Player*>(players[i].get())->generate();
+        players.push_back(std::make_shared<Player>());
+        players.back()->generate();
     }
     Player::set_game_state(&running);
 
@@ -108,8 +110,11 @@ void Game::Execute() {
     Player::set_player_gui(&ui);
     //-------------------------------------------------------------------------------------------------
 
-    game_map.generate_map(100, 100, players);
-    Map::curr_map = &game_map;
+    game_map = std::make_shared<Map>(100, 100);
+    DungeonGenerator dungeon_generator { game_map };
+    dungeon_generator.generate();
+    dungeon_generator.place_players(players);
+    Map::curr_map = game_map.get();
     while (running) {
         Loop();
     }
@@ -117,7 +122,7 @@ void Game::Execute() {
 }
 
 void Game::Loop() {
-    for (auto& it : game_map.get_actors()) {
+    for (auto& it : game_map->get_actors()) {
         it->make_turn();
         if (!running)
             return;

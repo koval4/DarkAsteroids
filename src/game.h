@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <vector>
+#include <list>
 #include "map.h"
 #include "actor.h"
 #include "player.h"
@@ -13,9 +14,9 @@
 class Game {
     private:
         bool running;
-        Map game_map;
+        Map::ptr game_map;
         Player::UI ui;
-        std::vector<Actor::ptr> players;
+        std::list<Player::ptr> players;
 
     public:
         Game();

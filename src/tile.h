@@ -16,12 +16,12 @@ class Tile : public std::enable_shared_from_this<Tile> {
         static uint16_t volume; /// volume of space in tile
 
     private:
-        Coord pos;                              /// coordinates of tile on map
-        bool passable;                          /// does actor could walk in tile
-        std::string texture;                    /// path to texture of this tile
-        Actor::ptr actor;                       /// actor that stands in this tile
-        std::vector<Item::ptr> items;           /// items that lying in this tile
-        std::unordered_map<Coord, Tile::ptr> adjacent;    /// tiles that adjacent to this tile
+        Coord pos;                                      /// coordinates of tile on map
+        bool passable;                                  /// does actor could walk in tile
+        std::string texture;                            /// path to texture of this tile
+        Actor::ptr actor;                               /// actor that stands in this tile
+        std::vector<Item::ptr> items;                   /// items that lying in this tile
+        std::unordered_map<Coord, Tile::ptr> adjacent;  /// tiles that adjacent to this tile
 
     public:
         //################ CONSTRUCTORS ##################
@@ -34,6 +34,7 @@ class Tile : public std::enable_shared_from_this<Tile> {
         //################# GETTERS ################
         Coord get_pos() const;
         inline bool is_passable() const;
+        bool is_wall() const;
         std::string get_texture() const;
         std::vector<Item::ptr> get_items() const;
         Actor::ptr& get_actor();

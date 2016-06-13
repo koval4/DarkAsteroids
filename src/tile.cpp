@@ -30,6 +30,10 @@ Coord Tile::get_pos() const {
     return pos;
 }
 
+bool Tile::is_wall() const {
+    return !passable;
+}
+
 std::string Tile::get_texture() const {
     if (actor)
         return actor->get_texture();

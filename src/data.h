@@ -57,6 +57,16 @@ struct Rectangle {
         return (this->first.x < other.last.x && this->last.x > other.first.x &&
                 this->first.y < other.last.y && this->last.y > other.first.y);
     }
+
+    uint8_t get_width() const {
+        // +1 to include both last and first
+        return last.x - first.x + 1;
+    }
+
+    uint8_t get_height() const {
+        // +1 to include both last and first
+        return last.y - first.y + 1;
+    }
 };
 
 namespace std {

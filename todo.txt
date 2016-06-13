@@ -1,11 +1,15 @@
-Make dungeon generation algorithm
+Add ActorManager class
 Make simple npc logic (seek & destroy)
 Add thermal calculations
-Improve map drawing (add raycasting)
+Improve map drawing (add primitive raycasting)
 Implement enabled field in widgets
 Add text input
-Add textures to items
+Add Property class (contains formula of calculations, calculated value, uses listener pattern)
+Rewrite parameters and skills
+Improve dungeon generation algorithm
 Add character generation step
+Add textures to items
+Add physical object class
 Add air resistance and thermal losses during ranged attack (add air into tiles, it will act just like item)
 Add object counters for checking if memory is leaked
 Place items in dungeon rooms

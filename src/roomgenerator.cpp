@@ -33,8 +33,8 @@ void RoomGenerator::generate(Rectangle square) {
     }
 
     // making floor
-    for (uint8_t i = square.first.x + 1; i < square.last.x; i++) {
-        for (uint8_t j = square.first.y + 1; j++ < square.last.y; j++) {
+    for (uint8_t i = square.first.x + 1; i <= square.last.x; i++) {
+        for (uint8_t j = square.first.y + 1; j <= square.last.y; j++) {
             Tile::ptr tile = map->at({i, j});
             tile->set_passable(true);
             tile->set_texture(floor_texture);

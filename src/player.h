@@ -14,6 +14,8 @@
  */
 class Player : public Actor {
     public:
+        typedef std::shared_ptr<Player> ptr;
+
         struct UI {
             Textbox::ptr output;        /// pointer to textbox used for output
             Label::ptr ap_lbl;          /// label that shows ho much action points left
@@ -49,8 +51,6 @@ class Player : public Actor {
         void reload_weapon();
 
     public:
-        typedef std::unique_ptr<Player> ptr;
-
         Player();
 
         //############### SETTERS ################
