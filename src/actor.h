@@ -86,7 +86,7 @@ class Actor {
         std::vector<Weapon*> weapons;                           /// currently equipped weapons
         std::vector<Container::ptr> containers;                     /// currently equipped containers
 
-        Map* map;                   /// map where actor is situated
+        const Map* map;                   /// map where actor is situated
 
         void rand_params();             /// randomises parameters of actor
         void calc_secondary_params();   /// calculates secondary parameters of the actor (such as action points,max weight etc.)
@@ -122,7 +122,6 @@ class Actor {
          */
         std::vector<Coord> find_path_to(Coord pos);
         void remove_weap(Weapon* weapon);
-        void die();
 
     public:
         //############# CONSTRUCTORS ###############
@@ -140,7 +139,7 @@ class Actor {
 
         //############# SETTERS ###################
         void set_pos(Coord pos);
-        void set_map(Map* map);
+        void set_map(const Map* map);
 
         //############# GAME LOGIC #################
         virtual void make_turn() = 0;   /// virtual function wich describes logic of what actor doing in one turn
@@ -180,6 +179,7 @@ class Actor {
          * @param item      -- item that will be removed from inventory
          */
 		void drop_item(Item::ptr item);
+        void die();
 };
 
 #endif // ACTOR_H

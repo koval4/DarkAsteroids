@@ -7,6 +7,7 @@
 #include "data.h"
 #include "tile.h"
 #include "map.h"
+#include "actormanager.h"
 #include "room.h"
 
 class RoomGenerator {
@@ -14,14 +15,16 @@ class RoomGenerator {
         using prt = std::shared_ptr<RoomGenerator>;
 
     private:
-        Map::ptr map;
+        const Map::ptr map;
+        const ActorManager::ptr actor_manager;
 
-    public:
-        explicit RoomGenerator(Map::ptr map);
-
-        void generate(Rectangle square);
         void put_items();
         void place_npc();
+
+    public:
+        RoomGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager);
+
+        void generate(Rectangle square);
 };
 
 #endif // ROOMGENERATOR_H

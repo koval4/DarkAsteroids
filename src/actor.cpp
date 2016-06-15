@@ -259,20 +259,6 @@ void Actor::remove_weap(Weapon* weapon) {
     weapons.erase(it);
 }
 
-void Actor::die() {
-    // possible bug here, item could be copied
-    for (auto& bpart : equipment) {
-        for (auto& item : bpart.second->get_items()) {
-            Map::curr_map->at(pos)->put_item(Item::ptr(new Item(*item)));
-        }
-    }
-    for (auto& bpart : grasps) {
-        for (auto& item : bpart.second->get_grabbed_items()) {
-            Map::curr_map->at(pos)->put_item(Item::ptr(new Item(*item)));
-        }
-    }
-}
-
 //############### GETTERS ################
 
 std::string Actor::get_texture() const {
@@ -289,7 +275,7 @@ void Actor::set_pos(Coord pos) {
     this->pos = pos;
 }
 
-void Actor::set_map(Map* map) {
+void Actor::set_map(const Map* map) {
     this->map = map;
 }
 
@@ -500,4 +486,18 @@ void Actor::get_wound( int32_t& momentum
     #endif // _DEBUG_
     target->get_hit(bpart_stress, item);
     feel_pain();
+}
+
+void Actor::die() {
+    // possible bug here, item could be copied
+    for (auto& bpart : equipment) {
+        for (auto& item : bpart.second->get_items()) {
+            Map::curr_map->at(pos)->put_item(Item::ptr(new Item(*item)));
+        }
+    }
+    for (auto& bpart : grasps) {
+        for (auto& item : bpart.second->get_grabbed_items()) {
+            Map::curr_map->at(pos)->put_item(Item::ptr(new Item(*item)));
+        }
+    }
 }

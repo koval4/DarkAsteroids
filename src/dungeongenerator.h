@@ -7,6 +7,7 @@
 #include "tile.h"
 #include "map.h"
 #include "roomgenerator.h"
+#include "actormanager.h"
 #include "player.h"
 
 class DungeonGenerator {
@@ -14,8 +15,9 @@ class DungeonGenerator {
         using Area = std::vector<Tile::ptr>;
         using AreaIterator = std::vector<Area>::iterator;
 
-        Map::ptr map;
+        const Map::ptr map;
         RoomGenerator::prt room_generator;
+        const ActorManager::ptr actor_manager;
         std::vector<Rectangle> rooms;
         std::vector<Area> areas;
 
@@ -33,7 +35,7 @@ class DungeonGenerator {
         void remove_deadends();
 
     public:
-        DungeonGenerator(Map::ptr map);
+        DungeonGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager);
 
         void generate();
         void place_players(std::list<Player::ptr> players);

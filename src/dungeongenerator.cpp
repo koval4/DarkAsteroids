@@ -9,9 +9,10 @@
 #include "room.h"
 #include "roomgenerator.h"
 
-DungeonGenerator::DungeonGenerator(Map::ptr map)
-    : map(map) {
-    room_generator = std::make_shared<RoomGenerator>(map);
+DungeonGenerator::DungeonGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager)
+    : map(map)
+    , actor_manager(actor_manager) {
+    room_generator = std::make_shared<RoomGenerator>(map, actor_manager);
 }
 
 DungeonGenerator::Area DungeonGenerator::make_area(Rectangle rect) {
@@ -258,7 +259,7 @@ void DungeonGenerator::place_players(std::list<Player::ptr> players) {
             auto player = *players.begin();
             // TODO: add check if player can be placed on this tile
             // if player cannot be placed => search for tile where he could be placed
-            map->place_actor({i, j}, std::dynamic_pointer_cast<Actor>(player));
+            actor_manager->place_at({i, j}, std::dynamic_pointer_cast<Actor>(player));
             players.erase(players.begin());
         }
     }

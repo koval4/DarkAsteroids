@@ -94,8 +94,9 @@ Actor::ptr Tile::remove_actor() {
     return std::move(actor);
 }
 
-void Tile::place_actor(Actor::ptr actor) {
-    this->actor = std::move(actor);
+void Tile::place_actor(const Actor::ptr& actor) {
+    this->actor = actor;
+    this->actor->set_pos(pos);
 }
 
 void Tile::connect(Tile::ptr tile) {

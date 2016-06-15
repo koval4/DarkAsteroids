@@ -12,6 +12,7 @@
 #include "ui/slidebar.h"
 #include "ui/panel.h"
 #include "actor.h"
+#include "actormanager.h"
 #include "player.h"
 #include "npc.h"
 #include "item.h"
@@ -110,11 +111,12 @@ void Game::Execute() {
     Player::set_player_gui(&ui);
     //-------------------------------------------------------------------------------------------------
 
-    game_map = std::make_shared<Map>(100, 100);
-    DungeonGenerator dungeon_generator { game_map };
+    map = std::make_shared<Map>(100, 100);
+    actor_manager = std::make_shared<ActorManager>(map);
+    DungeonGenerator dungeon_generator { map, actor_manager };
     dungeon_generator.generate();
     dungeon_generator.place_players(players);
-    Map::curr_map = game_map.get();
+    Map::curr_map = map.get();
     while (running) {
         Loop();
     }
@@ -122,8 +124,8 @@ void Game::Execute() {
 }
 
 void Game::Loop() {
-    for (auto& it : game_map->get_actors()) {
-        it->make_turn();
+    for (auto& actor : actor_manager->get_actors()) {
+        actor->make_turn();
         if (!running)
             return;
     }

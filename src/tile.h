@@ -51,7 +51,7 @@ class Tile : public std::enable_shared_from_this<Tile> {
 
         //############ ACTORS OPERATIONS ##############
         Actor::ptr remove_actor();
-        void place_actor(Actor::ptr actor);
+        void place_actor(const Actor::ptr& actor);
 
         //############# TILES OPERATIONS #################
         void connect(Tile::ptr tile);

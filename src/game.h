@@ -5,6 +5,7 @@
 #include <list>
 #include "map.h"
 #include "actor.h"
+#include "actormanager.h"
 #include "player.h"
 #include "ui/panel.h"
 #include "ui/label.h"
@@ -14,7 +15,8 @@
 class Game {
     private:
         bool running;
-        Map::ptr game_map;
+        Map::ptr map;
+        ActorManager::ptr actor_manager;
         Player::UI ui;
         std::list<Player::ptr> players;
 

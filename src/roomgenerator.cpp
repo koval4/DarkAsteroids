@@ -7,8 +7,17 @@
 #include "map.h"
 #include "room.h"
 
-RoomGenerator::RoomGenerator(Map::ptr map)
-    : map(map) {}
+RoomGenerator::RoomGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager)
+    : map(map)
+    , actor_manager(actor_manager) {}
+
+void RoomGenerator::put_items() {
+
+}
+
+void RoomGenerator::place_npc() {
+
+}
 
 void RoomGenerator::generate(Rectangle square) {
     // choosing textures of floor and walls
@@ -43,12 +52,4 @@ void RoomGenerator::generate(Rectangle square) {
 
     put_items();
     place_npc();
-}
-
-void RoomGenerator::put_items() {
-
-}
-
-void RoomGenerator::place_npc() {
-
 }
