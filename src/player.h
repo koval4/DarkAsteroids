@@ -28,13 +28,18 @@ class Player : public Actor {
         void reload_weapon();
 
     public:
-        Player();
+        Player(std::string texture,
+               std::string name,
+               std::string description,
+               Params params,
+               Skills skills,
+               Race race);
 
         //############### SETTERS ################
         static void set_game_state(bool* running);
 
         //############## GAME LOGIC ################
-        void generate();
+        static std::shared_ptr<Player> generate();
         virtual void make_turn() override;
         virtual void pick_item() override;
         virtual void attack(Coord target) override;

@@ -25,7 +25,7 @@ InventoryController::InventoryController(
             selected_str = clicked_item;
             std::string slot = clicked_item.substr(0, clicked_item.find(" : "));
             std::string item_name = clicked_item.substr(clicked_item.find(" : ") + 3);
-            selected_item = this->player->get_inventory()->get_item_by_name(slot, item_name);
+            selected_item = this->player->get_inventory().get_item_by_name(slot, item_name);
             if (selected_item)
                 item_descr->set_text(selected_item->describe());
         });
@@ -74,7 +74,7 @@ void InventoryController::setup_ui() {
 
     panel->set_widgets({ items_list, item_descr, drop_btn, done_btn });
 
-    for (auto& item : player->get_inventory()->list_items()) {
+    for (auto& item : player->get_inventory().list_items()) {
         items_list->add_item(item.first + " : " + item.second);
     }
 }

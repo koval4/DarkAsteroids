@@ -7,9 +7,10 @@
 #include <vector>
 #include "item.h"
 #include "stack.h"
-#include "actor.h"
 #include "attack.h"
 #include "data.h"
+
+class Actor;
 
 class Weapon : public Item {
     public:

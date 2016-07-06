@@ -6,12 +6,14 @@
 #include <memory>
 #include "data.h"
 #include "bodypart.h"
+#include "race.h"
+#include "body.h"
+#include "inventory.h"
 #include "container.h"
 
 /// forward declaration of Map class
 class Map;
 class Tile;
-class Inventory;
 
 /**
  * @brief The Actor class describes game logic of characters
@@ -45,6 +47,9 @@ class Actor {
                   , uint16_t agility
                   , uint16_t speed
                   , uint16_t endurance);
+
+            static Params rand_params();    /// randomises parameters of actor
+            void calc_secondary_params();   /// calculates secondary parameters of the actor (such as action points,max weight etc.)
         };
 
         /**
@@ -55,21 +60,6 @@ class Actor {
             uint16_t rifles = 0;        /// skill of using any rifle
             uint16_t pistols = 0;       /// skill of using any pistol
         };
-
-        typedef std::unordered_map<std::string, Bodypart::ptr> Body;
-
-        struct Race {
-            std::string name;
-
-            std::unordered_map<std::string, Bodypart> body;
-            uint16_t max_body_size;
-            uint16_t min_body_size;
-
-            Race();
-            Race(const Race& obj);
-        };
-
-        static std::unordered_map<std::string, Race> RACES_LIST;
 
     protected:
         Coord pos;                  /// position of character in map
@@ -82,19 +72,15 @@ class Actor {
         Skills skills;              ///
         Race race;                  ///
         Body body;                  /// container with bodyparts of this actor
-        uint16_t body_size;         /// total size of a body
 
-        std::shared_ptr<Inventory> inventory;
+        Inventory inventory;
 
         const Map* map;                   /// map where actor is situated
 
-        void rand_params();             /// randomises parameters of actor
-        void calc_secondary_params();   /// calculates secondary parameters of the actor (such as action points,max weight etc.)
         void calc_skills();             /// calculates starting skills of the actor
 
         //############## BODY ################
 
-        void make_body();
         void feel_pain();
 
         //##########################
@@ -108,7 +94,6 @@ class Actor {
 
     public:
         //############# CONSTRUCTORS ###############
-        Actor();
         Actor(std::string texture,
               std::string name,
               std::string description,
@@ -116,13 +101,11 @@ class Actor {
               Skills skills,
               Race race,
               uint16_t level = 1,
-              uint16_t experience = 0);
+              uint16_t experience = 0,
+              const Map* map = nullptr);
         Actor(const Actor& obj);
 
         virtual ~Actor();
-
-        //############ DATABASE ###################
-        static void read_races_txt();
 
         //############### GETTERS ##################
         std::string get_texture() const;
@@ -130,7 +113,7 @@ class Actor {
         Params get_params() const;
         const Map* get_map() const;
         const std::shared_ptr<Tile> get_tile() const;
-        const std::shared_ptr<Inventory> get_inventory() const;
+        const Inventory& get_inventory() const;
 
         //############# SETTERS ###################
         void set_pos(Coord pos);

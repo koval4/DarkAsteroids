@@ -47,7 +47,7 @@ std::vector<Item::ptr> Tile::get_items() const {
     return items_ref;
 }
 
-Actor::ptr& Tile::get_actor() {
+const std::shared_ptr<Actor>& Tile::get_actor() {
     return actor;
 }
 
@@ -94,7 +94,7 @@ Actor::ptr Tile::remove_actor() {
     return std::move(actor);
 }
 
-void Tile::place_actor(const Actor::ptr& actor) {
+void Tile::place_actor(const std::shared_ptr<Actor>& actor) {
     this->actor = actor;
     this->actor->set_pos(pos);
 }

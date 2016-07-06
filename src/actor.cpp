@@ -13,8 +13,6 @@
 
 //############## STATIC VARIABLES ##############
 
-std::unordered_map<std::string, Actor::Race> Actor::RACES_LIST;
-
 //################## PARAMS ################
 
 Actor::Params::Params() {}
@@ -30,44 +28,34 @@ Actor::Params::Params( uint16_t strength
     , speed(speed)
     , endurance(endurance) {}
 
-//################## RACE ###################
+Actor::Params Actor::Params::rand_params() {
+    Params params;
+    params.strength = rand()%3 + 5;
+    params.perception = rand()%3 + 5;
+    params.agility = rand()%3 + 5;
+    params.speed = rand()%3 + 5;
+    params.endurance = rand()%3 + 5;
+    return params;
+}
 
-Actor::Race::Race() {}
-
-Actor::Race::Race(const Actor::Race& obj)
-    : name(obj.name)
-    , max_body_size(obj.max_body_size)
-    , min_body_size(obj.min_body_size) {
-    for (auto& it : obj.body)
-        body.insert(it);
+void Actor::Params::calc_secondary_params() {
+    max_ap = (2*speed + agility)/2;
+    max_weight = 3*strength + 2*endurance;
+    visibility_range = perception;
+    pain_threshold = 1000 * endurance;
 }
 
 //################# CONSTRUCTORS ##################
 
-Actor::Actor()
-    : pos()
-    , name()
-    , texture()
-    , description()
-    , level(0)
-    , experience(0)
-    , params()
-    , skills()
-    , race()
-    , body()
-    , body_size(0)
-    , map(nullptr)
-    , inventory() {}
-
-Actor::Actor(
-        std::string texture,
+Actor::Actor(std::string texture,
         std::string name,
         std::string description,
         Params params,
         Skills skills,
-        Actor::Race race,
+        Race race,
         uint16_t level,
-        uint16_t experience)
+        uint16_t experience,
+        const Map* map)
     : pos()
     , name(name)
     , texture(texture)
@@ -77,11 +65,9 @@ Actor::Actor(
     , params(params)
     , skills(skills)
     , race(race)
-    , body()
-    , body_size(0)
-    , inventory()
-    , map(nullptr) {
-    make_body();
+    , body(race, params.max_weight)
+    , inventory(body)
+    , map(map) {
 }
 
 Actor::Actor(const Actor& obj)
@@ -94,105 +80,20 @@ Actor::Actor(const Actor& obj)
     , params(obj.params)
     , skills(obj.skills)
     , race(obj.race)
-    , body_size(obj.body_size)
+    , body(obj.body)
     , inventory(obj.inventory)
-    , map(obj.map) {
-    make_body();
-}
+    , map(obj.map) {}
 
 Actor::~Actor() {}
 
-void Actor::read_races_txt() {
-    std::ifstream file("races_list.txt");
-    std::string line;
-
-    if (!file.is_open()) {
-        std::cout << "Unable to open race-list.txt!" << std::endl;
-        log_file << "Unable to open race-list.txt!" << std::endl;
-        return;
-    }
-
-    Race temp_race;
-    while (std::getline(file, line)) {
-        if (line.front() == '#') continue;  //comment line
-        if (line.find_first_not_of(" \n\t\r") == std::string::npos) continue;   //if line is empty
-        while (line.find(";") == std::string::npos) {   //line ends with semicolon
-            std::string buffer_line = "";
-            std::getline(file, buffer_line);
-            line += buffer_line;
-        }
-        line.erase(line.find(";"));
-        trimr_string(line); //erasing unnecessary from end
-        if (line == "NEW_RACE") {
-            temp_race = {};
-        } else if (line == "PUSH_RACE") {
-            RACES_LIST.insert(std::pair<std::string, Race>(temp_race.name, Race(temp_race)));
-            log_file << "Added new item to RACES_LIST: " << temp_race.name << std::endl;
-            temp_race = {};
-        } else if (line.find("name") != std::string::npos) {
-            line.erase(0, line.find("=") + 1);
-            triml_string(line);
-            temp_race.name = line;
-        } else if (line.find("min_body_size") != std::string::npos) {
-            line.erase(0, line.find("=") + 1);
-            triml_string(line);
-            temp_race.min_body_size = std::stoi(line);
-        } else if (line.find("max_body_size") != std::string::npos) {
-            line.erase(0, line.find("=") + 1);
-            triml_string(line);
-            temp_race.max_body_size = std::stoi(line);
-        } else if (line.find("body") != std::string::npos) {
-            line.erase(0, line.find("=") + 1);
-            triml_string(line);
-            for (auto& it : split_with_match_chars(line)) {
-                Bodypart bpart(it);
-                temp_race.body.insert(std::pair<std::string, Bodypart>(bpart.get_name(), bpart));
-            }
-        }
-    }
-
-    file.close();
-}
-
 //############ PRIVATE F-NS ##############
-
-void Actor::rand_params() {
-    params.strength = rand()%3 + 5;
-    params.perception = rand()%3 + 5;
-    params.agility = rand()%3 + 5;
-    params.speed = rand()%3 + 5;
-    params.endurance = rand()%3 + 5;
-}
-
-void Actor::calc_secondary_params() {
-    params.max_ap = (2*params.speed + params.agility)/2;
-    params.max_weight = 3*params.strength + 2*params.endurance;
-    params.visibility_range = params.perception;
-    params.pain_threshold = 1000 * params.endurance;
-}
 
 void Actor::calc_skills() {
     skills.close_combat = 3*params.strength + 2*params.endurance + 2*params.speed;
 }
 
-void Actor::make_body() {
-    #ifdef _DEBUG_
-    std::cout << "make_body() called by " << name << " (" << this << " )  :" << std::endl;
-    #endif // _DEBUG_
-    body_size = race.min_body_size + rand()%(race.max_body_size - race.min_body_size + 1);
-    #ifdef _DEBUG_
-    std::cout << "body_size = " << body_size << std::endl;
-    #endif
-    for (auto& it : race.body) {
-        body.insert(std::pair<std::string, Bodypart::ptr>(it.first, Bodypart::ptr(new Bodypart(it.second))));
-        body.at(it.first)->set_max_weight(params.max_weight / (body_size / body.at(it.first)->get_volume()));
-    }
-    inventory = std::make_shared<Inventory>(body);
-}
-
 void Actor::feel_pain() {
-    for (auto& bodypart : body)
-        params.curr_pain += bodypart.second->get_pain();
+
 }
 
 std::vector<Coord> Actor::find_path_to(Coord pos) {
@@ -262,7 +163,7 @@ const std::shared_ptr<Tile> Actor::get_tile() const {
     return map->at(pos);
 }
 
-const std::shared_ptr<Inventory> Actor::get_inventory() const {
+const Inventory& Actor::get_inventory() const {
     return inventory;
 }
 
@@ -335,22 +236,22 @@ void Actor::equip_item(Item::ptr item) {
     }
 
     if (map)
-        inventory->equip_item(item, map->at(pos));
-    else inventory->equip_item(item, nullptr);
+        inventory.equip_item(item, map->at(pos));
+    else inventory.equip_item(item, nullptr);
 }
 
 void Actor::grab_item(Item::ptr item) {
     if (map)
-        inventory->grab_item(item, map->at(pos));
-    else inventory->grab_item(item, nullptr);
+        inventory.grab_item(item, map->at(pos));
+    else inventory.grab_item(item, nullptr);
 }
 
 void Actor::drop_item(Item::ptr item) {
     //removing specific properties
     params.curr_weight -= item->get_weight();
     if (map)
-        inventory->drop_item(item, map->at(pos));
-    else inventory->drop_item(item, nullptr);
+        inventory.drop_item(item, map->at(pos));
+    else inventory.drop_item(item, nullptr);
     log_file << name << " has dropped " << item->get_name() << "." << std::endl;
 }
 
@@ -364,12 +265,8 @@ void Actor::get_wound( int32_t& momentum
                        , Bodypart* target
                      ) {
     // if target nullptr => choose random bodypart
-    if (target == nullptr) {
-        auto it = body.begin();
-        for (size_t i = 0; i < rand()%body.size(); i++)
-            it++;
-        target = it->second.get();
-    }
+    if (target == nullptr)
+        target = body.get_random_part().get();
 
     float mass1 = item.get_weight();
     float mass2 = target->get_weight();
@@ -393,7 +290,8 @@ void Actor::get_wound( int32_t& momentum
 }
 
 void Actor::die() {
-    if (map)
-        inventory->drop_all(map->at(pos));
-    else inventory->drop_all(nullptr);
+    if (map) {
+        inventory.drop_all(map->at(pos));
+        map->at(pos)->remove_actor();
+    } else inventory.drop_all(nullptr);
 }

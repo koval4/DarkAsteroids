@@ -8,9 +8,9 @@
 #include "data.h"
 #include "item.h"
 #include "bodypart.h"
+#include "body.h"
 #include "container.h"
 #include "weapon.h"
-#include "actor.h"
 #include "tile.h"
 
 class Tile;
@@ -40,7 +40,7 @@ class Inventory {
         void remove_weap(const std::shared_ptr<Weapon> weapon);
 
     public:
-        Inventory(std::unordered_map<std::string, Bodypart::ptr> body);
+        Inventory(const Body& body);
 
         const Item::ptr get_item_by_name(std::string slot, std::string name) const;
         PAIRS<std::string, std::string> list_items() const;

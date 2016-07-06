@@ -17,7 +17,6 @@ class NPC : public Actor {
 
     public:
         //############### CONSTRUCTORS ##############
-        NPC();
         NPC(const NPC& obj);
 
         //############### DATABASE ###############

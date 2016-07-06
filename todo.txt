@@ -1,5 +1,4 @@
 Add Controllers for different menus
-Add Body class
 Add widgets updating in draw fn
 Make simple npc logic (seek & destroy)
 Move find_path to Map

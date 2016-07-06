@@ -11,8 +11,8 @@
 #include "weapon.h"
 #include "actor.h"
 
-Inventory::Inventory(std::unordered_map<std::string, Bodypart::ptr> body) {
-    for (auto& it : body) {  //iterating through body
+Inventory::Inventory(const Body& body) {
+    for (auto& it : body.get_parts()) {  //iterating through body
         if (it.second->is_grasp())  //if grasp => adding pair to grasps map
             grasps.insert(std::pair<std::string, Bodypart*>(it.first, it.second.get()));
         else equipment.insert(std::pair<std::string, Bodypart*>(it.first, it.second.get()));  //else adding pair to equipment map

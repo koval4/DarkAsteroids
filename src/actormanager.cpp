@@ -31,6 +31,7 @@ void ActorManager::check_alive() {
     auto actor = actors.begin();
     while (actor != actors.end()) {
         if (!(*actor)->is_alive()) {
+            (*actor)->die();
             actors.erase(actor);
         } else actor++;
     }

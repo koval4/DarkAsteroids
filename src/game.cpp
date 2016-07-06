@@ -14,6 +14,7 @@
 #include "ui/panel.h"
 #include "controllersmanager.h"
 #include "playercontroller.h"
+#include "race.h"
 #include "actor.h"
 #include "actormanager.h"
 #include "player.h"
@@ -93,16 +94,14 @@ void Game::Init() {
     Weapon::read_weapons_txt();
     Armor::read_armor_txt();
     Container::read_containers_txt();
-    Actor::read_races_txt();
+    Race::read_races_txt();
     NPC::read_npc_txt();
 }
 
 void Game::Execute() {
     Init();
-    for (uint16_t i = 0; i < 4; i++) {
-        players.push_back(std::make_shared<Player>());
-        players.back()->generate();
-    }
+    for (uint16_t i = 0; i < 4; i++)
+        players.push_back(Player::generate());
     Player::set_game_state(&running);
 
     //--------------------------setting player's gui---------------------------------

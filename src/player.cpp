@@ -21,10 +21,15 @@
 
 bool* Player::game_running = nullptr;
 
-Player::Player() : Actor() {
-    texture = img("player.png");
-    curr_weap = nullptr;
-}
+Player::Player(
+        std::string texture,
+        std::string name,
+        std::string description,
+        Params params,
+        Skills skills,
+        Race race)
+    : Actor(texture, name, description, params, skills, race)
+    , curr_weap(nullptr) {}
 
 void Player::update_ap_lbl() {
     auto ap_lbl = GUI::inst().get_widget("ap_lbl");
@@ -54,19 +59,26 @@ void Player::set_game_state(bool* running) {
     game_running = running;
 }
 
-void Player::generate() {
-    race = RACES_LIST.at("Human");
-    make_body();
-    rand_params();
-    calc_secondary_params();
-    calc_skills();
-    params.action_points += 20;
-    equip_item(Weapon::make("CPP-17"));
-    equip_item(Armor::make("Pressure suit"));
+std::shared_ptr<Player> Player::generate() {
+    std::string texture = img("player.png");
+    std::string name = "Player";
+    std::string description = "Player";
+    Params params = Params::rand_params();
+    params.calc_secondary_params();
+    Skills skills;
+    auto race = Race::RACES_LIST.at("Human");
+
+    auto player = std::make_shared<Player>(texture, name, description, params, skills, race);
+
+    player->params.action_points += 20;
+    player->equip_item(Weapon::make("CPP-17"));
+    player->equip_item(Armor::make("Pressure suit"));
     Item::ptr backpack = Container::make("Backpack");
     for (uint8_t i = 0; i < 100; i++)
-        dynamic_cast<Container*>(backpack.get())->add_item(Item::make("5.56x45 ammo"));
-    equip_item(std::move(backpack));
+        std::dynamic_pointer_cast<Container>(backpack)->add_item(Item::make("5.56x45 ammo"));
+    player->equip_item(backpack);
+
+    return player;
 }
 
 void Player::switch_to_next_weapon() {
