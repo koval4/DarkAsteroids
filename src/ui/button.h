@@ -28,7 +28,7 @@ class Button : public Widget {
         static int default_font_size;           /// size of default font
         static SDL_Color default_font_color;    /// default color of text
     public:
-        typedef std::unique_ptr<Button> ptr;
+        typedef std::shared_ptr<Button> ptr;
 
         /**
          * @brief The Content enum used to mark content that will be placed inside button
@@ -44,12 +44,13 @@ class Button : public Widget {
         Button();
         /**
          * @brief Button -- constructor to make complete button
+         * @param access_name -- name used for identification of element
          * @param txtr -- contains text to render or path to icon; will be placed in center of button
          * @param form  -- size and position of button
          * @param margin -- margins inside button
          * @param content -- marks content that will be placed in button (text, icon), defaulted to text
          */
-        Button(std::string txtr, SDL_Rect form, Padding margin, Content content = text);
+        Button(std::string access_name, std::string txtr, SDL_Rect form, Padding padding, Content content = text);
 
         //############## DESTRUCTOR #################
         ~Button();

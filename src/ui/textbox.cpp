@@ -32,9 +32,16 @@ Textbox::Textbox() : Widget(), Scrollable() {
 * @param font_color -- color used for text rendering, defaulted to black
 * @param font_size -- size of font used to render text, uses default static value
 */
-Textbox::Textbox(SDL_Rect form, Padding margin, bool multiline, SDL_Color font_color, uint16_t font_size)
-    : Widget(default_back_txtr, form, margin), Scrollable()
-    , multiline(multiline), font_color(font_color) {
+Textbox::Textbox(std::string access_name,
+                 SDL_Rect form,
+                 Padding margin,
+                 bool multiline,
+                 SDL_Color font_color,
+                 uint16_t font_size)
+    : Widget(access_name, default_back_txtr, form, margin)
+    , Scrollable()
+    , multiline(multiline)
+    , font_color(font_color) {
     pos = 0;
     font = TTF_OpenFont(default_font_path.c_str(), font_size);
     text_txtr = Texture::ptr(nullptr);
@@ -54,13 +61,13 @@ Textbox::~Textbox() {
 void Textbox::text_to_texture() {
     if (multiline) {
         //creating new text texture with wrapping width of (form - margins)
-        text_txtr = Texture::ptr(new Texture(text, (form.w - margin.left - margin.right)
+        text_txtr = std::make_unique<Texture>(text, (form.w - padding.left - padding.right)
                                              , font, font_color
-                                             , form.x + margin.left, form.y + margin.top));
+                                             , form.x + padding.left, form.y + padding.top);
     } else {
         //creating new one-line text texture
-        text_txtr = Texture::ptr(new Texture(text, font, font_color
-                                             , form.x + margin.left, form.y + margin.top));
+        text_txtr = std::make_unique<Texture>(text, font, font_color
+                                             , form.x + padding.left, form.y + padding.top);
     }
     redraw_text();
 }
@@ -69,11 +76,11 @@ void Textbox::text_to_texture() {
  * @brief Textbox::scroll_to_end sets pos to text texture height - (form - margins)
  */
 void Textbox::scroll_to_end() {
-    if (text_txtr->get_height() <= (form.h - margin.bottom - margin.top)) {
+    if (text_txtr->get_height() <= (form.h - padding.bottom - padding.top)) {
         pos = 0;
         return;
     }
-    pos = text_txtr->get_height() - (form.h - margin.bottom - margin.top);
+    pos = text_txtr->get_height() - (form.h - padding.bottom - padding.top);
     if (slidebar != nullptr)
         slidebar->set_slider_pos(pos / (text_txtr->get_height()/100));
     GUI::inst().update();
@@ -88,25 +95,25 @@ void Textbox::redraw_text() {
     text_form.h = text_txtr->get_height();
     if (multiline) {
         //if texture is bigger than (form - margins) =>
-        if (text_form.h > (form.h - margin.bottom - margin.top)) {
+        if (text_form.h > (form.h - padding.bottom - padding.top)) {
             //rendering text that fits into (form - margins) from pos
             text_txtr->set_part_to_render({0, pos, text_form.w
-                                          , (form.h - margin.top - margin.bottom)
+                                          , (form.h - padding.top - padding.bottom)
                                           });
             text_txtr->set_form({text_form.x, text_form.y, text_form.w
-                                , (form.h - margin.top - margin.bottom)
+                                , (form.h - padding.top - padding.bottom)
                                 });
         //else render full texture
         } else text_txtr->set_part_to_render({0, 0, text_form.w, text_form.h});
     } else {
         //if texture is bigger than (form - margins) =>
-        if (text_form.w > (form.w - margin.left - margin.right)) {
+        if (text_form.w > (form.w - padding.left - padding.right)) {
             //rendering all text from end that fits into (form -margins)
-            text_txtr->set_part_to_render({(text_form.w - form.w - margin.left - margin.right)
-                                           , 0, (form.w - margin.left - margin.right), text_form.h
+            text_txtr->set_part_to_render({(text_form.w - form.w - padding.left - padding.right)
+                                           , 0, (form.w - padding.left - padding.right), text_form.h
                                           });
             text_txtr->set_form({text_form.x, text_form.y
-                                 , (form.w - margin.left - margin.right), text_form.h});
+                                 , (form.w - padding.left - padding.right), text_form.h});
         //else render full texture
         } else text_txtr->set_part_to_render({0, 0, text_form.w, text_form.h});
     }

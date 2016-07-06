@@ -71,17 +71,20 @@ Slidebar::Slidebar()
 * @param lines_total -- how much lines represents full slidebar
 * @param lines_on_screen -- how much lines represents slider
 */
-Slidebar::Slidebar(SDL_Rect form, uint16_t lines_total, uint16_t lines_on_screen)
-    : Widget(default_back_path, form), size(lines_total)
+Slidebar::Slidebar(std::string access_name, SDL_Rect form, uint16_t lines_total, uint16_t lines_on_screen)
+    : Widget(access_name, default_back_path, form)
+    , size(lines_total)
     , slider(default_slider_path
         , {form.x, form.y, form.w, form.h / lines_total * lines_on_screen}
         , lines_on_screen)
     , scrollable(nullptr)
     , wheel_listener(SDL_MOUSEWHEEL) {
     uint16_t btn_side_len = (form.w > form.h) ? form.h : form.w;
-    up = Button::ptr(new Button(default_up_path, {form.x, form.y, btn_side_len, btn_side_len}, {}, Button::icon));
+    SDL_Rect up_form = {form.x, form.y, btn_side_len, btn_side_len};
+    up = std::make_unique<Button>("", default_up_path, up_form, Padding(), Button::icon);
     uint16_t down_y = form.y + form.h - btn_side_len;
-    down = Button::ptr(new Button(default_down_path, {form.x, down_y, btn_side_len, btn_side_len}, {}, Button::icon));
+    SDL_Rect down_form = {form.x, down_y, btn_side_len, btn_side_len};
+    down = std::make_unique<Button>("", default_down_path, down_form, Padding(), Button::icon);
     form = {form.x, form.y - btn_side_len, form.w, form.h - (2*btn_side_len)};
 
     //setting listeners on up and down buttons

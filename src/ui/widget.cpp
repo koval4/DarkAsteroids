@@ -13,21 +13,34 @@ uint16_t Widget::obj_counter = 0;
 Widget::Widget() {
     obj_counter++;
     form = {};
-    margin = {};
+    padding = {};
     visible = false;
     enabled = false;
 }
 
-Widget::Widget(Texture::ptr background, SDL_Rect form, Padding margin)
-    : background(std::move(background)), form(form), margin(margin) {
+Widget::Widget(std::string access_name,
+               Texture::ptr background,
+               SDL_Rect form,
+               Padding margin)
+    : access_name(access_name)
+    , background(std::move(background))
+    , form(form)
+    , padding(margin)
+    , visible(true)
+    , enabled(true) {
     obj_counter++;
-    visible = true;
-    enabled = true;
 }
 
-Widget::Widget(std::string back_path, SDL_Rect form, Padding margin)
-    : form(form), margin(margin), visible(true)
-    , enabled(true), background(new Texture(back_path, form.x, form.y, form.w, form.h)) {
+Widget::Widget(std::string access_name,
+               std::string back_path,
+               SDL_Rect form,
+               Padding margin)
+    : access_name(access_name)
+    , form(form)
+    , padding(margin)
+    , visible(true)
+    , enabled(true)
+    , background(std::make_unique<Texture>(back_path, form.x, form.y, form.w, form.h)) {
     obj_counter++;
 }
 
@@ -35,6 +48,10 @@ Widget::Widget(std::string back_path, SDL_Rect form, Padding margin)
 
 Widget::~Widget() {
     obj_counter--;
+}
+
+std::string Widget::get_access_name() const {
+    return access_name;
 }
 
 //################ PRIVATE FUNCTIONS ######################
@@ -54,7 +71,7 @@ SDL_Rect Widget::get_form() const {
 }
 
 Padding Widget::get_padding() const {
-    return margin;
+    return padding;
 }
 
 bool Widget::is_enabled() const{

@@ -12,9 +12,10 @@
 /** abstract class that describes base gui element*/
 class Widget{
     protected:
+        std::string access_name;    /// name used for widget identification
         Texture::ptr background;
-        SDL_Rect form;  ///position and size of widget
-        Padding margin;  ///margin of widget
+        SDL_Rect form;              ///position and size of widget
+        Padding padding;             ///margin of widget
 
         bool visible;   ///is object visible
         bool enabled;   ///is object enabled
@@ -23,14 +24,15 @@ class Widget{
 
         bool is_point_in(SDL_Point point);  /// checks if point belongs form rectangle
     public:
-        typedef std::unique_ptr<Widget> ptr;
+        typedef std::shared_ptr<Widget> ptr;    /// shared_ptr type alias
 
         Widget();   ///base c-tor, creates empty widget
-        Widget(Texture::ptr background, SDL_Rect form, Padding margin = {});
-        Widget(std::string back_path, SDL_Rect form, Padding margin = {});
+        Widget(std::string access_name, Texture::ptr background, SDL_Rect form, Padding padding = {});
+        Widget(std::string access_name, std::string back_path, SDL_Rect form, Padding padding = {});
         virtual ~Widget();  ///d-tor
 
         //####################### GETTERS ##########################
+        std::string get_access_name() const;
         virtual std::vector<Texture*> get_textures() const = 0;    ///returns textures of widget
         SDL_Rect get_form() const;
         Padding get_padding() const;

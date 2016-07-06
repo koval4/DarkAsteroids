@@ -49,6 +49,8 @@ Attack::Attack(Weapon* parent, std::string line)
     }
 }
 
+Attack::~Attack() {}
+
 std::string Attack::get_name() const {
     return name;
 }

@@ -1,6 +1,8 @@
 #include "gui.h"
 #include <vector>
+#include <unordered_map>
 #include <algorithm>
+#include <type_traits>
 #include "screen.h"
 #include "widget.h"
 
@@ -21,9 +23,9 @@ void GUI::update() {
             all_textures.push_back(texture.get());
     }
     for (auto& widget : widgets) {
-        if (widget == nullptr)
+        if (!widget.second)
             continue;
-        auto widget_textures = widget->get_textures();
+        auto widget_textures = widget.second->get_textures();
         std::copy(widget_textures.begin(), widget_textures.end(), std::back_inserter(all_textures));
     }
     Screen::inst().update(all_textures);
@@ -36,30 +38,25 @@ std::vector<Texture*> GUI::get_textures() {
             all_textures.push_back(texture.get());
     }
     for (auto& widget : widgets) {
-        if (widget == nullptr)
+        if (!widget.second)
             continue;
-        for (auto& texture : widget->get_textures())
+        for (auto& texture : widget.second->get_textures())
             all_textures.push_back(texture);
     }
     return all_textures;
 }
 
-void GUI::set_widgets(std::vector<Widget*> widgets) {
-    this->widgets.clear();
-    this->widgets = widgets;
+Widget::ptr GUI::get_widget(std::string access_name) const {
+    // return nullptr if widget doesn't exists
+    if (widgets.find(access_name) == widgets.end())
+        return nullptr;
+    return widgets.at(access_name);
 }
 
-void GUI::add_widget(Widget* widget) {
-    widgets.push_back(widget);
-}
+//##################### WIDGETS OPERATIONS #####################
 
-void GUI::remove_widget(Widget* widget) {
-    for (size_t i = 0; i < widgets.size(); i++) {
-        if (widgets[i] == widget) {
-            widgets.erase(widgets.begin() + i);
-            return;
-        }
-    }
+void GUI::remove_widget(std::string access_name) {
+    widgets.erase(access_name);
 }
 
 void GUI::clear_widgets() {
@@ -74,7 +71,7 @@ void GUI::add_texture( std::string path
                      , uint16_t width
                      , uint16_t height
                      ) {
-    buffer.push_back(Texture::ptr(new Texture(path, x, y, width, height)));
+    buffer.push_back(std::make_unique<Texture>(path, x, y, width, height));
 }
 
 void GUI::flush() {

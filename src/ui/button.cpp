@@ -27,13 +27,18 @@ Button::Button()
 
 /**
 * @brief Button -- constructor to make complete button
+* @param access_name -- name used for identification of element
 * @param txtr -- contains text to render or path to icon; will be placed in center of button
 * @param form  -- size and position of button
 * @param margin -- margins inside button
 * @param content -- marks content that will be placed in button (text, icon), defaulted to text
 */
-Button::Button(std::string txtr, SDL_Rect form, Padding margin, Button::Content content)
-    : Widget(default_back_path, form , margin)
+Button::Button(std::string access_name,
+               std::string txtr,
+               SDL_Rect form,
+               Padding margin,
+               Button::Content content)
+    : Widget(access_name, default_back_path, form, margin)
     , font_color(default_font_color)
     , listener(SDL_MOUSEBUTTONDOWN) {
     font = TTF_OpenFont(default_font_path.c_str(), default_font_size);

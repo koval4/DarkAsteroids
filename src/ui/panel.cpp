@@ -16,24 +16,22 @@ std::string Panel::default_back_path = "";  /// path to texture used as default 
 /**
 * @brief Panel -- default constructor, doing nothing
 */
-Panel::Panel() : Widget() {
-
-}
+Panel::Panel() : Widget() {}
 
 /**
 * @brief Panel -- constructor that creates just panel widthout widgets
+* @param access_name -- name used for identification of element
 * @param form -- size and position of panel
 * @param margin -- margins inside panel
 */
-Panel::Panel(SDL_Rect form, Padding margin) : Widget(default_back_path, form, margin) {
-
-}
+Panel::Panel(std::string access_name,
+             SDL_Rect form,
+             Padding padding)
+    : Widget(access_name, default_back_path, form, padding) {}
 
 //###################### DESTRUCTOR ########################
 
-Panel::~Panel() {
-
-}
+Panel::~Panel() {}
 
 //##################### GETTERS ########################
 
@@ -61,9 +59,8 @@ std::vector<const Listener*> Panel::get_listeners() const {
 
 //##################### SETTERS #########################
 
-void Panel::set_widgets(std::vector<Widget*> widgets) {
+void Panel::set_widgets(std::vector<Widget::ptr> widgets) {
     this->widgets = widgets;
-    GUI::inst().update();
 }
 
 void Panel::set_default_background(std::string path) {
@@ -72,17 +69,15 @@ void Panel::set_default_background(std::string path) {
 
 //################# WIDGETS OPERATIONS #####################
 
-void Panel::add_widget(Widget* widget) {
+void Panel::add_widget(const Widget::ptr widget) {
     widgets.push_back(widget);
-    GUI::inst().update();
 }
 
-void Panel::remove_widget(Widget* widget) {
+void Panel::remove_widget(const Widget::ptr widget) {
     auto it = widgets.begin();
     while (it != widgets.end()) {
         if (widget == *it) {
             widgets.erase(it);
-            GUI::inst().update();
             return;
         } else it++;
     }
@@ -90,5 +85,4 @@ void Panel::remove_widget(Widget* widget) {
 
 void Panel::clear_widgets() {
     widgets.clear();
-    GUI::inst().update();
 }

@@ -5,10 +5,35 @@
 #include "map.h"
 
 ActorManager::ActorManager(const Map::ptr& map)
-    : map(map) {}
+    : map(map) {
+    curr_actor = actors.begin();
+}
 
 std::unordered_set<Actor::ptr> ActorManager::get_actors() const {
     return actors;
+}
+
+const Actor::ptr ActorManager::get_curr_actor() const {
+    return *curr_actor;
+}
+
+void ActorManager::start_turn() {
+    curr_actor = actors.begin();
+}
+
+void ActorManager::end_turn() {
+    curr_actor++;
+    if (curr_actor == actors.end())
+        start_turn();
+}
+
+void ActorManager::check_alive() {
+    auto actor = actors.begin();
+    while (actor != actors.end()) {
+        if (!(*actor)->is_alive()) {
+            actors.erase(actor);
+        } else actor++;
+    }
 }
 
 void ActorManager::place_at(Coord pos, Actor::ptr actor) {

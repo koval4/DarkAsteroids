@@ -1,5 +1,9 @@
-Add ActorManager class
+Add Controllers for different menus
+Add Body class
+Add widgets updating in draw fn
 Make simple npc logic (seek & destroy)
+Move find_path to Map
+Make main menu
 Add thermal calculations
 Improve map drawing (add primitive raycasting)
 Implement enabled field in widgets
@@ -17,6 +21,5 @@ Make dungeon regions
 Add Logger class
 Add Database class
 Add Output class (Used for info output on screen)
-Add Inventory class
 Make gui generatin from text file (dunno how to implement listeners in text file)
 Make scriptable npc logic

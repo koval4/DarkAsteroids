@@ -29,7 +29,7 @@ class Listbox : public Widget {
 
             Listener listener;          /// listener that checks if item is clicked
 
-            typedef std::unique_ptr<List_Item> ptr;
+            typedef std::shared_ptr<List_Item> ptr;
 
             /**
              * @brief List_Item -- constructor of single visible item
@@ -62,7 +62,7 @@ class Listbox : public Widget {
 
         void draw_items();  /// makes visible_items from items
     public:
-        typedef std::unique_ptr<Listbox> ptr;
+        typedef std::shared_ptr<Listbox> ptr;
 
         //################# CONSTRUCTORS ##########################
         /**
@@ -71,12 +71,15 @@ class Listbox : public Widget {
         Listbox();
         /**
          * @brief Listbox -- constructor for complete listbox construction without items
+         * @param access_name -- name used for identification of element
          * @param form -- size and position of listbox
          * @param margin -- margins inside listbox, defaulted to no margins
          * @param items_color -- color used for items rendering, defaulted to black
          */
-        Listbox(SDL_Rect form, Padding margin = {}
-                , uint16_t item_height = default_item_height);
+        Listbox(std::string access_name,
+                SDL_Rect form,
+                Padding padding = {},
+                uint16_t item_height = default_item_height);
 
         //################## DESTRUCTOR ##########################
         ~Listbox();

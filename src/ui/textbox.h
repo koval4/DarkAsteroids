@@ -35,7 +35,7 @@ class Textbox : public Widget, public Scrollable {
         //################## SCROLLABLE #########################
         void update_bar() override;
     public:
-        typedef std::unique_ptr<Textbox> ptr;
+        typedef std::shared_ptr<Textbox> ptr;
 
         //####################### CONSTRUCTORS #########################
         /**
@@ -44,14 +44,16 @@ class Textbox : public Widget, public Scrollable {
         Textbox();
         /**
          * @brief Textbox -- constuctor used to make normal textbox
+         * @param access_name -- name used for identification of element
          * @param form -- size and position of textbox
          * @param margin -- margins inside textbox, defaulted to no margins
          * @param multiline -- does text displays in multiple lines or in single line
          * @param font_color -- color used for text rendering, uses default static value
          * @param font_size -- size of font used to render text, uses default static value
          */
-        Textbox( SDL_Rect form
-               , Padding margin = {}
+        Textbox( std::string access_name
+               , SDL_Rect form
+               , Padding padding = {}
                , bool multiline = false
                , SDL_Color font_color = default_font_color
                , uint16_t font_size = default_font_size);

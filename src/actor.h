@@ -10,13 +10,16 @@
 
 /// forward declaration of Map class
 class Map;
+class Tile;
+class Inventory;
 
 /**
  * @brief The Actor class describes game logic of characters
  */
 class Actor {
     public:
-        typedef std::shared_ptr<Actor> ptr;
+        using ptr = std::shared_ptr<Actor>;
+        using wptr = std::weak_ptr<Actor>;
 
         /**
          * @brief The Params struct
@@ -58,20 +61,20 @@ class Actor {
         struct Race {
             std::string name;
 
-			std::unordered_map<std::string, Bodypart> body;
+            std::unordered_map<std::string, Bodypart> body;
             uint16_t max_body_size;
             uint16_t min_body_size;
 
             Race();
-			Race(const Race& obj);
+            Race(const Race& obj);
         };
 
         static std::unordered_map<std::string, Race> RACES_LIST;
 
     protected:
         Coord pos;                  /// position of character in map
-        std::string texture;        /// texture of character used for rendering
         std::string name;           /// name of the actor
+        std::string texture;        /// texture of character used for rendering
         std::string description;    /// description of the actor
         uint16_t level;             ///
         uint16_t experience;        ///
@@ -81,10 +84,7 @@ class Actor {
         Body body;                  /// container with bodyparts of this actor
         uint16_t body_size;         /// total size of a body
 
-        std::unordered_map<std::string, Bodypart*> equipment;   /// actor equips Item in slot(string type) , so map makes some slots and fills it with items
-        std::unordered_map<std::string, Bodypart*> grasps;      /// here actor holds weapon, items etc.
-        std::vector<Weapon*> weapons;                           /// currently equipped weapons
-        std::vector<Container::ptr> containers;                     /// currently equipped containers
+        std::shared_ptr<Inventory> inventory;
 
         const Map* map;                   /// map where actor is situated
 
@@ -95,22 +95,6 @@ class Actor {
         //############## BODY ################
 
         void make_body();
-        /**
-         * @brief make_slots
-         */
-        void make_slots();
-        /**
-         * @brief find_slots -- searches specific bodyparts by part of a name
-         * @param slot       -- slot name used for search
-         * @return           -- slots that contains 'slot' in name
-         */
-        PAIRS<std::string, Bodypart*> find_slots(std::string slot);
-        /**
-         * @brief find_less_loaded_bpart -- searches bodypart with least weight of equipment
-         * @param slots                  -- slots where bodypart is searched
-         * @return                       -- bodypart with minimal equipment weight
-         */
-        Bodypart* find_less_loaded_bpart(PAIRS<std::string, Bodypart*> slots);
         void feel_pain();
 
         //##########################
@@ -121,11 +105,18 @@ class Actor {
          * @return path from current position to pos
          */
         std::vector<Coord> find_path_to(Coord pos);
-        void remove_weap(Weapon* weapon);
 
     public:
         //############# CONSTRUCTORS ###############
         Actor();
+        Actor(std::string texture,
+              std::string name,
+              std::string description,
+              Params params,
+              Skills skills,
+              Race race,
+              uint16_t level = 1,
+              uint16_t experience = 0);
         Actor(const Actor& obj);
 
         virtual ~Actor();
@@ -136,12 +127,17 @@ class Actor {
         //############### GETTERS ##################
         std::string get_texture() const;
         Coord get_pos() const;
+        Params get_params() const;
+        const Map* get_map() const;
+        const std::shared_ptr<Tile> get_tile() const;
+        const std::shared_ptr<Inventory> get_inventory() const;
 
         //############# SETTERS ###################
         void set_pos(Coord pos);
         void set_map(const Map* map);
 
         //############# GAME LOGIC #################
+        bool can_make_turn() const;
         virtual void make_turn() = 0;   /// virtual function wich describes logic of what actor doing in one turn
         virtual void pick_item() = 0;
         virtual void attack(Coord target) = 0;
@@ -162,6 +158,8 @@ class Actor {
                       , uint32_t contact_area
                       , Bodypart* target = nullptr
                       );
+        bool is_alive() const;
+        void die();
 
         //############ INVENTORY ################
         /**
@@ -173,13 +171,12 @@ class Actor {
          * @brief grab_item -- adds item to grasps
          * @param item      -- item that will be added to grasps
          */
-		void grab_item(Item::ptr item);
+        void grab_item(Item::ptr item);
         /**
          * @brief drop_item -- removes item from inventory
          * @param item      -- item that will be removed from inventory
          */
-		void drop_item(Item::ptr item);
-        void die();
+        void drop_item(Item::ptr item);
 };
 
 #endif // ACTOR_H

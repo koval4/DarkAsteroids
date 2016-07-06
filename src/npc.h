@@ -2,14 +2,19 @@
 #define NPC_H
 
 #include "actor.h"
-#include <map>
+#include <vector>
+#include <unordered_map>
 #include <memory>
+#include "tile.h"
 
 class NPC : public Actor {
     public:
         typedef std::unique_ptr<NPC> ptr;
-        static std::map<std::string, NPC> NPC_LIST;
+        static std::unordered_map<std::string, NPC> NPC_LIST;
     private:
+        std::vector<Tile::ptr> get_tiles_in_fov() const;
+        std::vector<Actor::ptr> get_actors_in_fov() const;
+
     public:
         //############### CONSTRUCTORS ##############
         NPC();

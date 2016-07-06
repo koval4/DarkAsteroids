@@ -3,8 +3,10 @@
 
 #include <string>
 #include <memory>
+#include "bodypart.h"
 #include "item.h"
-#include "actor.h"
+
+class Actor;
 
 class Attack {
     public:
@@ -25,6 +27,8 @@ class Attack {
         Attack();
         Attack(const Attack& obj);
         Attack(Weapon* parent, std::string line);
+
+        virtual ~Attack();
 
         //############### GETTERS ##############
         std::string get_name() const;

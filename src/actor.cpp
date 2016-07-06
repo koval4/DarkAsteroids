@@ -9,6 +9,7 @@
 #include "map.h"
 #include "data.h"
 #include "weapon.h"
+#include "inventory.h"
 
 //############## STATIC VARIABLES ##############
 
@@ -45,21 +46,48 @@ Actor::Race::Race(const Actor::Race& obj)
 
 Actor::Actor()
     : pos()
-    , texture()
     , name()
+    , texture()
     , description()
     , level(0)
     , experience(0)
     , params()
     , skills()
+    , race()
     , body()
     , body_size(0)
-    , map(nullptr) {}
+    , map(nullptr)
+    , inventory() {}
+
+Actor::Actor(
+        std::string texture,
+        std::string name,
+        std::string description,
+        Params params,
+        Skills skills,
+        Actor::Race race,
+        uint16_t level,
+        uint16_t experience)
+    : pos()
+    , name(name)
+    , texture(texture)
+    , description(description)
+    , level(level)
+    , experience(experience)
+    , params(params)
+    , skills(skills)
+    , race(race)
+    , body()
+    , body_size(0)
+    , inventory()
+    , map(nullptr) {
+    make_body();
+}
 
 Actor::Actor(const Actor& obj)
     : pos(obj.pos)
-    , texture(obj.texture)
     , name(obj.name)
+    , texture(obj.texture)
     , description(obj.description)
     , level(obj.level)
     , experience(obj.experience)
@@ -67,14 +95,12 @@ Actor::Actor(const Actor& obj)
     , skills(obj.skills)
     , race(obj.race)
     , body_size(obj.body_size)
+    , inventory(obj.inventory)
     , map(obj.map) {
     make_body();
-    make_slots();
 }
 
-Actor::~Actor() {
-
-}
+Actor::~Actor() {}
 
 void Actor::read_races_txt() {
     std::ifstream file("races_list.txt");
@@ -161,45 +187,7 @@ void Actor::make_body() {
         body.insert(std::pair<std::string, Bodypart::ptr>(it.first, Bodypart::ptr(new Bodypart(it.second))));
         body.at(it.first)->set_max_weight(params.max_weight / (body_size / body.at(it.first)->get_volume()));
     }
-}
-
-void Actor::make_slots() {
-    for (auto& it : body) {  //iterating through body
-        if (it.second->is_grasp())  //if grasp => adding pair to grasps map
-            grasps.insert(std::pair<std::string, Bodypart*>(it.first, it.second.get()));
-        else equipment.insert(std::pair<std::string, Bodypart*>(it.first, it.second.get()));  //else adding pair to equipment map
-    }
-}
-
-PAIRS<std::string, Bodypart*> Actor::find_slots(std::string slot) {
-    PAIRS<std::string, Bodypart*> slots;
-    if (slot == "Grasp") {  //if item graspable => return grasps map
-        for (auto& it : grasps)
-            slots.push_back(it);
-    } else {
-        for (auto& it : equipment) {
-            if (it.first.find(slot) != std::string::npos) {   //if slot is found
-                slots.push_back(it);
-            }
-        }
-    }
-    return slots;
-}
-
-Bodypart* Actor::find_less_loaded_bpart(PAIRS<std::string, Bodypart*> slots) {
-    if (slots.size() == 0)
-        return nullptr;
-    Bodypart* less_loaded = slots[0].second;
-    int min_items = slots[0].second->get_items_weight();
-    for (auto& it : slots) {
-        if (min_items == 0)
-            break;
-        if (it.second->get_items_weight() < min_items) {
-            min_items = it.second->get_items_weight();
-            less_loaded = it.second;
-        }
-    }
-    return less_loaded;
+    inventory = std::make_shared<Inventory>(body);
 }
 
 void Actor::feel_pain() {
@@ -252,13 +240,6 @@ std::vector<Coord> Actor::find_path_to(Coord pos) {
     return path;
 }
 
-void Actor::remove_weap(Weapon* weapon) {
-    auto it = weapons.begin();
-    while (*it != weapon)
-        it++;
-    weapons.erase(it);
-}
-
 //############### GETTERS ################
 
 std::string Actor::get_texture() const {
@@ -269,6 +250,22 @@ Coord Actor::get_pos() const {
     return pos;
 }
 
+Actor::Params Actor::get_params() const {
+    return params;
+}
+
+const Map*Actor::get_map() const {
+    return map;
+}
+
+const std::shared_ptr<Tile> Actor::get_tile() const {
+    return map->at(pos);
+}
+
+const std::shared_ptr<Inventory> Actor::get_inventory() const {
+    return inventory;
+}
+
 //################## SETTERS ################
 
 void Actor::set_pos(Coord pos) {
@@ -277,6 +274,10 @@ void Actor::set_pos(Coord pos) {
 
 void Actor::set_map(const Map* map) {
     this->map = map;
+}
+
+bool Actor::can_make_turn() const {
+    return params.action_points > 0;
 }
 
 //################# GAME LOGIC ###############
@@ -333,125 +334,28 @@ void Actor::equip_item(Item::ptr item) {
         return;// "lack_ap";
     }
 
-    //if item is grabbable
-    if ((item->get_type() != Item::armor)
-            && (item->get_type() != Item::wear_cont) ) {
-        if (grasps.empty())
-            return;
-        grab_item(std::move(item));
-        return;// "success";
-    }
-
-    //searching for slots to equip item
-    std::vector<std::string> needed_slots = item->get_slots();   //rquired slots
-    std::vector<Bodypart*> found_slots; //vector with found bodyparts, found_slots.size() must be equal to needed_slots.size()
-    for (auto& it : needed_slots) { //searching appropriate bodypart for each slot
-        PAIRS<std::string, Bodypart*> slots = find_slots(it);    //getting vector with appropriate bodyparts
-        if (slots.size() == 0) {  //if none appropriate slot => return
-            map->at(pos)->put_item(std::move(item));
-            return;// "no_slot";
-        }
-        Bodypart* bpart_slot = find_less_loaded_bpart(slots);
-        found_slots.push_back(bpart_slot);
-    }
-
-    for (auto& it : found_slots)
-        it->add_item(item);
-
-    if (item->get_type() == Item::wear_cont) {
-        containers.push_back(std::dynamic_pointer_cast<Container>(item));
-    }
-
-    return;// "success";
+    if (map)
+        inventory->equip_item(item, map->at(pos));
+    else inventory->equip_item(item, nullptr);
 }
 
 void Actor::grab_item(Item::ptr item) {
-    if (!item)
-        return;
-    Weapon* weap = nullptr;
-
-    if (item->get_type() == Item::weapon) {
-        weap = dynamic_cast<Weapon*>(item.get());
-        if ((weap->get_hold_type() == Weapon::two_handed) && (grasps.size() < 2))
-            return;
-
-    }
-    //grabbing with 1 grasp
-    bool is_equipped = false;
-    PAIRS<std::string, Bodypart*> slots = find_slots("Grasp");
-    Bodypart* bpart_slot = find_less_loaded_bpart(slots);
-
-    if (bpart_slot != nullptr) {
-        bpart_slot->grab_item(item);
-        is_equipped = true;
-    } else return;
-
-    //if no free grasp => first used
-    if (!is_equipped) {
-        auto it = grasps.begin();
-        for (auto& it_item : it->second->get_grabbed_items())
-            drop_item(Item::ptr(it_item));
-        it->second->grab_item(item);
-    }
-
-    //if needed => use 2nd grasp
-    if (    (item->get_type() == Item::weapon)
-            && (weap->get_hold_type() == Weapon::two_handed)) {
-        is_equipped = false;
-        auto it = ++grasps.begin();
-        it->second->grab_item(item);
-    }
-    if (item->get_type() == Item::weapon) {
-        weapons.push_back(weap);
-    }
+    if (map)
+        inventory->grab_item(item, map->at(pos));
+    else inventory->grab_item(item, nullptr);
 }
 
 void Actor::drop_item(Item::ptr item) {
     //removing specific properties
     params.curr_weight -= item->get_weight();
-    if (item->get_type() == Item::weapon)
-        remove_weap(dynamic_cast<Weapon*>(item.get()));
-    else if (item->get_type() == Item::wear_cont) {
-        auto it = containers.begin();
-        while (item != *it)
-            it++;
-        containers.erase(it);
-    }
-    //placing null at inventory slots
-    for (auto& it : item->get_slots()) {
-        auto it_object = equipment.find(it);
-        if (it_object != equipment.end()) {
-            equipment.at(it_object->first)->remove_item(item);
-        } else {
-            bool dropped = false;
-            for (auto& iter : grasps) {
-                for (auto& it_items : iter.second->get_grabbed_items()) {
-                    if (it_items == item) {
-                        iter.second->drop_item(item);
-                        dropped = true;
-                        break;
-                    }
-                }
-                if (dropped)
-                    break;
-            }
-            if (!dropped) { //if item wasn't found in grasps map => searching in containers
-                for (auto& contnr : containers) {
-                    for (auto& item_it : contnr->open_container()) { //searching item in contnr_it content
-                        if (item_it == item.get()) {
-                            contnr->remove_item(item_it);
-                            dropped = true;
-                            break;
-                        }
-                    }
-                    if (dropped)
-                        break;
-                }
-            }
-        }
-    }
+    if (map)
+        inventory->drop_item(item, map->at(pos));
+    else inventory->drop_item(item, nullptr);
     log_file << name << " has dropped " << item->get_name() << "." << std::endl;
-    map->at(pos)->put_item(std::move(item));
+}
+
+bool Actor::is_alive() const {
+    return params.curr_pain < params.pain_threshold;
 }
 
 void Actor::get_wound( int32_t& momentum
@@ -489,15 +393,7 @@ void Actor::get_wound( int32_t& momentum
 }
 
 void Actor::die() {
-    // possible bug here, item could be copied
-    for (auto& bpart : equipment) {
-        for (auto& item : bpart.second->get_items()) {
-            Map::curr_map->at(pos)->put_item(Item::ptr(new Item(*item)));
-        }
-    }
-    for (auto& bpart : grasps) {
-        for (auto& item : bpart.second->get_grabbed_items()) {
-            Map::curr_map->at(pos)->put_item(Item::ptr(new Item(*item)));
-        }
-    }
+    if (map)
+        inventory->drop_all(map->at(pos));
+    else inventory->drop_all(nullptr);
 }

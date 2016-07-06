@@ -25,7 +25,7 @@ class Label : public Widget {
         static int default_font_size;           /// default size of font
         static SDL_Color default_font_color;    /// default color of text in label
     public:
-        typedef std::unique_ptr<Label> ptr;
+        typedef std::shared_ptr<Label> ptr;
 
         //################ CONSTRUCTORS ###################
         /**
@@ -34,10 +34,11 @@ class Label : public Widget {
         Label();
         /**
          * @brief Label constructor creates label with passed text at passed position
+         * @param access_name -- name used for identification of element
          * @param text -- text inside label
          * @param form -- size and position of label
          */
-        Label(std::string text, SDL_Rect form);
+        Label(std::string access_name, std::string text, SDL_Rect form);
 
         //################## DESTRUCTOR #####################
         ~Label();

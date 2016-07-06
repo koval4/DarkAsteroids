@@ -73,12 +73,15 @@ class Slidebar : public Widget {
         Slidebar();
         /**
          * @brief Slidebar -- constuctor to set complete Slidebar
+         * @param access_name -- name used for identification of element
          * @param form -- size and position ofslidebar in pixels
          * @param lines_total -- how much lines represents full slidebar
          * @param lines_on_screen -- how much lines represents slider
          */
-        Slidebar(SDL_Rect form, uint16_t lines_total
-                 , uint16_t lines_on_screen);
+        Slidebar(std::string access_name,
+                 SDL_Rect form,
+                 uint16_t lines_total,
+                 uint16_t lines_on_screen);
 
         //################# DESTRUCTOR #############################
         ~Slidebar();

@@ -34,8 +34,8 @@ Listbox::List_Item::List_Item(Listbox* parent, std::string text, SDL_Rect form)
     , form(form)
     , margin(parent->item_margin)
     , listener(SDL_MOUSEBUTTONDOWN) {
-    text_txtr = Texture::ptr(new Texture(text, parent->items_font, parent->items_color, form.x + parent->item_margin.left, form.y + parent->item_margin.top));
-    background = Texture::ptr(new Texture(parent->item_background, form.x, form.y, form.w, form.h));
+    text_txtr = std::make_unique<Texture>(text, parent->items_font, parent->items_color, form.x + parent->item_margin.left, form.y + parent->item_margin.top);
+    background = std::make_unique<Texture>(parent->item_background, form.x, form.y, form.w, form.h);
 
     listener.set_handler([this, parent] (SDL_Event& event) -> void {
         //checking if click was inside list item
@@ -57,10 +57,10 @@ Listbox::List_Item::List_Item(Listbox* parent, std::string text, SDL_Rect form)
  * @brief Listbox::draw_items -- makes visible_items from items
  */
 void Listbox::draw_items() {
-    uint16_t max_items_visible = (form.h - margin.top - margin.bottom) / (item_height + spacing);
+    uint16_t max_items_visible = (form.h - padding.top - padding.bottom) / (item_height + spacing);
     visible_items.clear();
-    SDL_Rect item_form = {form.x + margin.left, form.y + margin.top
-                          , form.w - margin.left - margin.right
+    SDL_Rect item_form = {form.x + padding.left, form.y + padding.top
+                          , form.w - padding.left - padding.right
                           , item_height};
     for (uint16_t i = 0; i < max_items_visible && i < items.size(); i++) {
         visible_items.push_back(List_Item::ptr(new List_Item(this, items[i], item_form)));
@@ -80,12 +80,16 @@ Listbox::Listbox() : Widget() {}
 
 /**
 * @brief Listbox -- constructor for complete listbox construction without items
+* @param access_name -- name used for identification of element
 * @param form -- size and position of listbox
 * @param margin -- margins inside listbox, defaulted to no margins
 * @param items_color -- color used for items rendering, defaulted to black
 */
-Listbox::Listbox(SDL_Rect form, Padding margin, uint16_t item_height)
-    : Widget(default_back_txtr, form, margin)
+Listbox::Listbox(std::string access_name,
+                 SDL_Rect form,
+                 Padding margin,
+                 uint16_t item_height)
+    : Widget(access_name, default_back_txtr, form, margin)
     , pos(0)
     , item_height(item_height)
     , spacing(default_spacing)

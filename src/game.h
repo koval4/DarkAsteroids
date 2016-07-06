@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <list>
+#include <queue>
+#include <functional>
 #include "map.h"
 #include "actor.h"
 #include "actormanager.h"
@@ -17,8 +19,12 @@ class Game {
         bool running;
         Map::ptr map;
         ActorManager::ptr actor_manager;
-        Player::UI ui;
         std::list<Player::ptr> players;
+        Actor::ptr curr_actor;
+
+        void draw();
+        void handle_events();
+        void update();
 
     public:
         Game();

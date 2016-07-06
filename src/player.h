@@ -16,31 +16,8 @@ class Player : public Actor {
     public:
         typedef std::shared_ptr<Player> ptr;
 
-        struct UI {
-            Textbox::ptr output;        /// pointer to textbox used for output
-            Label::ptr ap_lbl;          /// label that shows ho much action points left
-            Panel::ptr weapon_panel;
-            Label::ptr weapon_info;
-            Label::ptr ammo_info;
-            Button::ptr next_weap;
-            Button::ptr prev_weap;
-            Button::ptr reload_btn;
-
-            UI();
-            UI( Textbox::ptr output
-              , Label::ptr ap_lbl
-              , Panel::ptr weapon_panel
-              , Label::ptr weapon_info
-              , Label::ptr ammo_info
-              , Button::ptr next_weap
-              , Button::ptr prev_weap
-              , Button::ptr reload_btn
-              );
-        };
-
     private:
         static bool* game_running;  /// pointer to game state
-        static UI* ui;
         Weapon* curr_weap;
 
         void update_ap_lbl();       /// updates ap label text
@@ -54,7 +31,6 @@ class Player : public Actor {
         Player();
 
         //############### SETTERS ################
-        static void set_player_gui(UI* ui);
         static void set_game_state(bool* running);
 
         //############## GAME LOGIC ################

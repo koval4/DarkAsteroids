@@ -24,15 +24,18 @@ Label::Label() : Widget() {
 
 /**
 * @brief Label constructor creates label with passed text at passed position
+* @param access_name -- name used for identification of element
 * @param text -- text inside label
 * @param form -- size and position of label
 */
-Label::Label(std::string text, SDL_Rect form)
-    : Widget("", form)
+Label::Label(std::string access_name,
+             std::string text,
+             SDL_Rect form)
+    : Widget(access_name, "", form)
     , text(text)
     , font_color(default_font_color) {
     font = TTF_OpenFont(default_font_path.c_str(), default_font_size);
-    txtr = Texture::ptr(new Texture(text, font, font_color, form.x, form.y));
+    txtr = std::make_unique<Texture>(text, font, font_color, form.x, form.y);
 }
 
 //###################### DESTRUCTOR ###########################
