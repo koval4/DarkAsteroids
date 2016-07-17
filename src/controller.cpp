@@ -1,11 +1,11 @@
 #include "controller.h"
 #include <memory>
 
-Controller::Controller(const EventHandler::ptr& handler,
-                       const std::shared_ptr<ActionQueue>& action_queue)
-    : handler(handler)
-    , action_queue(action_queue) {}
+Controller::Controller(const std::shared_ptr<ActionQueue>& action_queue)
+    : action_queue(action_queue) {}
 
-Controller::~Controller() {
+Controller::~Controller() {}
 
+void Controller::pull_actions() const {
+    handler.run();
 }

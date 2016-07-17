@@ -14,7 +14,6 @@ class ControllersManager {
     public:
 
     private:
-        EventHandler::ptr handler;
         std::unordered_map<std::type_index, Controller::ptr> controllers;
         const std::shared_ptr<ActionQueue> action_queue;
 
@@ -36,12 +35,15 @@ template<typename T, typename... Args>
 void ControllersManager::make_controller(Args&&... args) {
     // used for type constraint
     static_assert(std::is_base_of<Controller, T>::value, "T must be derived from Controller");
-    Controller::ptr controller = std::make_shared<T>(handler, action_queue, std::forward<Args>(args)...);
+    Controller::ptr controller = std::make_shared<T>(action_queue, std::forward<Args>(args)...);
+    controller->setup_ui();
+    controller->setup_handlers();
     controllers.emplace(typeid (T), controller);
 }
 template <typename T>
 void ControllersManager::remove_controller() {
-    controllers.erase(typeid (T));
+    controllers.at(typeid(T))->clear_ui();
+    controllers.erase(typeid(T));
 }
 
 #endif // CONTROLLERSMANAGER_H

@@ -30,22 +30,29 @@ Game::Game() {
     running = true;
 }
 
-void Game::draw() {
+void Game::make_turn(const std::shared_ptr<Actor> actor) {
+    actor->make_turn();
+    auto player = std::dynamic_pointer_cast<Player>(actor);
+    if (player) {
+        ControllersManager::inst().make_controller<PlayerController>(player, &running);
+        while (actor->can_make_turn() && running) {
+            handle_events();
+            draw(actor);
+            update();
+        }
+        ControllersManager::inst().remove_controller<PlayerController>();
+    }
+}
+
+void Game::draw(const std::shared_ptr<Actor> actor) {
     GUI::inst().update();
-    if (std::dynamic_pointer_cast<Player>(curr_actor)) {
-        MapDrawer {}.draw_map(map->at(curr_actor->get_pos()));
+    if (std::dynamic_pointer_cast<Player>(actor)) {
+        MapDrawer {} .draw_map(map->at(actor->get_pos()));
     }
 }
 
 void Game::handle_events() {
-    auto player = std::dynamic_pointer_cast<Player>(curr_actor);
-    if (player) {
-        ControllersManager::inst().make_controller<PlayerController>(player);
-    }
     ControllersManager::inst().pull_actions();
-    if (player) {
-        ControllersManager::inst().remove_controller<PlayerController>();
-    }
 }
 
 void Game::update() {
@@ -55,10 +62,7 @@ void Game::update() {
         action_queue->front()();
         action_queue->pop();
     }
-    if (!curr_actor->can_make_turn())
-        actor_manager->end_turn();
     actor_manager->check_alive();
-    curr_actor->make_turn();
 }
 
 void Game::Init() {
@@ -156,10 +160,11 @@ void Game::Execute() {
 }
 
 void Game::Loop() {
-    curr_actor = actor_manager->get_curr_actor();
-    handle_events();
-    draw();
-    update();
+    for (const auto& actor : actor_manager->get_actors()) {
+        make_turn(actor);
+        if (!running)
+            return;
+    }
 }
 
 void Game::Clean_up() {

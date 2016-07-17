@@ -25,15 +25,15 @@ class InventoryController : public Controller {
         Button::ptr drop_btn;
         Button::ptr done_btn;
 
-        virtual void setup_ui() override;
-        virtual void clear_ui() const override;
-
-   public:
+    public:
         InventoryController(
-                const EventHandler::ptr& handler,
-                const std::shared_ptr<ActionQueue>& action_queue,
-                const Player::ptr player);
+            const std::shared_ptr<ActionQueue>& action_queue,
+            const Player::ptr player);
         ~InventoryController();
+
+        virtual void setup_ui() override;
+        virtual void setup_handlers() override;
+        virtual void clear_ui() const override;
 };
 
 #endif // INVENTORYCONTROLLER_H

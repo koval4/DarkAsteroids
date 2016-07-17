@@ -13,13 +13,38 @@
 #include "player.h"
 
 InventoryController::InventoryController(
-        const EventHandler::ptr& handler,
-        const std::shared_ptr<ActionQueue>& action_queue,
-        const Player::ptr player)
-    : Controller (handler, action_queue)
-    , player(player) {
-    setup_ui();
+    const std::shared_ptr<ActionQueue>& action_queue,
+    const Player::ptr player)
+    : Controller (action_queue)
+    , player(player) {}
 
+InventoryController::~InventoryController() {}
+
+void InventoryController::setup_ui() {
+    SDL_Rect panel_form = {100, 100, 600, 400};
+    Padding big_padding = {5};
+    panel = GUI::inst().make_widget<Panel>("inventory_panel", panel_form, big_padding);
+
+    SDL_Rect items_list_form = {105, 105, 290, 390};
+    items_list = GUI::inst().make_widget<Listbox>("items_list", items_list_form);
+
+    SDL_Rect item_descr_form = {105, 105, 290, 390};
+    item_descr = GUI::inst().make_widget<Textbox>("item_descr", item_descr_form, big_padding, true);
+
+    Padding small_padding = {3};
+    SDL_Rect drop_btn_form = {500, 410, 100, 30};
+    drop_btn = GUI::inst().make_widget<Button>("drop_btn", "Drop it", drop_btn_form, small_padding);
+
+    SDL_Rect done_btn_form = {500, 465, 100, 30};
+    done_btn = GUI::inst().make_widget<Button>("done_btn", "Done", done_btn_form, small_padding);
+
+    panel->set_widgets({ items_list, item_descr, drop_btn, done_btn });
+
+    for (auto& item : player->get_inventory().list_items())
+        items_list->add_item(item.first + " : " + item.second);
+}
+
+void InventoryController::setup_handlers() {
     items_list->on_item_clicked([this] (std::string clicked_item) -> void {
         add_action([this, clicked_item] (void) -> void {
             selected_str = clicked_item;
@@ -47,36 +72,7 @@ InventoryController::InventoryController(
         });
     });
 
-    handler->listen(*panel);
-}
-
-InventoryController::~InventoryController() {
-    clear_ui();
-}
-
-void InventoryController::setup_ui() {
-    SDL_Rect panel_form = {100, 100, 600, 400};
-    Padding big_padding = {5};
-    panel = GUI::inst().make_widget<Panel>("inventory_panel", panel_form, big_padding);
-
-    SDL_Rect items_list_form = {105, 105, 290, 390};
-    items_list = GUI::inst().make_widget<Listbox>("items_list", items_list_form);
-
-    SDL_Rect item_descr_form = {105, 105, 290, 390};
-     item_descr = GUI::inst().make_widget<Textbox>("item_descr", item_descr_form, big_padding, true);
-
-    Padding small_padding = {3};
-    SDL_Rect drop_btn_form = {500, 410, 100, 30};
-    drop_btn = GUI::inst().make_widget<Button>("drop_btn", "Drop it", drop_btn_form, small_padding);
-
-    SDL_Rect done_btn_form = {500, 465, 100, 30};
-    done_btn = GUI::inst().make_widget<Button>("done_btn", "Done", done_btn_form, small_padding);
-
-    panel->set_widgets({ items_list, item_descr, drop_btn, done_btn });
-
-    for (auto& item : player->get_inventory().list_items()) {
-        items_list->add_item(item.first + " : " + item.second);
-    }
+    handler.listen(*panel);
 }
 
 void InventoryController::clear_ui() const {

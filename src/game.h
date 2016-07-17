@@ -22,7 +22,8 @@ class Game {
         std::list<Player::ptr> players;
         Actor::ptr curr_actor;
 
-        void draw();
+        void make_turn(const std::shared_ptr<Actor> actor);
+        void draw(const std::shared_ptr<Actor> actor);
         void handle_events();
         void update();
 

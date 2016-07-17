@@ -13,19 +13,20 @@ class Controller {
         using ptr = std::shared_ptr<Controller>;
 
     protected:
-        const EventHandler::ptr handler;
+        EventHandler handler;
         const std::shared_ptr<ActionQueue> action_queue;
 
         template<typename T>
         void add_action(T action);
-        virtual void setup_ui() = 0;
-        virtual void clear_ui() const = 0;
 
     public:
-        Controller(
-                const EventHandler::ptr& handler,
-                const std::shared_ptr<ActionQueue>& action_queue);
+        Controller(const std::shared_ptr<ActionQueue>& action_queue);
         virtual ~Controller();
+
+        virtual void setup_ui() = 0;
+        virtual void setup_handlers() = 0;
+        virtual void clear_ui() const = 0;
+        void pull_actions() const;
 };
 
 template <typename T>

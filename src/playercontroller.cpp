@@ -10,19 +10,48 @@
 #include "tile.h"
 #include "map.h"
 #include "inventorycontroller.h"
+#include "pickitemcontroller.h"
 
 PlayerController::PlayerController(
-        const EventHandler::ptr& handler,
-        const std::shared_ptr<ActionQueue>& action_queue,
-        const Player::ptr& player)
-    : Controller(handler, action_queue)
-    , player(player) {
+    const std::shared_ptr<ActionQueue>& action_queue,
+    const Player::ptr& player,
+    bool* game_state)
+    : Controller(action_queue)
+    , player(player)
+    , game_state(game_state) {
     keyboard_listener = std::make_shared<Listener>(SDL_KEYDOWN);
     mouse_listener = std::make_shared<Listener>(SDL_MOUSEBUTTONDOWN);
 
     update_ap_lbl();
 
-    keyboard_listener->set_handler([this, player] (SDL_Event& event) -> void {
+}
+
+PlayerController::~PlayerController() {}
+
+void PlayerController::show_inventory() const {
+    ControllersManager::inst().make_controller<InventoryController>(player);
+}
+
+void PlayerController::pick_item() const {
+    ControllersManager::inst().make_controller<PickItemController>(
+        player,
+        player->get_map()->at(player->get_pos())
+    );
+}
+
+void PlayerController::update_ap_lbl() {
+    auto ap_lbl = GUI::inst().get_widget<Label>("ap_lbl");
+    ap_lbl->set_text(
+        std::to_string(player->get_params().action_points) + "/" + std::to_string(player->get_params().max_ap)
+    );
+}
+
+void PlayerController::setup_ui() {
+
+}
+
+void PlayerController::setup_handlers() {
+    keyboard_listener->set_handler([this] (SDL_Event & event) -> void {
         auto pos = player->get_pos();
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
@@ -30,9 +59,14 @@ PlayerController::PlayerController(
                 break;
             case SDLK_ESCAPE:
                 // show_menu()
+                add_action([this] (void) -> void {
+                    *game_state = false;
+                });
                 break;
             case SDLK_g:
-                // pick_item();
+                add_action([this] (void) -> void {
+                    pick_item();
+                });
                 break;
             case SDLK_i:
                 add_action([this] (void) -> void {
@@ -40,22 +74,22 @@ PlayerController::PlayerController(
                 });
                 break;
             case SDLK_UP:
-                add_action([player, pos] () -> void {
+                add_action([this, pos] () -> void {
                     player->move_to({pos.x, static_cast<uint8_t>(pos.y - 1) });
                 });
                 break;
             case SDLK_DOWN:
-                add_action([player, pos] () -> void {
+                add_action([this, pos] () -> void {
                     player->move_to({pos.x, static_cast<uint8_t>(pos.y + 1)});
                 });
                 break;
             case SDLK_LEFT:
-                add_action([player, pos] () -> void {
+                add_action([this, pos] () -> void {
                     player->move_to({static_cast<uint8_t>(pos.x - 1), pos.y});
                 });
                 break;
             case SDLK_RIGHT:
-                add_action([player, pos] () -> void {
+                add_action([this, pos] () -> void {
                     player->move_to({static_cast<uint8_t>(pos.x + 1), pos.y});
                 });
                 break;
@@ -64,7 +98,7 @@ PlayerController::PlayerController(
         }
     });
 
-    mouse_listener->set_handler([this, player] (SDL_Event& event) -> void {
+    mouse_listener->set_handler([this] (SDL_Event & event) -> void {
         auto tiles_hor = Screen::inst().get_width() / Tile::size;
         auto tiles_vert = Screen::inst().get_height() / Tile::size;
         // calculating position on map that has been clicked
@@ -81,32 +115,8 @@ PlayerController::PlayerController(
         } else player->move_to(mpos);
     });
 
-    handler->listen(keyboard_listener.get());
-    handler->listen(mouse_listener.get());
-}
-
-PlayerController::~PlayerController() {
-    handler->unlisten(keyboard_listener.get());
-    handler->unlisten(mouse_listener.get());
-}
-
-void PlayerController::show_inventory() const {
-    ControllersManager::inst().make_controller<InventoryController>(player);
-}
-
-void PlayerController::pick_item() const {
-
-}
-
-void PlayerController::update_ap_lbl() {
-    auto ap_lbl = GUI::inst().get_widget<Label>("ap_lbl");
-    ap_lbl->set_text(
-        std::to_string(player->get_params().action_points) + "/" + std::to_string(player->get_params().max_ap)
-    );
-}
-
-void PlayerController::setup_ui() {
-
+    handler.listen(keyboard_listener.get());
+    handler.listen(mouse_listener.get());
 }
 
 void PlayerController::clear_ui() const {

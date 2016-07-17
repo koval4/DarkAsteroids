@@ -77,13 +77,13 @@ Item::ptr Tile::take_item(Item::ptr& item) {
     auto it = items.begin();
     while (it != items.end()) {
         if (*it == item) {
-            Item::ptr itm = std::move(*it);
+            Item::ptr itm = *it;
             items.erase(it);
             return itm;
         }
         it++;
     }
-    return Item::ptr(nullptr);
+    return nullptr;
 }
 
 void Tile::put_item(Item::ptr item) {

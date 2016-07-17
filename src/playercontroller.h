@@ -12,6 +12,7 @@
 class PlayerController : public Controller {
     private:
         const Player::ptr player;
+        bool* game_state;
         Listener::ptr keyboard_listener;
         Listener::ptr mouse_listener;
 
@@ -19,16 +20,19 @@ class PlayerController : public Controller {
         void pick_item() const;
 
         void update_ap_lbl();       /// updates ap label text
-        virtual void setup_ui() override;
-        virtual void clear_ui() const override;
 
     public:
         using ptr = std::shared_ptr<PlayerController>;
 
-        PlayerController(const EventHandler::ptr& handler,
-                         const std::shared_ptr<ActionQueue>& action_queue,
-                         const Player::ptr& player);
+        PlayerController(
+            const std::shared_ptr<ActionQueue>& action_queue,
+            const Player::ptr& player,
+            bool* game_state);
         ~PlayerController();
+
+        virtual void setup_ui() override;
+        virtual void setup_handlers() override;
+        virtual void clear_ui() const override;
 };
 
 #endif // PLAYERCONTROLLER_H
