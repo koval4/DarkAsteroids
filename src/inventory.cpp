@@ -26,9 +26,8 @@ PAIRS<std::string, Bodypart*> Inventory::find_slots(std::string slot) {
             slots.push_back(it);
     } else {
         for (auto& it : equipment) {
-            if (it.first.find(slot) != std::string::npos) {   //if slot is found
+            if (it.first.find(slot) != std::string::npos)     //if slot is found
                 slots.push_back(it);
-            }
         }
     }
     return slots;
@@ -50,13 +49,17 @@ Bodypart* Inventory::find_less_loaded_bpart(PAIRS<std::string, Bodypart*> slots)
     return less_loaded;
 }
 
+void Inventory::add_weapon(const std::shared_ptr<Weapon> weapon) {
+    weapons.push_back(weapon);
+    current_weapon = weapons.end() - 1;
+}
+
 void Inventory::remove_weap(const std::shared_ptr<Weapon> weapon) {
-    auto it = weapons.begin();
-    while (it != weapons.end()) {
+    for (auto it = weapons.begin(); it != weapons.end(); it++)
         if (*it == weapon)
             weapons.erase(it);
-        else it++;
-    }
+    if (*current_weapon == weapon)
+        switch_to_next_weapon();
 }
 
 const Item::ptr Inventory::get_item_by_name(std::string slot, std::string name) const {
@@ -114,9 +117,12 @@ void Inventory::equip_item(Item::ptr item, const std::shared_ptr<Tile> tile) {
     for (auto& it : found_slots)
         it->add_item(item);
 
-    if (item->get_type() == Item::wear_cont) {
+    if (item->get_type() == Item::wear_cont)
         containers.push_back(std::dynamic_pointer_cast<Container>(item));
-    }
+}
+
+const std::shared_ptr<Weapon> Inventory::get_current_weapon() const {
+    return *current_weapon;
 }
 
 void Inventory::grab_item(Item::ptr item, const Tile::ptr tile) {
@@ -154,7 +160,7 @@ void Inventory::grab_item(Item::ptr item, const Tile::ptr tile) {
         it->second->grab_item(item);
     }
     if (item->get_type() == Item::weapon) {
-        weapons.push_back(weap);
+        add_weapon(weap);
     }
 }
 
@@ -171,9 +177,9 @@ void Inventory::drop_item(Item::ptr item, const Tile::ptr tile) {
     //placing null at inventory slots
     for (auto& it : item->get_slots()) {
         auto it_object = equipment.find(it);
-        if (it_object != equipment.end()) {
+        if (it_object != equipment.end())
             equipment.at(it_object->first)->remove_item(item);
-        } else {
+        else {
             bool dropped = false;
             for (auto& iter : grasps) {
                 for (auto& it_items : iter.second->get_grabbed_items()) {
@@ -209,13 +215,31 @@ void Inventory::drop_item(Item::ptr item, const Tile::ptr tile) {
 void Inventory::drop_all(const Tile::ptr tile) {
     // possible bug here, item could be copied
     for (auto& bpart : equipment) {
-        for (auto& item : bpart.second->get_items()) {
+        for (auto& item : bpart.second->get_items())
             tile->put_item(Item::ptr(new Item(*item)));
-        }
     }
     for (auto& bpart : grasps) {
-        for (auto& item : bpart.second->get_grabbed_items()) {
+        for (auto& item : bpart.second->get_grabbed_items())
             tile->put_item(Item::ptr(new Item(*item)));
-        }
     }
+}
+
+void Inventory::switch_to_next_weapon() {
+    if (weapons.empty()) {
+        current_weapon = weapons.end();
+        return;
+    }
+    if (current_weapon + 1 == weapons.end())
+        current_weapon = weapons.begin();
+    else current_weapon++;
+}
+
+void Inventory::switch_to_prev_weapon() {
+    if (weapons.empty()) {
+        current_weapon = weapons.end();
+        return;
+    }
+    if (current_weapon == weapons.begin())
+        current_weapon = weapons.end() - 1;
+    else current_weapon--;
 }

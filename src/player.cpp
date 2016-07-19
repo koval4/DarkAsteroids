@@ -81,30 +81,6 @@ std::shared_ptr<Player> Player::generate() {
     return player;
 }
 
-void Player::switch_to_next_weapon() {
-//    auto weap_it = std::find(weapons.begin(), weapons.end(), curr_weap);
-//    if (weap_it == weapons.end())
-//        curr_weap = *weapons.begin();
-//    else if (weap_it + 1 != weapons.end()) {
-//        weap_it++;
-//        curr_weap = *weap_it;
-//    } else curr_weap = nullptr;
-//    update_weap_info();
-}
-
-void Player::switch_to_prev_weapon() {
-//    auto weap_it = std::find(weapons.begin(), weapons.end(), curr_weap);
-//    if (weap_it == weapons.end())
-//        curr_weap = *weapons.begin();
-//    else if (weap_it == weapons.begin())
-//        curr_weap = nullptr;
-//    else {
-//        weap_it--;
-//        curr_weap = *weap_it;
-//    }
-//    update_weap_info();
-}
-
 void Player::reload_weapon() {
 //    // searching in inventory for ammo
 //    for (auto& container : containers) {
@@ -139,15 +115,6 @@ void Player::reload_weapon() {
 
 void Player::make_turn() {
     params.action_points = params.max_ap;
-    bool done = false;
-    MapDrawer map_drawer;
-    auto move_action = [this, &map_drawer] (Coord new_pos) {
-        move_to(new_pos);
-        update_ap_lbl();
-        map_drawer.draw_map(map->at(pos));
-    };
-
-    map_drawer.draw_map(map->at(pos));
     update_ap_lbl();
     // current weapon is the first available
 //    if (curr_weap == nullptr && !weapons.empty())
@@ -157,8 +124,8 @@ void Player::make_turn() {
     auto next_weap = GUI::inst().get_widget<Button>("next_weap");
     auto prev_weap = GUI::inst().get_widget<Button>("prev_weap");
     auto reload_btn = GUI::inst().get_widget<Button>("reload_btn");
-    next_weap->on_click(std::bind(&Player::switch_to_next_weapon, this));
-    prev_weap->on_click(std::bind(&Player::switch_to_prev_weapon, this));
+//    next_weap->on_click(std::bind(&Player::switch_to_next_weapon, this));
+//    prev_weap->on_click(std::bind(&Player::switch_to_prev_weapon, this));
     reload_btn->on_click(std::bind(&Player::reload_weapon, this));
 }
 

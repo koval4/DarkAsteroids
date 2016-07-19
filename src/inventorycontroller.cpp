@@ -28,7 +28,7 @@ void InventoryController::setup_ui() {
     SDL_Rect items_list_form = {105, 105, 290, 390};
     items_list = GUI::inst().make_widget<Listbox>("items_list", items_list_form);
 
-    SDL_Rect item_descr_form = {105, 105, 290, 390};
+    SDL_Rect item_descr_form = {405, 105, 290, 390};
     item_descr = GUI::inst().make_widget<Textbox>("item_descr", item_descr_form, big_padding, true);
 
     Padding small_padding = {3};

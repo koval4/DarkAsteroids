@@ -14,6 +14,7 @@
 /// forward declaration of Map class
 class Map;
 class Tile;
+class Attack;
 
 /**
  * @brief The Actor class describes game logic of characters
@@ -72,6 +73,8 @@ class Actor {
         Skills skills;              ///
         Race race;                  ///
         Body body;                  /// container with bodyparts of this actor
+
+        bool making_turn;
 
         Inventory inventory;
 
@@ -143,6 +146,10 @@ class Actor {
                       );
         bool is_alive() const;
         void die();
+        std::vector<std::shared_ptr<Attack>> get_available_attacks() const;
+        void start_turn();
+        void end_turn();
+        void decrease_action_points(uint16_t value);
 
         //############ INVENTORY ################
         /**
@@ -160,6 +167,7 @@ class Actor {
          * @param item      -- item that will be removed from inventory
          */
         void drop_item(Item::ptr item);
+        const std::shared_ptr<Weapon> get_current_weapon() const;
 };
 
 #endif // ACTOR_H

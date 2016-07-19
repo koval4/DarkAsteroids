@@ -31,6 +31,7 @@ Game::Game() {
 }
 
 void Game::make_turn(const std::shared_ptr<Actor> actor) {
+    actor->start_turn();
     actor->make_turn();
     auto player = std::dynamic_pointer_cast<Player>(actor);
     if (player) {
@@ -42,6 +43,7 @@ void Game::make_turn(const std::shared_ptr<Actor> actor) {
         }
         ControllersManager::inst().remove_controller<PlayerController>();
     }
+    actor->end_turn();
 }
 
 void Game::draw(const std::shared_ptr<Actor> actor) {

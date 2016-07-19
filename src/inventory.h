@@ -24,6 +24,7 @@ class Inventory {
         std::unordered_map<std::string, Bodypart*> grasps;      /// here actor holds weapon, items etc.
         std::vector<Weapon::ptr> weapons;                           /// currently equipped weapons
         std::vector<Container::ptr> containers;                     /// currently equipped containers
+        decltype(weapons)::iterator current_weapon;
 
         /**
          * @brief find_slots -- searches specific bodyparts by part of a name
@@ -37,6 +38,7 @@ class Inventory {
          * @return                       -- bodypart with minimal equipment weight
          */
         Bodypart* find_less_loaded_bpart(PAIRS<std::string, Bodypart*> slots);
+        void add_weapon(const std::shared_ptr<Weapon> weapon);
         void remove_weap(const std::shared_ptr<Weapon> weapon);
 
     public:
@@ -61,6 +63,10 @@ class Inventory {
          */
         void drop_item(Item::ptr item, const std::shared_ptr<Tile> tile);
         void drop_all(const std::shared_ptr<Tile> tile);
+
+        const std::shared_ptr<Weapon> get_current_weapon() const;
+        void switch_to_next_weapon();
+        void switch_to_prev_weapon();
 };
 
 #endif // INVENTORY_H

@@ -11,6 +11,7 @@
 #include "map.h"
 #include "inventorycontroller.h"
 #include "pickitemcontroller.h"
+#include "attackcontroller.h"
 
 PlayerController::PlayerController(
     const std::shared_ptr<ActionQueue>& action_queue,
@@ -21,9 +22,6 @@ PlayerController::PlayerController(
     , game_state(game_state) {
     keyboard_listener = std::make_shared<Listener>(SDL_KEYDOWN);
     mouse_listener = std::make_shared<Listener>(SDL_MOUSEBUTTONDOWN);
-
-    update_ap_lbl();
-
 }
 
 PlayerController::~PlayerController() {}
@@ -47,7 +45,7 @@ void PlayerController::update_ap_lbl() {
 }
 
 void PlayerController::setup_ui() {
-
+    update_ap_lbl();
 }
 
 void PlayerController::setup_handlers() {
@@ -55,7 +53,9 @@ void PlayerController::setup_handlers() {
         auto pos = player->get_pos();
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
-                // player->end_turn();
+                add_action([this] (void) -> void {
+                    player->end_turn();
+                });
                 break;
             case SDLK_ESCAPE:
                 // show_menu()
@@ -111,7 +111,9 @@ void PlayerController::setup_handlers() {
 
         auto actor_at_mpos = player->get_map()->at(mpos)->get_actor();
         if (actor_at_mpos && actor_at_mpos != player) {
-
+            add_action([this, actor_at_mpos] (void) -> void {
+                ControllersManager::inst().make_controller<AttackController>(player, actor_at_mpos);
+            });
         } else player->move_to(mpos);
     });
 

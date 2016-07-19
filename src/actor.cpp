@@ -9,6 +9,7 @@
 #include "map.h"
 #include "data.h"
 #include "weapon.h"
+#include "attack.h"
 #include "inventory.h"
 
 //############## STATIC VARIABLES ##############
@@ -66,9 +67,9 @@ Actor::Actor(std::string texture,
     , skills(skills)
     , race(race)
     , body(race, params.max_weight)
+    , making_turn(false)
     , inventory(body)
-    , map(map) {
-}
+    , map(map) {}
 
 Actor::Actor(const Actor& obj)
     : pos(obj.pos)
@@ -81,6 +82,7 @@ Actor::Actor(const Actor& obj)
     , skills(obj.skills)
     , race(obj.race)
     , body(obj.body)
+    , making_turn(obj.making_turn)
     , inventory(obj.inventory)
     , map(obj.map) {}
 
@@ -178,7 +180,7 @@ void Actor::set_map(const Map* map) {
 }
 
 bool Actor::can_make_turn() const {
-    return params.action_points > 0;
+    return params.action_points > 0 && making_turn;
 }
 
 //################# GAME LOGIC ###############
@@ -255,6 +257,10 @@ void Actor::drop_item(Item::ptr item) {
     log_file << name << " has dropped " << item->get_name() << "." << std::endl;
 }
 
+const std::shared_ptr<Weapon> Actor::get_current_weapon() const {
+    return inventory.get_current_weapon();
+}
+
 bool Actor::is_alive() const {
     return params.curr_pain < params.pain_threshold;
 }
@@ -294,4 +300,26 @@ void Actor::die() {
         inventory.drop_all(map->at(pos));
         map->at(pos)->remove_actor();
     } else inventory.drop_all(nullptr);
+}
+
+std::vector<std::shared_ptr<Attack>> Actor::get_available_attacks() const {
+    std::vector<std::shared_ptr<Attack>> available_attacks;
+    available_attacks.reserve(10);
+    for (const auto& attack : inventory.get_current_weapon()->get_available_attacks()) {
+        if (attack->get_cost() <= params.action_points)
+            available_attacks.push_back(attack);
+    }
+    return available_attacks;
+}
+
+void Actor::start_turn() {
+    making_turn = true;
+}
+
+void Actor::end_turn() {
+    making_turn = false;
+}
+
+void Actor::decrease_action_points(uint16_t value) {
+    params.action_points -= value;
 }

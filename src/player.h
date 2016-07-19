@@ -23,8 +23,6 @@ class Player : public Actor {
         void update_ap_lbl();       /// updates ap label text
         void update_weap_info();    /// updates labels in weapon_panel
 
-        void switch_to_next_weapon();
-        void switch_to_prev_weapon();
         void reload_weapon();
 
     public:
