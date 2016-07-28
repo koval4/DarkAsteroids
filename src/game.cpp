@@ -18,6 +18,7 @@
 #include "actor.h"
 #include "actormanager.h"
 #include "player.h"
+#include "npcprototype.h"
 #include "npc.h"
 #include "item.h"
 #include "bodypart.h"
@@ -101,7 +102,7 @@ void Game::Init() {
     Armor::read_armor_txt();
     Container::read_containers_txt();
     Race::read_races_txt();
-    NPC::read_npc_txt();
+    NPCPrototype::read_from_file("npc.txt");
 }
 
 void Game::Execute() {

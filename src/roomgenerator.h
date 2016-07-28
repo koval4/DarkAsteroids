@@ -19,7 +19,6 @@ class RoomGenerator {
         const ActorManager::ptr actor_manager;
 
         void put_items();
-        void place_npc();
 
     public:
         RoomGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager);

@@ -34,6 +34,9 @@ class DungeonGenerator {
         void connect_areas(uint8_t connection_chance);
         void remove_deadends();
 
+        void place_npc(uint8_t quantity, uint8_t min_squad_size, uint8_t max_squad_size);
+        void place_actors(std::vector<std::shared_ptr<Actor>>&& actors, Rectangle area) const;
+
     public:
         DungeonGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager);
 

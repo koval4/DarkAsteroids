@@ -8,6 +8,8 @@
 #include "map.h"
 #include "room.h"
 #include "roomgenerator.h"
+#include "npc.h"
+#include "npcfactory.h"
 
 DungeonGenerator::DungeonGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager)
     : map(map)
@@ -111,14 +113,20 @@ void DungeonGenerator::make_rooms(uint16_t attempts, uint8_t min_size, uint8_t m
         // statatic casts just to silence -Wc++11-narrowing issue
         uint8_t width = rand()%max_size + min_size;
         uint8_t height = rand()%max_size + min_size;
-        room_square.first = { static_cast<uint8_t>( 1 + rand()%(map->get_width() - width - 1)),
-                              static_cast<uint8_t>( 1 + rand()%(map->get_height() - height - 1))
-                            };
-        room_square.last = { static_cast<uint8_t>(room_square.first.x + width),
-                             static_cast<uint8_t>(room_square.first.y + height)
-                           };
+        room_square.first = {
+            static_cast<uint8_t>( 1 + rand()%(map->get_width() - width - 1)),
+            static_cast<uint8_t>( 1 + rand()%(map->get_height() - height - 1))
+        };
+        room_square.last = {
+            static_cast<uint8_t>(room_square.first.x + width),
+            static_cast<uint8_t>(room_square.first.y + height)
+        };
 
-        if (is_overlapping_rooms(room_square))
+        Rectangle check_rect = {
+            {static_cast<uint8_t>(room_square.first.x - 1), static_cast<uint8_t>(room_square.first.y - 1)},
+            {static_cast<uint8_t>(room_square.last.x + 1), static_cast<uint8_t>(room_square.last.y + 1)}
+        };
+        if (is_overlapping_rooms(check_rect))
             continue;
 
         rooms.push_back(room_square);
@@ -174,6 +182,7 @@ void DungeonGenerator::connect_areas(uint8_t connection_chance) {
         auto second_area = find_area(connector.adjacent[1]);
         // if areas different => zettai merging
         // else merging with chance
+        // if both areas rooms => connect it
         if (first_area != second_area) {
             // make passable
             connector.tile->set_passable(true);
@@ -218,11 +227,58 @@ void DungeonGenerator::remove_deadends() {
     }
 }
 
+void DungeonGenerator::place_npc(uint8_t quantity, uint8_t min_squad_size, uint8_t max_squad_size) {
+    NPCFactory factory {actor_manager};
+    std::string type = "Pirate";
+    // getting random starting room
+    auto room = rooms[rand()%rooms.size()];
+    // until quantity == 0
+    do {
+        // in each adjacent room place npc squad
+        auto squad_size = min_squad_size + (rand() % (max_squad_size - min_squad_size));
+        std::vector<std::shared_ptr<NPC>> squad = factory.get_squad(type, squad_size);
+        place_actors({begin(squad), end(squad)}, room);
+        quantity -= squad_size;
+        // choose next room from adjacent to last selected
+        room = rooms[rand()%rooms.size()];
+    } while (quantity > 0);
+}
+
+void DungeonGenerator::place_actors(std::vector<std::shared_ptr<Actor>>&& actors, Rectangle area) const {
+    // forming square with actors
+    uint8_t placement_width = ceil(sqrt(actors.size()));
+    Coord placement_start = {
+        static_cast<uint8_t>(area.first.x + rand()% (area.get_width() - placement_width)),
+        static_cast<uint8_t>(area.first.y + rand()% (area.get_height() - placement_width))
+    };
+    Rectangle placement = {
+        placement_start, {
+            static_cast<uint8_t>(placement_start.x + placement_width),
+            static_cast<uint8_t>(placement_start.y + placement_width)
+        }
+    };
+
+    // placing each actor
+    for (uint8_t i = placement.first.x; i <= placement.last.x; i++) {
+        for (uint8_t j = placement.first.y; j <= placement.last.y; j++) {
+            // if all actors placed => return
+            if (actors.empty())
+                return;
+            auto actor = *actors.begin();
+            // TODO: add check if actor can be placed on this tile
+            // if actor cannot be placed => search for tile where he could be placed
+            actor_manager->place_at({i, j}, actor);
+            actors.erase(actors.begin());
+        }
+    }
+}
+
 void DungeonGenerator::generate() {
-    make_rooms(30, 5, 7);
+    make_rooms(30, 3, 5);
     make_maze();
     connect_areas(5);
     remove_deadends();
+    place_npc(30, 3, 6);
 }
 
 void DungeonGenerator::place_players(std::list<Player::ptr> players) {
@@ -239,28 +295,5 @@ void DungeonGenerator::place_players(std::list<Player::ptr> players) {
                     counter++;
     } while (counter < players.size());
 
-    // forming rectangle with players
-    uint8_t placement_width = ceil(sqrt(players.size()));
-    Coord placement_start = { static_cast<uint8_t>(room.first.x + rand()% (room.get_width() - placement_width))
-                              , static_cast<uint8_t>(room.first.y + rand()% (room.get_height() - placement_width))
-                            };
-    Rectangle placement = { placement_start
-                            , { static_cast<uint8_t>(placement_start.x + placement_width)
-                                , static_cast<uint8_t>(placement_start.y + placement_width)
-                              }
-                          };
-
-    // placing each player
-    for (uint8_t i = placement.first.x; i <= placement.last.x; i++) {
-        for (uint8_t j = placement.first.y; j <= placement.last.y; j++) {
-            // if all players placed => return
-            if (players.empty())
-                return;
-            auto player = *players.begin();
-            // TODO: add check if player can be placed on this tile
-            // if player cannot be placed => search for tile where he could be placed
-            actor_manager->place_at({i, j}, std::dynamic_pointer_cast<Actor>(player));
-            players.erase(players.begin());
-        }
-    }
+    place_actors({begin(players), end(players)}, room);
 }

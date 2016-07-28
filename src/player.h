@@ -18,7 +18,6 @@ class Player : public Actor {
 
     private:
         static bool* game_running;  /// pointer to game state
-        Weapon* curr_weap;
 
         void update_ap_lbl();       /// updates ap label text
         void update_weap_info();    /// updates labels in weapon_panel
@@ -26,12 +25,14 @@ class Player : public Actor {
         void reload_weapon();
 
     public:
-        Player(std::string texture,
-               std::string name,
-               std::string description,
-               Params params,
-               Skills skills,
-               Race race);
+        Player(
+            std::string texture,
+            std::string name,
+            std::string description,
+            Params params,
+            Skills skills,
+            Race race
+        );
 
         //############### SETTERS ################
         static void set_game_state(bool* running);

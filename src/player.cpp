@@ -28,8 +28,7 @@ Player::Player(
         Params params,
         Skills skills,
         Race race)
-    : Actor(texture, name, description, params, skills, race)
-    , curr_weap(nullptr) {}
+    : Actor(texture, name, description, params, skills, race) {}
 
 void Player::update_ap_lbl() {
     auto ap_lbl = GUI::inst().get_widget("ap_lbl");
@@ -41,7 +40,8 @@ void Player::update_ap_lbl() {
 void Player::update_weap_info() {
     auto weapon_info = std::dynamic_pointer_cast<Label>(GUI::inst().get_widget("weapon_info"));
     auto ammo_info = std::dynamic_pointer_cast<Label>(GUI::inst().get_widget("ammo_info"));
-    if (curr_weap != nullptr) {
+    auto curr_weap = inventory.get_current_weapon();
+    if (curr_weap) {
         weapon_info->set_text(curr_weap->get_name());
         // first ammo type in weapon ammo info is main caliber
         auto weap_ammo = curr_weap->get_ammo_info().begin();

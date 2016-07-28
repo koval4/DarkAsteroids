@@ -8,6 +8,7 @@
 #include "tile.h"
 #include "actor.h"
 #include "item.h"
+#include "room.h"
 
 //class Actor;
 
@@ -24,6 +25,7 @@ class Map {
         uint8_t height;
         std::vector<std::vector<Tile::ptr>> map; /// container for tiles, actual game map
         std::vector<Actor::ptr> actors;         /// container with actors on map
+        std::vector<std::shared_ptr<Room>> rooms;
 
     public:
         //################# CONSTRUCTORS ##################
@@ -33,6 +35,7 @@ class Map {
 
         //################## SETTERS ###################
         void place_actor(Coord pos, Actor::ptr actor);
+        void add_room(std::shared_ptr<Room> room);
 
         //################## GETTERS ####################
         Tile::ptr at(Coord pos) const;    ///

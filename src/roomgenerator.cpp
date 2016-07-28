@@ -15,10 +15,6 @@ void RoomGenerator::put_items() {
 
 }
 
-void RoomGenerator::place_npc() {
-
-}
-
 void RoomGenerator::generate(Rectangle square) {
     // choosing textures of floor and walls
     // hardcoded as for now
@@ -50,6 +46,8 @@ void RoomGenerator::generate(Rectangle square) {
         }
     }
 
+    std::shared_ptr<Room> room = std::make_shared<Room>(square);
+    map->add_room(room);
+
     put_items();
-    place_npc();
 }

@@ -43,6 +43,9 @@ void Map::place_actor(Coord pos, Actor::ptr actor) {
     actors.push_back(actor);
 }
 
+void Map::add_room(std::shared_ptr<Room> room) {
+    rooms.push_back(room);
+}
 //################### MAP OPERATIONS ##################
 
 //################## SETTERS #####################

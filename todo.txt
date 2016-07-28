@@ -1,11 +1,11 @@
-Add Controllers for different menus
+Make simple npc logic (seek & destroy)
 Add TexturesBuffer widget (holds textures that will be drawn at screen)
 Add WidgetsManager class (tree of widgets, holds ownership of widget, draws widgets starting from root)
-Make simple npc logic (seek & destroy)
 Move find_path to Map
 Add Resizable class
 Add abstract WidgetsContainer class
 Add layouts (inherited from WidgetsContainer)
+Add GameSession class (generates dunegeon >>= runs main loop)
 Make main menu
 Add widgets updating in draw fn
 Add thermal calculations
@@ -16,6 +16,8 @@ Add Property class (contains formula of calculations, calculated value, uses lis
 Rewrite parameters and skills
 Improve dungeon generation algorithm
 Add character generation step
+Add Database class
+Add game saves
 Add Output class (Used for info output on screen)
 Add textures to items
 Add physical object class
@@ -24,6 +26,5 @@ Add object counters for checking if memory is leaked
 Place items in dungeon rooms
 Make dungeon regions
 Add Logger class
-Add Database class
 Make gui generatin from text file (dunno how to implement listeners in text file)
 Make scriptable npc logic
