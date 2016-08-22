@@ -103,3 +103,19 @@ void Tile::connect(Tile::ptr tile) {
     adjacent[tile->pos] = tile;
     tile->adjacent[pos] = shared_from_this();
 }
+
+bool Tile::is_visible_from(const Tile& other, uint16_t range) const {
+    if (range == 0)
+        return false;
+    float dx = other.pos.x - pos.x;
+    float dy = other.pos.y - pos.y;
+    float length = sqrt(dx*dx + dy*dy);
+    Coord next_pos = {
+        static_cast<uint8_t>(other.pos.x + round(dx / length)),
+        static_cast<uint8_t>(other.pos.y + round(dy / length))
+    };
+    auto next_tile = other.adjacent.at(next_pos);
+    if (next_tile.get() == this)
+        return true;
+    else return is_visible_from(*next_tile, range - 1);
+}

@@ -1,3 +1,5 @@
+Add npc groups
+Add NPCController
 Make simple npc logic (seek & destroy)
 Add TexturesBuffer widget (holds textures that will be drawn at screen)
 Add WidgetsManager class (tree of widgets, holds ownership of widget, draws widgets starting from root)

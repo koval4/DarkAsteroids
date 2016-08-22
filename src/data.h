@@ -49,6 +49,8 @@ struct Coord {
     }
 };
 
+uint16_t get_distance(const Coord& a, const Coord& b);
+
 struct Rectangle {
     Coord first;
     Coord last;

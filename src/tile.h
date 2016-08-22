@@ -20,7 +20,7 @@ class Tile : public std::enable_shared_from_this<Tile> {
         Coord pos;                                      /// coordinates of tile on map
         bool passable;                                  /// does actor could walk in tile
         std::string texture;                            /// path to texture of this tile
-        std::shared_ptr<Actor> actor;                               /// actor that stands in this tile
+        std::shared_ptr<Actor> actor;                   /// actor that stands in this tile
         std::vector<Item::ptr> items;                   /// items that lying in this tile
         std::unordered_map<Coord, Tile::ptr> adjacent;  /// tiles that adjacent to this tile
 
@@ -56,6 +56,8 @@ class Tile : public std::enable_shared_from_this<Tile> {
 
         //############# TILES OPERATIONS #################
         void connect(Tile::ptr tile);
+
+        bool is_visible_from(const Tile& other, uint16_t range) const;
 };
 
 bool Tile::is_passable() const {

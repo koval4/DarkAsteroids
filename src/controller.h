@@ -20,7 +20,7 @@ class Controller {
         void add_action(T action);
 
     public:
-        Controller(const std::shared_ptr<ActionQueue>& action_queue);
+        explicit Controller(const std::shared_ptr<ActionQueue>& action_queue);
         virtual ~Controller();
 
         virtual void setup_ui() = 0;

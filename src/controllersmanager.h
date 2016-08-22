@@ -23,7 +23,7 @@ class ControllersManager {
         static ControllersManager& inst();
 
         template<typename T, typename... Args>
-        void make_controller(Args&&... args);
+        std::shared_ptr<T> make_controller(Args&&... args);
         template<typename T>
         void remove_controller();
 
@@ -32,13 +32,14 @@ class ControllersManager {
 };
 
 template<typename T, typename... Args>
-void ControllersManager::make_controller(Args&&... args) {
+std::shared_ptr<T> ControllersManager::make_controller(Args&&... args) {
     // used for type constraint
     static_assert(std::is_base_of<Controller, T>::value, "T must be derived from Controller");
-    Controller::ptr controller = std::make_shared<T>(action_queue, std::forward<Args>(args)...);
+    auto controller = std::make_shared<T>(action_queue, std::forward<Args>(args)...);
     controller->setup_ui();
     controller->setup_handlers();
     controllers.emplace(typeid (T), controller);
+    return controller;
 }
 template <typename T>
 void ControllersManager::remove_controller() {

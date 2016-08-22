@@ -11,6 +11,7 @@
 #include "weapon.h"
 #include "attack.h"
 #include "inventory.h"
+#include "group.h"
 
 //############## STATIC VARIABLES ##############
 
@@ -322,4 +323,8 @@ void Actor::end_turn() {
 
 void Actor::decrease_action_points(uint16_t value) {
     params.action_points -= value;
+}
+
+bool Actor::is_enemy(const Actor& other) const {
+    return group.lock()->get_relation_to(*other.group.lock()) < 50;
 }

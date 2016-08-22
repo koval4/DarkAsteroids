@@ -14,6 +14,7 @@
 #include "ui/panel.h"
 #include "controllersmanager.h"
 #include "playercontroller.h"
+#include "npccontroller.h"
 #include "race.h"
 #include "actor.h"
 #include "actormanager.h"
@@ -31,7 +32,7 @@ Game::Game() {
     running = true;
 }
 
-void Game::make_turn(const std::shared_ptr<Actor> actor) {
+void Game::make_turn(const std::shared_ptr<Actor>& actor) {
     actor->start_turn();
     actor->make_turn();
     auto player = std::dynamic_pointer_cast<Player>(actor);
@@ -43,11 +44,21 @@ void Game::make_turn(const std::shared_ptr<Actor> actor) {
             update();
         }
         ControllersManager::inst().remove_controller<PlayerController>();
+    } else {
+        auto controller = ControllersManager::inst().make_controller<NPCController>(
+            std::dynamic_pointer_cast<NPC>(actor)
+        );
+        while (actor->can_make_turn() && running) {
+            controller->do_action();
+            draw(actor);
+            update();
+        }
+        ControllersManager::inst().remove_controller<NPCController>();
     }
     actor->end_turn();
 }
 
-void Game::draw(const std::shared_ptr<Actor> actor) {
+void Game::draw(const std::shared_ptr<Actor>& actor) {
     GUI::inst().update();
     if (std::dynamic_pointer_cast<Player>(actor)) {
         MapDrawer {} .draw_map(map->at(actor->get_pos()));

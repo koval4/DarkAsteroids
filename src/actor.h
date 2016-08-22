@@ -15,6 +15,7 @@
 class Map;
 class Tile;
 class Attack;
+class Group;
 
 /**
  * @brief The Actor class describes game logic of characters
@@ -73,6 +74,7 @@ class Actor {
         Skills skills;              ///
         Race race;                  ///
         Body body;                  /// container with bodyparts of this actor
+        std::weak_ptr<Group> group;
 
         bool making_turn;
 
@@ -150,6 +152,7 @@ class Actor {
         void start_turn();
         void end_turn();
         void decrease_action_points(uint16_t value);
+        bool is_enemy(const Actor& other) const;
 
         //############ INVENTORY ################
         /**

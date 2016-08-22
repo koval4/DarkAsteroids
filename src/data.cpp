@@ -6,6 +6,7 @@
 #include <ostream>
 #include <iostream>
 #include <limits>
+#include <cmath>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "data.h"
@@ -129,4 +130,9 @@ uint32_t get_force(uint32_t momentum, uint16_t time){
 /** fuck you, it's obvious*/
 uint32_t get_stress(uint32_t force, uint32_t area){
     return (force/area);
+}
+
+
+uint16_t get_distance(const Coord& a, const Coord& b) {
+    return std::sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
