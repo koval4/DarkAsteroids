@@ -1,7 +1,7 @@
-#include "attackcontroller.h"
+#include "controllers/attackcontroller.h"
 #include "screen.h"
 #include "gui.h"
-#include "controllersmanager.h"
+#include "controllers/controllersmanager.h"
 
 AttackController::AttackController(
     const std::shared_ptr<ActionQueue>& action_queue,

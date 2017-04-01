@@ -1,17 +1,17 @@
-#include "playercontroller.h"
+#include "controllers/playercontroller.h"
 #include <memory>
-#include "controller.h"
+#include "controllers/controller.h"
 #include "ui/eventhandler.h"
 #include "ui/gui.h"
 #include "ui/listener.h"
 #include "ui/screen.h"
-#include "controllersmanager.h"
+#include "controllers/controllersmanager.h"
 #include "player.h"
 #include "tile.h"
 #include "map.h"
-#include "inventorycontroller.h"
-#include "pickitemcontroller.h"
-#include "attackcontroller.h"
+#include "controllers/inventorycontroller.h"
+#include "controllers/pickitemcontroller.h"
+#include "controllers/attackcontroller.h"
 
 PlayerController::PlayerController(
     const std::shared_ptr<ActionQueue>& action_queue,

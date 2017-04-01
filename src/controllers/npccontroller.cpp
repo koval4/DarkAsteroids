@@ -1,4 +1,4 @@
-#include "npccontroller.h"
+#include "controllers/npccontroller.h"
 
 NPCController::NPCController(
     const std::shared_ptr<ActionQueue>& action_queue,

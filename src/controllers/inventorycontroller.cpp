@@ -1,4 +1,4 @@
-#include "inventorycontroller.h"
+#include "controllers/inventorycontroller.h"
 #include <memory>
 #include "ui/listener.h"
 #include "ui/gui.h"
@@ -6,8 +6,8 @@
 #include "ui/listbox.h"
 #include "ui/textbox.h"
 #include "ui/button.h"
-#include "controller.h"
-#include "controllersmanager.h"
+#include "controllers/controller.h"
+#include "controllers/controllersmanager.h"
 #include "item.h"
 #include "inventory.h"
 #include "player.h"

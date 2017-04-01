@@ -1,14 +1,14 @@
-#include "pickitemcontroller.h"
+#include "controllers/pickitemcontroller.h"
 #include <memory>
-#include "controller.h"
-#include "controllersmanager.h"
+#include "controllers/controller.h"
+#include "controllers/controllersmanager.h"
 #include "tile.h"
 #include "player.h"
-#include "gui.h"
-#include "panel.h"
-#include "listbox.h"
-#include "textbox.h"
-#include "button.h"
+#include "ui/gui.h"
+#include "ui/panel.h"
+#include "ui/listbox.h"
+#include "ui/textbox.h"
+#include "ui/button.h"
 
 PickItemController::PickItemController(
     const std::shared_ptr<ActionQueue>& action_queue,

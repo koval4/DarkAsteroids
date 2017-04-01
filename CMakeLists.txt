@@ -68,13 +68,13 @@ set(SRC_LIST
   src/itemsstack.cpp
   src/weapon.cpp
 
-  src/controller.cpp
-  src/controllersmanager.cpp
-  src/attackcontroller.cpp
-  src/inventorycontroller.cpp
-  src/npccontroller.cpp
-  src/pickitemcontroller.cpp
-  src/playercontroller.cpp)
+  src/controllers/controller.cpp
+  src/controllers/controllersmanager.cpp
+  src/controllers/attackcontroller.cpp
+  src/controllers/inventorycontroller.cpp
+  src/controllers/npccontroller.cpp
+  src/controllers/pickitemcontroller.cpp
+  src/controllers/playercontroller.cpp)
 
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 target_link_libraries(${PROJECT_NAME}

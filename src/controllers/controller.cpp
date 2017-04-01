@@ -1,4 +1,4 @@
-#include "controller.h"
+#include "controllers/controller.h"
 #include <memory>
 
 Controller::Controller(const std::shared_ptr<ActionQueue>& action_queue)
