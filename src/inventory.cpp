@@ -3,7 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include <memory>
-#include "data.h"
+#include "common.h"
 #include "tile.h"
 #include "item.h"
 #include "bodypart.h"

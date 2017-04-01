@@ -4,7 +4,7 @@
 #include <queue>
 #include <memory>
 #include "controller.h"
-#include "ui/event_handler.h"
+#include "ui/eventhandler.h"
 #include "ui/listener.h"
 #include "map.h"
 #include "player.h"

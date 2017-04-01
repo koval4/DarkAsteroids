@@ -1,9 +1,9 @@
 #include "dungeongenerator.h"
 #include "game.h"
-#include "map_drawer.h"
+#include "mapdrawer.h"
 #include <vector>
 #include <list>
-#include "ui/event_handler.h"
+#include "ui/eventhandler.h"
 #include "ui/screen.h"
 #include "ui/gui.h"
 #include "ui/textbox.h"
@@ -26,7 +26,7 @@
 #include "weapon.h"
 #include "container.h"
 #include "armor.h"
-#include "data.h"
+#include "common.h"
 
 Game::Game() {
     running = true;

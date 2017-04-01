@@ -5,7 +5,7 @@
 #include <fstream>
 #include <tuple>
 #include "group.h"
-#include "data.h"
+#include "common.h"
 #include "filereader.h"
 
 GroupsManager::GroupsManager() {}

@@ -9,7 +9,7 @@
 #include <cmath>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "data.h"
+#include "common.h"
 
 std::string txtr_path = "textures/";
 std::ofstream log_file;

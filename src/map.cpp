@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "data.h"
+#include "common.h"
 #include "tile.h"
 #include "ui/screen.h"
 #include "ui/gui.h"

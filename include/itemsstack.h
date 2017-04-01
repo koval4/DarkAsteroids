@@ -1,5 +1,5 @@
-#ifndef STACK_H
-#define STACK_H
+#ifndef ITEMSSTACK_H
+#define ITEMSSTACK_H
 
 #include <memory>
 #include "item.h"
@@ -27,4 +27,4 @@ class Stack : public Item {
         Item::ptr take();
 };
 
-#endif // STACK_H
+#endif // ITEMSSTACK_H

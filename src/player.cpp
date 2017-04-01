@@ -3,10 +3,10 @@
 #include <functional>
 #include <algorithm>
 #include "actor.h"
-#include "data.h"
+#include "common.h"
 #include "tile.h"
 #include "map.h"
-#include "map_drawer.h"
+#include "mapdrawer.h"
 #include "ui/gui.h"
 #include "ui/screen.h"
 #include "ui/textbox.h"

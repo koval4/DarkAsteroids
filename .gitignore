@@ -72,3 +72,5 @@ Thumbs.db
 *.exe
 
 notes.txt
+bin/
+CMakeLists.txt.user

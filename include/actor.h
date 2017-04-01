@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "data.h"
+#include "common.h"
 #include "bodypart.h"
 #include "race.h"
 #include "body.h"

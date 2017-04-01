@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "data.h"
+#include "common.h"
 #include "tile.h"
 
 class Room : public std::enable_shared_from_this<Room> {

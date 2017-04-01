@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "itemsstack.h"
 
 Stack::Stack()
     : Item()

@@ -4,7 +4,7 @@
 #include <memory>
 #include <queue>
 #include <functional>
-#include "ui/event_handler.h"
+#include "ui/eventhandler.h"
 
 using ActionQueue = std::queue<std::function<void(void)>>;
 

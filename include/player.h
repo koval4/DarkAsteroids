@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "actor.h"
-#include "data.h"
+#include "common.h"
 #include "ui/textbox.h"
 #include "ui/label.h"
 #include "ui/button.h"

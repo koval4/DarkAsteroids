@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <list>
-#include "data.h"
+#include "common.h"
 #include "tile.h"
 #include "map.h"
 #include "roomgenerator.h"

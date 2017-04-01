@@ -5,7 +5,7 @@
 #include <memory>
 #include <algorithm>
 #include "map.h"
-#include "data.h"
+#include "common.h"
 
 NPC::NPC(
     std::string texture,

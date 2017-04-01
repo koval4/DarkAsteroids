@@ -1,7 +1,7 @@
 #include "playercontroller.h"
 #include <memory>
 #include "controller.h"
-#include "ui/event_handler.h"
+#include "ui/eventhandler.h"
 #include "ui/gui.h"
 #include "ui/listener.h"
 #include "ui/screen.h"

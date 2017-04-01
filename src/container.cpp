@@ -6,7 +6,7 @@
 #include <fstream>
 #include <algorithm>
 #include "item.h"
-#include "stack.h"
+#include "itemsstack.h"
 
 std::map<std::string, Container> Container::LIST;   /// database with prototypes for containers
 

@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
-#include "data.h"
+#include "common.h"
 #include "item.h"
 
 class Actor;

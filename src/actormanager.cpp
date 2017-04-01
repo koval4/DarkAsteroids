@@ -1,6 +1,6 @@
 #include "actormanager.h"
 #include <unordered_set>
-#include "data.h"
+#include "common.h"
 #include "actor.h"
 #include "map.h"
 

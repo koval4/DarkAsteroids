@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 #include <memory>
-#include "data.h"
+#include "common.h"
 #include "actor.h"
 #include "item.h"
 

@@ -6,9 +6,9 @@
 #include <string>
 #include <typeindex>
 #include <typeinfo>
-#include <common.h>
+#include "common.h"
 #include "controller.h"
-#include "ui/event_handler.h"
+#include "ui/eventhandler.h"
 
 class ControllersManager {
     public:

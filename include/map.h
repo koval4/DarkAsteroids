@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "data.h"
+#include "common.h"
 #include "tile.h"
 #include "actor.h"
 #include "item.h"

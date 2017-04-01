@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <fstream>
 #include "map.h"
-#include "data.h"
+#include "common.h"
 #include "weapon.h"
 #include "attack.h"
 #include "inventory.h"

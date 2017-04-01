@@ -11,9 +11,9 @@
 #include "actor.h"
 #include "map.h"
 #include "attack.h"
-#include "ranged_attack.h"
-#include "close_attack.h"
-#include "data.h"
+#include "rangedattack.h"
+#include "closeattack.h"
+#include "common.h"
 
 std::map<std::string, Weapon> Weapon::LIST;
 

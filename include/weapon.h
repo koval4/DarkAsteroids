@@ -6,9 +6,9 @@
 #include <string>
 #include <vector>
 #include "item.h"
-#include "stack.h"
+#include "itemsstack.h"
 #include "attack.h"
-#include "data.h"
+#include "common.h"
 
 class Actor;
 
