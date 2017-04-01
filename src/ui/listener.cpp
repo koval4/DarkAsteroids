@@ -1,7 +1,7 @@
-#include "listener.h"
+#include "ui/listener.h"
 #include <functional>
 #include <SDL2/SDL.h>
-#include "gui.h"
+#include "ui/gui.h"
 
 /**
  * @brief Listener::Listener

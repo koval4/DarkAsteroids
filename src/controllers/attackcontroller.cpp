@@ -1,6 +1,6 @@
 #include "controllers/attackcontroller.h"
-#include "screen.h"
-#include "gui.h"
+#include "ui/screen.h"
+#include "ui/gui.h"
 #include "controllers/controllersmanager.h"
 
 AttackController::AttackController(

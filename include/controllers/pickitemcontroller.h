@@ -6,10 +6,10 @@
 #include "item.h"
 #include "tile.h"
 #include "player.h"
-#include "panel.h"
-#include "listbox.h"
-#include "textbox.h"
-#include "button.h"
+#include "ui/panel.h"
+#include "ui/listbox.h"
+#include "ui/textbox.h"
+#include "ui/button.h"
 
 class PickItemController : public Controller {
     private:

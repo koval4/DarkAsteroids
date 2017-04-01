@@ -4,8 +4,8 @@
 #include <map>
 #include <string>
 #include <iostream>
-#include "screen.h"
-#include "texture.h"
+#include "ui/screen.h"
+#include "ui/texture.h"
 
 uint16_t Texture::obj_counter = 0;
 

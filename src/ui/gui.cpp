@@ -1,10 +1,10 @@
-#include "gui.h"
+#include "ui/gui.h"
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
 #include <type_traits>
-#include "screen.h"
-#include "widget.h"
+#include "ui/screen.h"
+#include "ui/widget.h"
 
 GUI::GUI() {
 

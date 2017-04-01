@@ -1,13 +1,13 @@
-#include "button.h"
+#include "ui/button.h"
 #include <string>
 #include <vector>
 #include <functional>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include "texture.h"
-#include "widget.h"
-#include "gui.h"
-#include "listener.h"
+#include "ui/texture.h"
+#include "ui/widget.h"
+#include "ui/gui.h"
+#include "ui/listener.h"
 
 //################ STATIC VARIABLES DECLARATION ######################
 

@@ -1,10 +1,10 @@
-#include "eventhandler.h"
+#include "ui/eventhandler.h"
 #include <iostream>
 #include <unordered_map>
 #include <vector>
 #include <functional>
 #include <SDL2/SDL.h>
-#include "listener.h"
+#include "ui/listener.h"
 
 /**
 * @brief EventProcessor -- default constructor, starts thread that polls event

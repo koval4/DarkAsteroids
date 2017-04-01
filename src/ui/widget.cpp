@@ -2,9 +2,9 @@
 #include <string>
 #include <typeinfo>
 #include <SDL2/SDL.h>
-#include "texture.h"
-#include "common.h"
-#include "widget.h"
+#include "ui/texture.h"
+#include "ui/common.h"
+#include "ui/widget.h"
 
 uint16_t Widget::obj_counter = 0;
 

@@ -7,9 +7,9 @@
 #include "actor.h"
 #include "player.h"
 #include "attack.h"
-#include "panel.h"
-#include "listbox.h"
-#include "button.h"
+#include "ui/panel.h"
+#include "ui/listbox.h"
+#include "ui/button.h"
 
 class AttackController : public Controller {
     private:

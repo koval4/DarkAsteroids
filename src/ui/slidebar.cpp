@@ -1,11 +1,11 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
-#include "widget.h"
-#include "texture.h"
-#include "common.h"
-#include "slidebar.h"
-#include "gui.h"
+#include "ui/widget.h"
+#include "ui/texture.h"
+#include "ui/common.h"
+#include "ui/slidebar.h"
+#include "ui/gui.h"
 
 std::string Slidebar::default_back_path = "";
 std::string Slidebar::default_slider_path = "";

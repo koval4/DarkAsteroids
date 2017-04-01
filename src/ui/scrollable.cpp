@@ -1,4 +1,4 @@
-#include "scrollable.h"
+#include "ui/scrollable.h"
 
 Scrollable::Scrollable() {
     slidebar = nullptr;

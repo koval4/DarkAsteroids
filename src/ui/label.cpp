@@ -1,11 +1,11 @@
-#include "label.h"
+#include "ui/label.h"
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include "texture.h"
-#include "widget.h"
-#include "gui.h"
+#include "ui/texture.h"
+#include "ui/widget.h"
+#include "ui/gui.h"
 
 //###################### STATIC VARIABLES ##########################
 

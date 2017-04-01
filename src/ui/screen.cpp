@@ -3,9 +3,9 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
-#include "common.h"
-#include "texture.h"
-#include "screen.h"
+#include "ui/common.h"
+#include "ui/texture.h"
+#include "ui/screen.h"
 
 Screen::Screen(){
     window = nullptr;
