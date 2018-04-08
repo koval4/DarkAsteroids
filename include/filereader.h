@@ -157,7 +157,7 @@ T read_object(
     auto unwrapped = unwrap_variant(
         read_object_impl(source,
             wrap_variant(properties)));
-    return apply(factory, unwrapped);
+    return std::apply(factory, unwrapped);
 }
 
 template <typename T>
