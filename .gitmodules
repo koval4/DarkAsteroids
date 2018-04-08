@@ -1,0 +1,3 @@
+[submodule "libs/sml"]
+	path = libs/sml
+	url = https://github.com/boost-experimental/sml.git

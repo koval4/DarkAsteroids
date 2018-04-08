@@ -17,6 +17,8 @@ include_directories(${SDL2_INCLUDE_DIR}
                     ${SDL2_IMAGE_INCLUDE_DIR}
                     ${SDL2_TTF_INCLUDE_DIR})
 
+include_directories(libs/sml/include)
+
 include_directories("include")
 set(SRC_LIST
   src/main.cpp
