@@ -14,21 +14,6 @@
 #include <boost/variant.hpp>
 
 template <typename F, typename T, size_t... index>
-decltype(auto) apply_impl(F&& func, T&& tuple, std::index_sequence<index...>) {
-    return func(std::get<index>(std::forward<T>(tuple))...);
-}
-
-template <typename F, typename T>
-decltype(auto) apply(F&& func, T&& tuple) {
-    constexpr auto size = std::tuple_size<std::decay_t<T> >::value;
-    return apply_impl(
-        std::move(func),
-        std::move(tuple),
-        std::make_index_sequence<size>()
-    );
-}
-
-template <typename F, typename T, size_t... index>
 constexpr decltype(auto) for_each_impl(T&& tuple, F&& fn, std::index_sequence<index...>) {
     return std::make_tuple(fn(std::get<index>(tuple))...);
 }
