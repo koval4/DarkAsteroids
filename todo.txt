@@ -1,32 +1,54 @@
-Add npc groups
-Add NPCController
-Make simple npc logic (seek & destroy)
-Add TexturesBuffer widget (holds textures that will be drawn at screen)
-Add WidgetsManager class (tree of widgets, holds ownership of widget, draws widgets starting from root)
-Move find_path to Map
-Add Resizable class
-Add abstract WidgetsContainer class
-Add layouts (inherited from WidgetsContainer)
-Add GameSession class (generates dunegeon >>= runs main loop)
-Make main menu
-Add widgets updating in draw fn
-Add thermal calculations
-Improve map drawing (add primitive raycasting)
-Implement enabled field in widgets
-Add text input
-Add Property class (contains formula of calculations, calculated value, uses listener pattern)
-Rewrite parameters and skills
-Improve dungeon generation algorithm
-Add character generation step
-Add Database class
+Break game flow to game states using FSM
+ |- init state
+ |- main menu state
+ |- loading state
+ |- dungeon generarion state
+ |- player characters creation state
+ |- action phase state
+ |- world interaction state
+ |- pause state
+Implement text input widget
+Make main menu UI
+Make player character creation UI
+Make simple npc FSM (seek & destroy)
 Add game saves
-Add Output class (Used for info output on screen)
-Add textures to items
-Add physical object class
-Add air resistance and thermal losses during ranged attack (add air into tiles, it will act just like item)
-Add object counters for checking if memory is leaked
+ |- add Serializable class
+Add Property class (contains formula of calculations, calculated value, uses listener pattern)
+Implement entity-component system
+Rework biologycal system
+ |- relook pain shock
+ |- add vital organs system
+ |- add reactins to system changes
+ |- add asphyxation effect
+ |- add vomit
+ |- add loss of consciousnes
+Refactor items
+ |- break inheritance system, use entity-components approach instead
+ |- add physical object component
+ |- add material property
+ |- add items quality
+Make items recursive struct (item consists of multiple components)
+Refactor UI system
+ |- add Resizable class
+ |- add abstract WidgetsContainer class
+ |- add layouts (inherited from WidgetsContainer)
+ |- add WidgetsManager class (tree of widgets, holds ownership of widget, draws widgets starting from root)
+ |- add TexturesBuffer widget (holds textures that will be drawn at screen)
+ |- implement enabled field in widgets
+ |- make gui generatin from text file (dunno how to implement listeners in text file)
+------------------------
+Make find_path free function
+Add thermal calculations
+Rewrite parameters and skills
 Place items in dungeon rooms
+Add npc groups
+Add air resistance and thermal losses during ranged attack (add air into tiles, it will act just like item)
+Improve dungeon generation algorithm
 Make dungeon regions
-Add Logger class
-Make gui generatin from text file (dunno how to implement listeners in text file)
+Improve map drawing (add primitive raycasting)
+Add Database class
+Add Output class (Used for info output on screen)
+Add sprites to items
 Make scriptable npc logic
+Add object counters for checking if memory is leaked
+Add Logger class
