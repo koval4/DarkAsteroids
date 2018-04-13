@@ -15,13 +15,13 @@ class RoomGenerator {
         using prt = std::shared_ptr<RoomGenerator>;
 
     private:
-        const Map::ptr map;
-        const ActorManager::ptr actor_manager;
+        Map& map;
+        const ActorManager& actor_manager;
 
         void put_items();
 
     public:
-        RoomGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager);
+        RoomGenerator(Map& map, const ActorManager& actor_manager);
 
         void generate(Rectangle square);
 };

@@ -10,9 +10,8 @@
 #include "ui/textbox.h"
 #include "ui/button.h"
 
-PickItemController::PickItemController(
-    const std::shared_ptr<ActionQueue>& action_queue,
-    const std::shared_ptr<Player> player,
+PickItemController::PickItemController(const std::shared_ptr<ActionQueue>& action_queue,
+    Player& player,
     const std::shared_ptr<Tile> tile)
     : Controller (action_queue)
     , player(player)
@@ -63,7 +62,7 @@ void PickItemController::setup_handlers() {
             item_descr->clear_text();
             items_list->remove_item(selected_item->get_name());
             this->tile->take_item(selected_item);
-            this->player->equip_item(selected_item);
+            this->player.equip_item(selected_item);
         });
     });
 

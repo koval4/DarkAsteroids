@@ -37,7 +37,7 @@ Map::Map(uint8_t width, uint8_t height)
 }
 
 void Map::place_actor(Coord pos, Actor::ptr actor) {
-    map[pos.x][pos.y]->place_actor(actor);
+    map[pos.x][pos.y]->place_actor(actor.get());
     actor->set_map(this);
     actor->set_pos(pos);
     actors.push_back(actor);

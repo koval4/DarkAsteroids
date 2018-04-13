@@ -9,10 +9,10 @@
 
 class NPCFactory {
     private:
-        const std::shared_ptr<ActorManager> manager;
+        const ActorManager& manager;
 
     public:
-        explicit NPCFactory(const std::shared_ptr<ActorManager>& manager);
+        explicit NPCFactory(const ActorManager& manager);
 
         std::vector<std::shared_ptr<NPC>> get_squad(std::string type, uint8_t size);
 };

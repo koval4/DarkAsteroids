@@ -1,7 +1,7 @@
 #include "npcfactory.h"
 #include "npcprototype.h"
 
-NPCFactory::NPCFactory(const std::shared_ptr<ActorManager>& manager)
+NPCFactory::NPCFactory(const ActorManager& manager)
     : manager(manager) {}
 
 std::vector<std::shared_ptr<NPC>> NPCFactory::get_squad(std::string type, uint8_t size) {

@@ -15,7 +15,7 @@ class PickItemController : public Controller {
     private:
         std::shared_ptr<Item> selected_item;
 
-        const std::shared_ptr<Player> player;
+        Player& player;
         const std::shared_ptr<Tile> tile;
 
         std::shared_ptr<Panel> panel;
@@ -27,7 +27,7 @@ class PickItemController : public Controller {
     public:
         PickItemController(
             const std::shared_ptr<ActionQueue>& action_queue,
-            const std::shared_ptr<Player> player,
+            Player& player,
             const std::shared_ptr<Tile> tile);
         ~PickItemController();
 

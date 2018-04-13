@@ -59,7 +59,7 @@ void Player::set_game_state(bool* running) {
     game_running = running;
 }
 
-std::shared_ptr<Player> Player::generate() {
+std::unique_ptr<Player> Player::generate() {
     std::string texture = img("player.png");
     std::string name = "Player";
     std::string description = "Player";
@@ -68,7 +68,7 @@ std::shared_ptr<Player> Player::generate() {
     Skills skills;
     auto race = Race::RACES_LIST.at("Human");
 
-    auto player = std::make_shared<Player>(texture, name, description, params, skills, race);
+    auto player = std::make_unique<Player>(texture, name, description, params, skills, race);
 
     player->params.action_points += 20;
     player->equip_item(Weapon::make("CPP-17"));

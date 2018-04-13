@@ -13,8 +13,8 @@
 
 class AttackController : public Controller {
     private:
-        const std::shared_ptr<Player> player;
-        const std::shared_ptr<Actor> target;
+        Player& player;
+        Actor& target;
 
         std::vector<std::shared_ptr<Attack>> available_attacks;
         std::shared_ptr<Attack> selected_attack;
@@ -27,8 +27,8 @@ class AttackController : public Controller {
     public:
         AttackController(
             const std::shared_ptr<ActionQueue>& action_queue,
-            const std::shared_ptr<Player>& player,
-            const std::shared_ptr<Actor>& target);
+            Player& player,
+            Actor& target);
         ~AttackController();
 
         virtual void setup_ui() override;

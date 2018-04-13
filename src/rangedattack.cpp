@@ -91,7 +91,7 @@ void RangedAttack::make_attack(Actor& user
             // TODO: check for collision with items
 
             auto tile_actor = tile->get_actor();
-            if (tile_actor && tile_actor.get() == victim)
+            if (tile_actor && tile_actor == victim)
                 victim->get_wound(momentum, *projectile, contact_area, target);
             else if (tile_actor)
                 tile_actor->get_wound(momentum, *projectile, contact_area, nullptr);

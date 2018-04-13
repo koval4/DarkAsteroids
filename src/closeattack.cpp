@@ -29,7 +29,7 @@ void CloseAttack::make_attack(Actor& user
     int32_t momentum = get_momentum(projectile->get_weight(), start_force);
 
     Tile::ptr tile = Map::curr_map->at(end);
-    if (tile->get_actor().get() == victim)
+    if (tile->get_actor() == victim)
         victim->get_wound(momentum, *projectile, contact_area, target);
     else if (tile->get_actor())
         tile->get_actor()->get_wound(momentum, *projectile, contact_area, nullptr);

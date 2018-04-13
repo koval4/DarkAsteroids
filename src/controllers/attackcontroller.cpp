@@ -3,14 +3,13 @@
 #include "ui/gui.h"
 #include "controllers/controllersmanager.h"
 
-AttackController::AttackController(
-    const std::shared_ptr<ActionQueue>& action_queue,
-    const std::shared_ptr<Player>& player,
-    const std::shared_ptr<Actor>& target)
+AttackController::AttackController(const std::shared_ptr<ActionQueue>& action_queue,
+    Player& player,
+    Actor& target)
     : Controller(action_queue)
     , player(player)
     , target(target)
-    , available_attacks(player->get_available_attacks()) {}
+    , available_attacks(player.get_available_attacks()) {}
 
 AttackController::~AttackController() {}
 
@@ -66,13 +65,13 @@ void AttackController::setup_handlers() {
         if (!selected_attack)
             return;
         add_action([this] (void) -> void {
-            player->decrease_action_points(selected_attack->get_cost());
-            player->get_current_weapon()->make_attack(
-                *player,
+            player.decrease_action_points(selected_attack->get_cost());
+            player.get_current_weapon()->make_attack(
+                player,
                 selected_attack,
-                player->get_pos(),
-                target->get_pos(),
-                target.get()
+                player.get_pos(),
+                target.get_pos(),
+                &target
             );
             ControllersManager::inst().remove_controller<AttackController>();
         });

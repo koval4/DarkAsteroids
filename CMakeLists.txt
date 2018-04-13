@@ -23,7 +23,10 @@ include_directories("include")
 set(SRC_LIST
   src/main.cpp
   src/common.cpp
-  src/game.cpp
+
+  src/actionphase.cpp
+
+  src/actionphasebuilder.cpp
 
   src/ui/gui.cpp
   src/ui/texture.cpp

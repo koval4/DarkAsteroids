@@ -2,32 +2,33 @@
 #define ACTORMANAGER_H
 
 #include <memory>
-#include <unordered_set>
+#include <vector>
 #include "common.h"
 #include "actor.h"
 #include "map.h"
 
 class ActorManager {
-    public:
-        using ptr = std::shared_ptr<ActorManager>;
+    using actors_t = std::vector<std::unique_ptr<Actor>>;
 
-    private:
-        std::unordered_set<Actor::ptr> actors;
-        const Map::ptr map;
-        std::unordered_set<Actor::ptr>::iterator curr_actor;    // actor which makes current turn
+public:
+    explicit ActorManager(const Map& map);
+    ActorManager(const ActorManager&) = delete;
+    ActorManager(ActorManager&&) = default;
 
-    public:
-        explicit ActorManager(const Map::ptr& map);
+    const actors_t& get_actors() const;
+    Actor& get_curr_actor();
 
-        std::unordered_set<Actor::ptr> get_actors() const;
-        const Actor::ptr get_curr_actor() const;
+    void make_turn_priority();
 
-        void start_turn();
+    void check_alive();
+    void place_at(Coord pos, std::unique_ptr<Actor>&& actor);
 
-        void end_turn();
-        void check_alive();
-        void place_at(Coord pos, Actor::ptr actor);
-        void kill(const Actor::ptr& actor);
+private:
+    actors_t actors;
+    std::vector<actors_t::iterator>            actors_queue;
+    const Map&                                 map;
+    decltype(actors_queue)::iterator          actor_iterator;    // actor which makes current turn
+
 };
 
 #endif // ACTORMANAGER_H

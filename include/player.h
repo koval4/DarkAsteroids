@@ -14,17 +14,6 @@
  */
 class Player : public Actor {
     public:
-        typedef std::shared_ptr<Player> ptr;
-
-    private:
-        static bool* game_running;  /// pointer to game state
-
-        void update_ap_lbl();       /// updates ap label text
-        void update_weap_info();    /// updates labels in weapon_panel
-
-        void reload_weapon();
-
-    public:
         Player(
             std::string texture,
             std::string name,
@@ -38,11 +27,19 @@ class Player : public Actor {
         static void set_game_state(bool* running);
 
         //############## GAME LOGIC ################
-        static std::shared_ptr<Player> generate();
+        static std::unique_ptr<Player> generate();
         virtual void make_turn() override;
         virtual void pick_item() override;
         virtual void attack(Coord target) override;
         void show_inventory();
+
+    private:
+        static bool* game_running;  /// pointer to game state
+
+        void update_ap_lbl();       /// updates ap label text
+        void update_weap_info();    /// updates labels in weapon_panel
+
+        void reload_weapon();
 };
 
 #endif // PLAYER_H

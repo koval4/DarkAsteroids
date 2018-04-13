@@ -13,6 +13,9 @@
 template<typename F, typename S>
 using PAIRS = std::vector<std::pair<F, S>>;
 
+template <typename T>
+using OptRef = T*;
+
 extern std::string txtr_path;
 #define img(name) txtr_path + std::string(name)
 

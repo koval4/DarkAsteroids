@@ -20,7 +20,7 @@ class Tile : public std::enable_shared_from_this<Tile> {
         Coord pos;                                      /// coordinates of tile on map
         bool passable;                                  /// does actor could walk in tile
         std::string texture;                            /// path to texture of this tile
-        std::shared_ptr<Actor> actor;                   /// actor that stands in this tile
+        OptRef<Actor> actor;                            /// actor that stands in this tile
         std::vector<Item::ptr> items;                   /// items that lying in this tile
         std::unordered_map<Coord, Tile::ptr> adjacent;  /// tiles that adjacent to this tile
 
@@ -38,7 +38,7 @@ class Tile : public std::enable_shared_from_this<Tile> {
         bool is_wall() const;
         std::string get_texture() const;
         std::vector<Item::ptr> get_items() const;
-        const std::shared_ptr<Actor>& get_actor();
+        OptRef<Actor> get_actor();
         std::vector<Tile::ptr> get_adjacent() const;
         Tile::ptr get_tile(Coord coord) const;
 
@@ -51,8 +51,8 @@ class Tile : public std::enable_shared_from_this<Tile> {
         void put_item(Item::ptr item);
 
         //############ ACTORS OPERATIONS ##############
-        std::shared_ptr<Actor> remove_actor();
-        void place_actor(const std::shared_ptr<Actor>& actor);
+        Actor* remove_actor();
+        void place_actor(Actor* const actor);
 
         //############# TILES OPERATIONS #################
         void connect(Tile::ptr tile);

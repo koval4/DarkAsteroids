@@ -60,8 +60,8 @@ std::vector<std::shared_ptr<Tile>> NPC::get_tiles_in_fov() const {
     return get_result(center);
 }
 
-std::vector<Actor::ptr> NPC::get_actors_in_fov() const {
-    std::vector<Actor::ptr> actors;
+std::vector<Actor*> NPC::get_actors_in_fov() const {
+    std::vector<Actor*> actors;
 
     for (const auto& tile : get_tiles_in_fov()) {
         auto actor = tile->get_actor();

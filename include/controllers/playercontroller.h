@@ -11,7 +11,7 @@
 
 class PlayerController : public Controller {
     private:
-        const Player::ptr player;
+        Player& player;
         bool* game_state;
         Listener::ptr keyboard_listener;
         Listener::ptr mouse_listener;
@@ -26,7 +26,7 @@ class PlayerController : public Controller {
 
         PlayerController(
             const std::shared_ptr<ActionQueue>& action_queue,
-            const Player::ptr& player,
+            Player& player,
             bool* game_state);
         ~PlayerController();
 

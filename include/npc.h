@@ -16,7 +16,7 @@ class NPC : public Actor {
         std::vector<Coord> path;
 
         std::vector<Tile::ptr> get_tiles_in_fov() const;
-        std::vector<Actor::ptr> get_actors_in_fov() const;
+        std::vector<Actor*> get_actors_in_fov() const;
         std::shared_ptr<Attack> choose_attack();
 
     public:

@@ -11,37 +11,38 @@
 #include "player.h"
 
 class DungeonGenerator {
-    private:
-        using Area = std::vector<Tile::ptr>;
-        using AreaIterator = std::vector<Area>::iterator;
+public:
+    DungeonGenerator(Map& map, ActorManager& actor_manager);
 
-        const Map::ptr map;
-        RoomGenerator::prt room_generator;
-        const ActorManager::ptr actor_manager;
-        std::vector<Rectangle> rooms;
-        std::vector<Area> areas;
+    void generate();
+    void place_players(std::vector<std::unique_ptr<Player>>&& players);
 
-        Area make_area(Rectangle rect);
-        bool is_overlapping_rooms(Rectangle rect);
-        bool can_be_passable(Tile::ptr tile);
-        void make_tunnel(Tile::ptr current, Area& area);
-        bool is_in_area(Tile::ptr tile, const Area& area);
-        AreaIterator find_area(Tile::ptr tile);
-        void merge_areas(AreaIterator fst, AreaIterator snd);
+private:
+    using Area = std::vector<Tile*>;
+    using AreaIterator = std::vector<Area>::iterator;
 
-        void make_rooms(uint16_t attempts, uint8_t min_size, uint8_t max_size);
-        void make_maze();
-        void connect_areas(uint8_t connection_chance);
-        void remove_deadends();
+    Map& map;
+    RoomGenerator room_generator;
+    ActorManager& actor_manager;
+    std::vector<Rectangle> rooms;
+    std::vector<Area> areas;
 
-        void place_npc(uint8_t quantity, uint8_t min_squad_size, uint8_t max_squad_size);
-        void place_actors(std::vector<std::shared_ptr<Actor>>&& actors, Rectangle area) const;
+    Area make_area(Rectangle rect);
+    bool is_overlapping_rooms(Rectangle rect);
+    bool can_be_passable(const Tile& tile);
+    void make_tunnel(Tile* current, Area& area);
+    bool is_in_area(const Tile& tile, const Area& area);
+    AreaIterator find_area(const Tile& tile);
+    void merge_areas(AreaIterator fst, AreaIterator snd);
 
-    public:
-        DungeonGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager);
+    void make_rooms(uint16_t attempts, uint8_t min_size, uint8_t max_size);
+    void make_maze();
+    void connect_areas(uint8_t connection_chance);
+    void remove_deadends();
 
-        void generate();
-        void place_players(std::list<Player::ptr> players);
+    void place_npc(uint8_t quantity, uint8_t min_squad_size, uint8_t max_squad_size);
+    void place_actors(std::vector<std::unique_ptr<Actor>>&& actors, Rectangle area) const;
+
 };
 
 #endif // DUNGEONGENERATOR_H

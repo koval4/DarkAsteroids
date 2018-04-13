@@ -13,7 +13,7 @@
 
 class InventoryController : public Controller {
     private:
-        const Player::ptr player;
+        Player& player;
         Item::ptr selected_item;
         std::string selected_str;
         Listener::ptr keyboard_listener;
@@ -28,7 +28,7 @@ class InventoryController : public Controller {
     public:
         InventoryController(
             const std::shared_ptr<ActionQueue>& action_queue,
-            const Player::ptr player);
+            Player& player);
         ~InventoryController();
 
         virtual void setup_ui() override;

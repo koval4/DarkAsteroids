@@ -7,7 +7,7 @@
 #include "map.h"
 #include "room.h"
 
-RoomGenerator::RoomGenerator(const Map::ptr& map, const ActorManager::ptr& actor_manager)
+RoomGenerator::RoomGenerator(Map& map, const ActorManager& actor_manager)
     : map(map)
     , actor_manager(actor_manager) {}
 
@@ -23,7 +23,7 @@ void RoomGenerator::generate(Rectangle square) {
 
     // making walls
     auto make_wall = [&square, this, &wall_texture] (uint8_t i, uint8_t j) -> void {
-        Tile::ptr tile = map->at({i, j});
+        Tile::ptr tile = map.at({i, j});
         tile->set_passable(false);
         tile->set_texture(wall_texture);
     };
@@ -40,14 +40,14 @@ void RoomGenerator::generate(Rectangle square) {
     // making floor
     for (uint8_t i = square.first.x + 1; i <= square.last.x; i++) {
         for (uint8_t j = square.first.y + 1; j <= square.last.y; j++) {
-            Tile::ptr tile = map->at({i, j});
+            Tile::ptr tile = map.at({i, j});
             tile->set_passable(true);
             tile->set_texture(floor_texture);
         }
     }
 
     std::shared_ptr<Room> room = std::make_shared<Room>(square);
-    map->add_room(room);
+    map.add_room(room);
 
     put_items();
 }

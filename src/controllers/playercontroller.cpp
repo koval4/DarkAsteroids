@@ -13,9 +13,8 @@
 #include "controllers/pickitemcontroller.h"
 #include "controllers/attackcontroller.h"
 
-PlayerController::PlayerController(
-    const std::shared_ptr<ActionQueue>& action_queue,
-    const Player::ptr& player,
+PlayerController::PlayerController(const std::shared_ptr<ActionQueue>& action_queue,
+    Player& player,
     bool* game_state)
     : Controller(action_queue)
     , player(player)
@@ -33,14 +32,14 @@ void PlayerController::show_inventory() const {
 void PlayerController::pick_item() const {
     ControllersManager::inst().make_controller<PickItemController>(
         player,
-        player->get_map()->at(player->get_pos())
+        player.get_map()->at(player.get_pos())
     );
 }
 
 void PlayerController::update_ap_lbl() {
     auto ap_lbl = GUI::inst().get_widget<Label>("ap_lbl");
     ap_lbl->set_text(
-        std::to_string(player->get_params().action_points) + "/" + std::to_string(player->get_params().max_ap)
+        std::to_string(player.get_params().action_points) + "/" + std::to_string(player.get_params().max_ap)
     );
 }
 
@@ -50,11 +49,11 @@ void PlayerController::setup_ui() {
 
 void PlayerController::setup_handlers() {
     keyboard_listener->set_handler([this] (SDL_Event & event) -> void {
-        auto pos = player->get_pos();
+        auto pos = player.get_pos();
         switch (event.key.keysym.sym) {
             case SDLK_RETURN:
                 add_action([this] (void) -> void {
-                    player->end_turn();
+                    player.end_turn();
                 });
                 break;
             case SDLK_ESCAPE:
@@ -75,22 +74,22 @@ void PlayerController::setup_handlers() {
                 break;
             case SDLK_UP:
                 add_action([this, pos] () -> void {
-                    player->move_to({pos.x, static_cast<uint8_t>(pos.y - 1) });
+                    player.move_to({pos.x, static_cast<uint8_t>(pos.y - 1) });
                 });
                 break;
             case SDLK_DOWN:
                 add_action([this, pos] () -> void {
-                    player->move_to({pos.x, static_cast<uint8_t>(pos.y + 1)});
+                    player.move_to({pos.x, static_cast<uint8_t>(pos.y + 1)});
                 });
                 break;
             case SDLK_LEFT:
                 add_action([this, pos] () -> void {
-                    player->move_to({static_cast<uint8_t>(pos.x - 1), pos.y});
+                    player.move_to({static_cast<uint8_t>(pos.x - 1), pos.y});
                 });
                 break;
             case SDLK_RIGHT:
                 add_action([this, pos] () -> void {
-                    player->move_to({static_cast<uint8_t>(pos.x + 1), pos.y});
+                    player.move_to({static_cast<uint8_t>(pos.x + 1), pos.y});
                 });
                 break;
             default:
@@ -103,18 +102,18 @@ void PlayerController::setup_handlers() {
         auto tiles_vert = Screen::inst().get_height() / Tile::size;
         // calculating position on map that has been clicked
         Coord mpos = {
-            static_cast<uint8_t>((player->get_pos().x - tiles_hor / 2) + event.button.x / Tile::size),
-            static_cast<uint8_t>((player->get_pos().y - tiles_vert / 2) + event.button.y / Tile::size)
+            static_cast<uint8_t>((player.get_pos().x - tiles_hor / 2) + event.button.x / Tile::size),
+            static_cast<uint8_t>((player.get_pos().y - tiles_vert / 2) + event.button.y / Tile::size)
         };
 
         // TODO: add enemy check to attack-on-click
 
-        auto actor_at_mpos = player->get_map()->at(mpos)->get_actor();
-        if (actor_at_mpos && actor_at_mpos != player) {
+        OptRef<Actor> actor_at_mpos = player.get_map()->at(mpos)->get_actor();
+        if (actor_at_mpos && actor_at_mpos != &player) {
             add_action([this, actor_at_mpos] (void) -> void {
-                ControllersManager::inst().make_controller<AttackController>(player, actor_at_mpos);
+                ControllersManager::inst().make_controller<AttackController>(player, *actor_at_mpos);
             });
-        } else player->move_to(mpos);
+        } else player.move_to(mpos);
     });
 
     handler.listen(keyboard_listener.get());
