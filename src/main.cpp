@@ -2,15 +2,16 @@
 #include <time.h>
 #include <memory>
 #include <vector>
-#include "player.h"
-#include "actionphasebuilder.h"
+#include "boost/sml.hpp"
+#include "states/gameflow.h"
+
+namespace sml = boost::sml;
 
 int main(int argc, char *argv[]) {
     srand(time(nullptr));
-    std::vector<std::unique_ptr<Player>> players;
-    for (size_t i = 0; i < 4; i++) {
-        players.push_back(Player::generate());
-    }
-    ActionPhaseBuilder{std::move(players), 100, 100}.build().run();
+
+    GameFlow game_flow;
+    game_flow.run();
+
     return 0;
 }
