@@ -3,11 +3,12 @@
 
 #include <cstdint>
 #include "boost/sml.hpp"
+#include "states/initstate.h"
 
 namespace sml = boost::sml;
 
-constexpr auto idle_state = sml::state<class Idle>;
-constexpr auto init_state = sml::state<class InitState>;
+constexpr auto game_idle_state = sml::state<class GameIdle>;
+constexpr auto init_state = sml::state<InitState>;
 constexpr auto main_menu_state = sml::state<class MainMenuState>;
 constexpr auto action_phase_state = sml::state<class ActionPhaseState>;
 
@@ -37,7 +38,7 @@ constexpr auto time_tick = sml::event<TimeTick>;
 struct GameFlowImpl {
     auto operator()() const noexcept {
         return sml::make_transition_table(
-            * idle_state + start_init = init_state
+            * game_idle_state + start_init = init_state
             , init_state + init_finished = main_menu_state
             , main_menu_state + new_game_selected = action_phase_state
             , main_menu_state + quit_selected = sml::X
@@ -49,9 +50,14 @@ struct GameFlowImpl {
 
 class GameFlow {
 public:
+    GameFlow();
+
     void run();
 
 private:
+    InitStateNotifier     init_notifier;
+    UILoader              ui_loader;
+    EntityLoader          entity_loader;
     sml::sm<GameFlowImpl> impl;
 };
 

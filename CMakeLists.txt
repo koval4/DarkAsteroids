@@ -25,6 +25,7 @@ set(SRC_LIST
   src/common.cpp
 
   src/states/gameflow.cpp
+  src/states/initstate.cpp
 
   src/actionphase.cpp
 
