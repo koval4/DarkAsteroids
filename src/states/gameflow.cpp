@@ -10,6 +10,8 @@ GameFlow::GameFlow()
     , impl{init_notifier, ui_loader, entity_loader} {}
 
 void GameFlow::run() {
+    init_notifier.on_ui_loaded([this] () { impl.process_event(UILoaded{}); });
+    init_notifier.on_entities_loaded([this] () { impl.process_event(EntitiesLoaded{}); });
     init_notifier.on_finished([this] () { impl.process_event(InitFinished{}); });
 
     impl.process_event(StartInit{});
