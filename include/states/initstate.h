@@ -1,8 +1,10 @@
 #ifndef INIT_STATE_H
 #define INIT_STATE_H
 
+#include <SDL2/SDL_events.h>
 #include <boost/signals2.hpp>
 #include "boost/sml.hpp"
+#include "states/events.h"
 
 namespace sml = boost::sml;
 namespace sig = boost::signals2;
@@ -10,12 +12,6 @@ namespace sig = boost::signals2;
 constexpr auto init_idle_state = sml::state<class Idle>;
 constexpr auto loading_ui_state = sml::state<class LoadingUI>;
 constexpr auto loading_entities_state = sml::state<class LoadingEntities>;
-
-struct UILoaded {};
-constexpr auto ui_loaded = sml::event<UILoaded>;
-
-struct EntitiesLoaded {};
-constexpr auto entities_loaded = sml::event<EntitiesLoaded>;
 
 struct InitStateNotifier {
     template <typename Callback>
