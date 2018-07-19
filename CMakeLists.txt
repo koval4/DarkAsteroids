@@ -31,6 +31,9 @@ set(SRC_LIST
 
   src/actionphasebuilder.cpp
 
+  src/graphics/sdlwrappers.cpp
+  src/graphics/window.cpp
+
   src/ui/gui.cpp
   src/ui/texture.cpp
   src/ui/widget.cpp
