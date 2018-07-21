@@ -17,6 +17,14 @@ SdlContext make_sdl_context(const SdlWindow& window) noexcept {
     return SdlContext { ptr, &SDL_GL_DeleteContext };
 }
 
+SdlRenderer make_sdl_renderer(const SdlWindow& window) noexcept {
+    SDL_Renderer* ptr = SDL_CreateRenderer(
+        window.get(),
+        -1,
+        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    return SdlRenderer { ptr, &SDL_DestroyRenderer };
+}
+
 SdlSurface make_sdl_texture(std::string_view filename) noexcept {
     SDL_Surface* ptr = IMG_Load(filename.data());
     return SdlSurface { ptr, &SDL_FreeSurface };
