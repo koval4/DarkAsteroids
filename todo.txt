@@ -2,11 +2,15 @@ Break game flow to game states using FSM
  |- init state
  |- main menu state
  |- loading state
- |- dungeon generarion state
+ |- world generarion state
  |- player characters creation state
- |- action phase state
  |- world interaction state
+ |- action phase state
+ |- action phase state
+ |- travel state
  |- pause state
+Refactor Screen class to separate Window and Renderer classes
+Refactor Texture class
 Implement text input widget
 Make main menu UI
 Make player character creation UI
@@ -33,7 +37,7 @@ Refactor UI system
  |- add abstract WidgetsContainer class
  |- add layouts (inherited from WidgetsContainer)
  |- add WidgetsManager class (tree of widgets, holds ownership of widget, draws widgets starting from root)
- |- add TexturesBuffer widget (holds textures that will be drawn at screen)
+ |- add Scene class (will manage rendering of game objects)
  |- implement enabled field in widgets
  |- make gui generatin from text file (dunno how to implement listeners in text file)
 ------------------------
